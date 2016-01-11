@@ -1,10 +1,10 @@
 /dist/*
 /build/*
-
+/nbproject/*
 /ArhDb/*
 /dist/.
 /build/.
-
+/nbproject/.
 /ArhDb/.
 
 
