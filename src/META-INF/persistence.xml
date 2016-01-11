@@ -9,6 +9,8 @@
     <class>EventManagment.SEventSeveriry</class>
     <class>EventManagment.SIncEvent</class>
     <class>EventManagment.SEventType</class>
+    <class>ultracrm.oborud.SGrupOborud</class>
+    <class>ultracrm.oborud.DOborud</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://ASUSG46:1433;databaseName=UltraFiolet"/>
       <property name="javax.persistence.jdbc.user" value="sa"/>

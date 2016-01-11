@@ -9,7 +9,9 @@ public class Device {
     private boolean connection = false;
     private boolean status = false;
     private String password = "";
-
+    private String tel = "";
+    
+    
     public Device() {
         this("863591026612469", 5601, "1234", false, false);
     }
@@ -25,6 +27,7 @@ public class Device {
         this.connection = connected;
         this.status = status;
     }
+    
 
     public void setConnection(boolean connection) {
         this.connection = connection;

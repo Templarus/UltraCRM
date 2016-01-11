@@ -327,7 +327,8 @@ public class ServerDb implements Constatnts {
                 + "SET timeEnd = "
                 + "ISNULL("
                 + "(SELECT TOP(1) time FROM PackageDate WHERE deviceId = '" + devLastWork.getDeviceId() + "' AND (date = '" + devLastWork.getDtWork() + "') AND (time >= '" + devLastWork.getTimeBegin() + "') and ISNULL(input2,0) = 0 ORDER BY time),"
-                + "'23:59:59') "
+                + "'" + devLastWork.getDtWork() + "') "
+                //+ "'23:59:59') "
                 + "WHERE  deviceId = '" + devLastWork.getDeviceId() + "' ANd dtWork = '" + devLastWork.getDtWork() + "' And timeBegin = '" + devLastWork.getTimeBegin() + "'";
         System.out.println("setDeviceTimeWorkEnd - SQL : " + sql);
         if (updateDb(sql) > 0) {
@@ -350,9 +351,10 @@ public class ServerDb implements Constatnts {
         } catch (SQLException ex) {
             System.out.println("ServerDb:getGPSKoordinats():Ошибка подключения или создание Statement");
         }
-        
+
         return koordinat;
     }
+
     public String getCellKoordinats(String deviceId) {
         String koordinat = "";
         sql = " SELECT TOP 1 [params] FROM [UltraFiolet].[dbo].[PackageDate] WHERE deviceId = '" + deviceId + "' ORDER BY date DESC ,time DESC";
@@ -365,10 +367,11 @@ public class ServerDb implements Constatnts {
         } catch (SQLException ex) {
             System.out.println("ServerDb:getCellKoordinats():Ошибка подключения или создание Statement");
         }
-        
+
         return koordinat;
     }
 //работа с контрагентом
+
     public ResultSet getDKontr() {
         sql = "SELECT idKontr AS Код, userNameKontr AS Наименование, urNameKontr AS [Полное наименование], innKontr AS ИНН, kppKontr AS КПП, adressKontr AS Адрес FROM dKontr ORDER BY userNameKontr";
         return selectDb(sql);
@@ -466,6 +469,48 @@ public class ServerDb implements Constatnts {
         return selectDb(sql);
     }
 
+    public DDogovor getDogovor(int idDog) {
+        ResultSet rsQ;
+        DDogovor dog = new DDogovor();
+        sql = "SELECT idDogovor, idKontr, idUslovie, idVidOplat, dtBegin, dtEnd, nameDogovor, flclose, prim FROM dDogovor WHERE idDogovor = " + idDog + "";
+        rsQ = selectDb(sql);
+        try {
+            while (rsQ.next()) {
+                dog.setIdDogovor(rsQ.getInt(1));
+                dog.setKontr(getKontr(rsQ.getInt(2)));
+
+                int idUslovie = rsQ.getInt(3);
+
+                for (SUslovieDogovor usl : getSUslovie()) {
+                    if (usl.getIdUslovie() == idUslovie) {
+                        dog.setSUslovieDogovor(usl);
+                        break;
+                    }
+                }
+
+                int idVidOplat = rsQ.getInt(4);
+
+                for (SVidOplat opl : getSVidOplat()) {
+                    if (opl.getIdVidOplat() == idVidOplat) {
+                        dog.setSVidOplat(opl);
+                        break;
+                    }
+                }
+                
+                dog.setDtBegin(rsQ.getDate(5));
+                dog.setDtEnd(rsQ.getDate(6));
+                dog.setNameDogovor(rsQ.getString(7));
+                dog.setFlclose(rsQ.getBoolean(8));
+                dog.setPrim(rsQ.getString(9));
+
+            }
+        } catch (SQLException ex) {
+            System.out.println("ServerDb:getDogovor():Ошибка подключения или создание Statement - " + ex + " sql: " + sql);
+        }
+
+        return dog;
+    }
+
     public SVidOplat[] getSVidOplat() {
 
         int countRec = 0;
@@ -540,10 +585,12 @@ public class ServerDb implements Constatnts {
             System.out.println("ServerDb:getUslovie():Ошибка подключения или создание Statement(метод заполнения массива Условия договора) - " + ex + " sql: " + sql);
         }
 
-//        for (DKontr o : arrKontr) {
-//            System.out.println("Контрагент - " + o);
-//        }
         return arrUslovieDogovor;
+    }
+
+    public ResultSet getDDogovorOborud(int idDogovor) {
+        sql = "SELECT dOborud.nameOborud AS Оборудование, ISNULL(dDogOborud.gorod,'') + ', ' + ISNULL(dDogOborud.ulica,'') + ', ' + ISNULL(dDogOborud.dom,'') + ', '+ ISNULL(dDogOborud.korp,'') as Адрес,dDogOborud.kolvo AS [Кол-во],dDogOborud.cenaPoTarif AS Цена FROM dDogOborud INNER JOIN dOborud ON dDogOborud.idOborud = dOborud.idOborud WHERE idDogovor = " + idDogovor + "";
+        return selectDb(sql);
     }
 
     //Работа с событиями

@@ -45,6 +45,8 @@ public class MainFrame extends javax.swing.JFrame {
         butDogovor = new javax.swing.JButton();
         butTreker = new javax.swing.JButton();
         butKontr = new javax.swing.JButton();
+        butDogovor1 = new javax.swing.JButton();
+        butDogovor2 = new javax.swing.JButton();
         jPanelContainer = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -91,6 +93,26 @@ public class MainFrame extends javax.swing.JFrame {
         jPanelMenuBar.add(butKontr);
         butKontr.setBounds(120, 0, 130, 90);
 
+        butDogovor1.setText("Справочники");
+        butDogovor1.setPreferredSize(new java.awt.Dimension(120, 95));
+        butDogovor1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butDogovor1ActionPerformed(evt);
+            }
+        });
+        jPanelMenuBar.add(butDogovor1);
+        butDogovor1.setBounds(510, 0, 130, 90);
+
+        butDogovor2.setText("Оборудование");
+        butDogovor2.setPreferredSize(new java.awt.Dimension(120, 95));
+        butDogovor2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butDogovor2ActionPerformed(evt);
+            }
+        });
+        jPanelMenuBar.add(butDogovor2);
+        butDogovor2.setBounds(380, 0, 130, 90);
+
         getContentPane().add(jPanelMenuBar);
         jPanelMenuBar.setBounds(0, 0, 1600, 90);
 
@@ -109,7 +131,6 @@ public class MainFrame extends javax.swing.JFrame {
         setJMenuBar(jMenuBar1);
 
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void butTrekerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butTrekerActionPerformed
@@ -139,6 +160,14 @@ public class MainFrame extends javax.swing.JFrame {
         jPanelContainer.add(jPanKontr);
         jPanelContainer.updateUI();
     }//GEN-LAST:event_butKontrActionPerformed
+
+    private void butDogovor1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butDogovor1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_butDogovor1ActionPerformed
+
+    private void butDogovor2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butDogovor2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_butDogovor2ActionPerformed
 
     private void clearJPanelComponent() {
         jPanelContainer.removeAll();
@@ -181,6 +210,8 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton butDogovor;
+    private javax.swing.JButton butDogovor1;
+    private javax.swing.JButton butDogovor2;
     private javax.swing.JButton butKontr;
     private javax.swing.JButton butTreker;
     private javax.swing.JMenu jMenu1;

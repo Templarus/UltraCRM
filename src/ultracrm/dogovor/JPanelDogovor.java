@@ -11,6 +11,7 @@ import java.sql.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
@@ -176,9 +177,15 @@ public class JPanelDogovor extends javax.swing.JPanel {
     }//GEN-LAST:event_butAddActionPerformed
 
     private void butUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butUpdateActionPerformed
-        DKontr kontr = MainFrame.sDb.getKontr((int) dDogovorTable.getValueAt(dDogovorTable.getSelectedRow(), 0));
-        AddKontr addForm = new AddKontr(Start.mf, true, "Редактирование контрагента", kontr);
-        addForm.setVisible(true);        // TODO add your handling code here:
+        if (dDogovorTable.getSelectedRow() != -1) {
+            DDogovor dog = MainFrame.sDb.getDogovor((int) dDogovorTable.getValueAt(dDogovorTable.getSelectedRow(), 0));
+            AddDogovor addForm = new AddDogovor(Start.mf, true, "Редактирование договора", dog);
+            addForm.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Необходимо выделить договор", "Внимание", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+
     }//GEN-LAST:event_butUpdateActionPerformed
 
     private void butDelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butDelActionPerformed
@@ -215,8 +222,8 @@ public class JPanelDogovor extends javax.swing.JPanel {
 
     private void dDogovorTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dDogovorTableMouseClicked
         if (evt.getClickCount() == 2) {
-            DKontr kontr = MainFrame.sDb.getKontr((int) dDogovorTable.getValueAt(dDogovorTable.getSelectedRow(), 0));
-            AddKontr addForm = new AddKontr(Start.mf, true, "Редактирование контрагента", kontr);
+            DDogovor dog = MainFrame.sDb.getDogovor((int) dDogovorTable.getValueAt(dDogovorTable.getSelectedRow(), 0));
+            AddDogovor addForm = new AddDogovor(Start.mf, true, "Редактирование договора", dog);
             addForm.setVisible(true);
         }
     }//GEN-LAST:event_dDogovorTableMouseClicked
