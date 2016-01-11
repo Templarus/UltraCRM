@@ -65,4 +65,13 @@ public class Device {
         this.port = port;
     }
 
+    @Override
+    public String toString() {
+        return id;
+    }
+    
+    
+    
+    
+
 }

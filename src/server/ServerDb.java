@@ -17,6 +17,7 @@ import ultracrm.dogovor.DDogovor;
 import ultracrm.dogovor.SUslovieDogovor;
 import ultracrm.dogovor.SVidOplat;
 import ultracrm.kontragent.DKontr;
+import ultracrm.oborud.DOborud;
 import ultracrm.oborud.SGrupOborud;
 import ultracrm.treker.Device;
 import ultracrm.treker.DeviceTimeWork;
@@ -643,6 +644,17 @@ public class ServerDb implements Constatnts {
         return arrGrupOborud;
     }
     
+    public ResultSet getDOborud() {
+        sql = "SELECT dOborud.idOborud AS Код, dOborud.nameOborud AS [Наименование оборудования], dOborud.deviceId AS Трекер, sGrupOborud.nameGrupOborud AS [Группа оборудования] FROM dOborud LEFT OUTER JOIN sGrupOborud ON dOborud.idGrupOborud = sGrupOborud.idGrupOborud";
+        return selectDb(sql);
+    }
+    
+        public int setOborud(DOborud ob) {
+        sql = "INSERT INTO dOborud \n"
+                + "       (nameOborud, deviceId, idGrupOborud) \n"
+                + "VALUES ('" + ob.getNameOborud() + "','" + ob.getTreker().getId() + "'," + ob.getIdGrupOborud().getIdGrupOborud() + ")";
+        return insertDb(sql);
+    }
     @Override
     public int disconnect() {
         try {

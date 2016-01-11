@@ -45,7 +45,7 @@ public class AddOborud extends javax.swing.JDialog {
         butCancel = new javax.swing.JButton();
         butSaveClose = new javax.swing.JButton();
         balans = new javax.swing.JLabel();
-        deviceId = new javax.swing.JComboBox(MainFrame.sDb.getSVidOplat());
+        deviceId = new javax.swing.JComboBox(MainFrame.sDb.getDeviceList().toArray());
         jLabel6 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         idGrupOborud = new javax.swing.JComboBox(MainFrame.sDb.getSGrupOborud());
@@ -183,56 +183,41 @@ public class AddOborud extends javax.swing.JDialog {
     }//GEN-LAST:event_butCancelActionPerformed
 
     private void butSaveCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butSaveCloseActionPerformed
-//        System.out.println("Телефон : " + tel.getText());
+        int rezult;
 
+        if (nameOborud.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Необходимо заполнить наименование оборудования", "Внимание", JOptionPane.INFORMATION_MESSAGE);
+        } else 
+            if (this.getTitle().equals("Добавление нового оборудования")) {
+                
+                Device device = (Device)deviceId.getSelectedItem();
+                SGrupOborud grup = (SGrupOborud)idGrupOborud.getSelectedItem();
+           
+            
+            rezult = MainFrame.sDb.setOborud(new DOborud(0, nameOborud.getText(), grup, device));
 
+            if (MainFrame.sDb.err.equals("")) {
+                if (rezult != 0) {
+                    JOptionPane.showMessageDialog(this, "Оборудование успешно добавлено", "Внимание", JOptionPane.INFORMATION_MESSAGE);
+                    dispose();
+                }
 
-
-
-
-
-//  //        System.out.println("Наименование контрагента - " +  Kontr.getSelectedItem().toString());
-//          
-//          
-//       // new Date(dtBegin.getDate().getTime());
-//      
-//        int rezult;
-//
-//        if (nameDogovor.getText().equals("")) {
-//            JOptionPane.showMessageDialog(this, "Необходимо заполнить наименование договора", "Внимание", JOptionPane.INFORMATION_MESSAGE);
-//        } else 
-//        if (Kontr.getSelectedItem().toString().equals("")) {
-//            JOptionPane.showMessageDialog(this, "Необходимо выбрать контрагента", "Внимание", JOptionPane.INFORMATION_MESSAGE);
-//        } else 
-//            if (this.getTitle().equals("Добавление нового договора")) {
-//            DKontr kontr = (DKontr)Kontr.getSelectedItem();
-//            //    System.out.println("IdKontragent : " + kontr.getIdKontr());
-//           
-//            
-//            rezult = MainFrame.sDb.setDogovor(new DDogovor(kontr, new Date(dtBegin.getDate().getTime()), new Date(dtEnd.getDate().getTime()), nameDogovor.getText(), flClose.isSelected(), (SUslovieDogovor)idUslovie.getSelectedItem(), (SVidOplat)idVidOplat.getSelectedItem(), prim.getText()));
-//
-//            if (MainFrame.sDb.err.equals("")) {
-//                if (rezult != 0) {
-//                    JOptionPane.showMessageDialog(this, "Контрагент успешно добавлен", "Внимание", JOptionPane.INFORMATION_MESSAGE);
-//                    dispose();
-//                }
-//
-//            } else {
-//                JOptionPane.showMessageDialog(this, "Произошла ошибка " + MainFrame.sDb.err, "Внимание", JOptionPane.INFORMATION_MESSAGE);
-//            }
-//        } else {
-//////            rezult = MainFrame.sDb.updKontr(new DKontr(new Integer(idDogovor.getText()),nameDogovor.getText(), urNameKontr.getText(), innKontr.getText(), kppKontr.getText(), adressKontr.getText()));
-//////
-//////            if (MainFrame.sDb.err.equals("")) {
-//////                if (rezult != 0) {
-//////                    JOptionPane.showMessageDialog(this, "Контрагент успешно обновлен", "Внимание", JOptionPane.INFORMATION_MESSAGE);
-//////                    dispose();
-//////                }
-//////
-//////            } else {
-//////                JOptionPane.showMessageDialog(this, "Произошла ошибка " + MainFrame.sDb.err, "Внимание", JOptionPane.INFORMATION_MESSAGE);
-//////            }
-  //      }
+            } else {
+                JOptionPane.showMessageDialog(this, "Произошла ошибка " + MainFrame.sDb.err, "Внимание", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else {
+////            rezult = MainFrame.sDb.updKontr(new DKontr(new Integer(idDogovor.getText()),nameDogovor.getText(), urNameKontr.getText(), innKontr.getText(), kppKontr.getText(), adressKontr.getText()));
+////
+////            if (MainFrame.sDb.err.equals("")) {
+////                if (rezult != 0) {
+////                    JOptionPane.showMessageDialog(this, "Контрагент успешно обновлен", "Внимание", JOptionPane.INFORMATION_MESSAGE);
+////                    dispose();
+////                }
+////
+////            } else {
+////                JOptionPane.showMessageDialog(this, "Произошла ошибка " + MainFrame.sDb.err, "Внимание", JOptionPane.INFORMATION_MESSAGE);
+////            }
+        }
     }//GEN-LAST:event_butSaveCloseActionPerformed
 
     /**
