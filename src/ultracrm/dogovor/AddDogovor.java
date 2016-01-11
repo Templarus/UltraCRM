@@ -173,6 +173,11 @@ public class AddDogovor extends javax.swing.JDialog {
         jLabel11.setText("Список оборудования");
 
         jButton1.setText("Добавить");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         dDogovorOborudTable.setAutoCreateRowSorter(true);
         dDogovorOborudTable.setModel(dbm);
@@ -364,6 +369,10 @@ public class AddDogovor extends javax.swing.JDialog {
     private void primActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_primActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_primActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+      
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

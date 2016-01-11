@@ -48,7 +48,7 @@ public class AddOborud extends javax.swing.JDialog {
         deviceId = new javax.swing.JComboBox(MainFrame.sDb.getSVidOplat());
         jLabel6 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        idGrupOborud = new javax.swing.JComboBox(MainFrame.sDb.getSUslovie());
+        idGrupOborud = new javax.swing.JComboBox(MainFrame.sDb.getSGrupOborud());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setAlwaysOnTop(true);
