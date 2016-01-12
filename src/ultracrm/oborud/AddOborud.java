@@ -220,7 +220,7 @@ public class AddOborud extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_butSaveCloseActionPerformed
 
-<<<<<<< HEAD
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
       YandexRequest yr = new YandexRequest();
       deviceId.setText(yr.getLocation(MainFrame.sDb.getCellKoordinats(deviceId.getText()),false));
@@ -231,8 +231,6 @@ public class AddOborud extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_portActionPerformed
 
-=======
->>>>>>> origin/master
     /**
      * @param args the command line arguments
      */
