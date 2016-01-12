@@ -285,9 +285,8 @@ public class AddOborud extends javax.swing.JDialog {
     }//GEN-LAST:event_butSaveCloseActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-      YandexRequest yr = new YandexRequest(MainFrame.sDb.getCellKoordinats("863591026612469"), false);
-      String[] c = yr.getLocation(MainFrame.sDb.getCellKoordinats("863591026612469"),false);
-      deviceId.setText(c[1] + " , " + c[0]);
+      YandexRequest yr = new YandexRequest();
+      deviceId.setText(yr.getLocation(MainFrame.sDb.getCellKoordinats(deviceId.getText()),false));
       deviceId.updateUI();
     }//GEN-LAST:event_jButton1ActionPerformed
 

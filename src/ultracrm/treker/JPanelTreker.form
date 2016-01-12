@@ -36,6 +36,8 @@
                       <Component id="butUpdate" min="-2" pref="178" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="butDel" min="-2" pref="178" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="butGeoInfo" min="-2" pref="178" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="butRaschet" min="-2" pref="301" max="-2" attributes="0"/>
                   </Group>
@@ -74,6 +76,7 @@
                   <Component id="butUpdate" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="butDel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="butRaschet" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="butGeoInfo" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jSeparator1" min="-2" pref="2" max="-2" attributes="0"/>
@@ -213,6 +216,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="butRaschetActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="butGeoInfo">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x413;&#x435;&#x43e; &#x438;&#x43d;&#x444;&#x43e;&#x440;&#x43c;&#x430;&#x446;&#x438;&#x44f;"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="butGeoInfoActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

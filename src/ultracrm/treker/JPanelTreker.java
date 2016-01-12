@@ -3,30 +3,31 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ultracrm.treker;
 
 import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
 import java.sql.Date;
+import java.util.ArrayList;
 import ultracrm.DatabaseTableModel;
 import ultracrm.MainFrame;
 import ultracrm.Start;
-
 
 /**
  *
  * @author Asus
  */
 public class JPanelTreker extends javax.swing.JPanel {
+
     private DatabaseTableModel dbm = new DatabaseTableModel(false);
     private DatabaseTableModel dbmDeviceTimeWork = new DatabaseTableModel(false);
     private DatabaseTableModel dbmDeviceTimeWorkExtend = new DatabaseTableModel(false);
+
     /**
      * Creates new form JPanelTreker
      */
     public JPanelTreker() {
         initComponents();
-      
+
         try {
             dbm.setDataSource(MainFrame.sDb.getSTreker());
         } catch (Exception ex) {
@@ -58,11 +59,11 @@ public class JPanelTreker extends javax.swing.JPanel {
         DeviceTimeWorkForDayExtend.getColumnModel().getColumn(2).setPreferredWidth(100);
         DeviceTimeWorkForDayExtend.getColumnModel().getColumn(3).setPreferredWidth(100);
         DeviceTimeWorkForDayExtend.getColumnModel().getColumn(4).setPreferredWidth(100);
-        if(sTreker.getRowCount() != 0){
-        sTreker.setRowSelectionInterval(0, 0);
+        if (sTreker.getRowCount() != 0) {
+            sTreker.setRowSelectionInterval(0, 0);
         }
-        if(DeviceTimeWorkForDay.getRowCount() != 0){
-        DeviceTimeWorkForDay.setRowSelectionInterval(0, 0);
+        if (DeviceTimeWorkForDay.getRowCount() != 0) {
+            DeviceTimeWorkForDay.setRowSelectionInterval(0, 0);
         }
     }
 
@@ -89,6 +90,7 @@ public class JPanelTreker extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         DeviceTimeWorkForDayExtend = new javax.swing.JTable();
         butRaschet = new javax.swing.JButton();
+        butGeoInfo = new javax.swing.JButton();
 
         setMaximumSize(new java.awt.Dimension(1600, 780));
         setMinimumSize(new java.awt.Dimension(1600, 780));
@@ -154,6 +156,13 @@ public class JPanelTreker extends javax.swing.JPanel {
             }
         });
 
+        butGeoInfo.setText("Гео информация");
+        butGeoInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butGeoInfoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -167,6 +176,8 @@ public class JPanelTreker extends javax.swing.JPanel {
                         .addComponent(butUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(butDel, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(butGeoInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(butRaschet, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -194,7 +205,8 @@ public class JPanelTreker extends javax.swing.JPanel {
                     .addComponent(butAdd)
                     .addComponent(butUpdate)
                     .addComponent(butDel)
-                    .addComponent(butRaschet))
+                    .addComponent(butRaschet)
+                    .addComponent(butGeoInfo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -268,12 +280,27 @@ public class JPanelTreker extends javax.swing.JPanel {
         MainFrame.sDb.updDeviceTimeWork();
     }//GEN-LAST:event_butRaschetActionPerformed
 
+    private void butGeoInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butGeoInfoActionPerformed
+
+        String deviceId = (String) sTreker.getValueAt(sTreker.getSelectedRow(), 0);   
+       ArrayList<Device> devlist=MainFrame.sDb.getDeviceList();
+       for(Device d:devlist)
+       {
+           if (d.getId().equals(deviceId))
+                   {
+                        CheckGeo checkGeo = new CheckGeo(Start.mf, true, "Геоинформация о трекете",d  );
+                         checkGeo.setVisible(true);
+                   }
+       }
+    }//GEN-LAST:event_butGeoInfoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable DeviceTimeWorkForDay;
     private javax.swing.JTable DeviceTimeWorkForDayExtend;
     private javax.swing.JButton butAdd;
     private javax.swing.JButton butDel;
+    private javax.swing.JButton butGeoInfo;
     private javax.swing.JButton butRaschet;
     private javax.swing.JButton butUpdate;
     private javax.swing.JLabel jLabel2;
