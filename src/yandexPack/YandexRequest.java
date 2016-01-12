@@ -33,27 +33,34 @@ public class YandexRequest {
     private int mnc;
     private int lac;
     private int cid;
-    private String params;
+    private String Adress;
+    private String geoRequest;
 
-
-    public YandexRequest(String message, boolean isGPS) {
-      //  sendDataURL();
+    public YandexRequest() {
+        //  sendDataURL();
     }
 
-    public String[] getLocation(String message, boolean isGPS)
-    {
+    public String getLocation(String message, boolean isGPS) {
+        System.out.println("yandex message="+ message);
         if (isGPS) {
-            String body[] = message.split(";");
-            System.err.println("GPS YOABA");
+            geoRequest = "https://geocode-maps.yandex.ru/1.x/?format=json&geocode=" + message.split(";")[0]+","+message.split(";")[1];
         } else {
             splitCellData(message);
+            getCellCoordinates();
+
         }
-        
-        
-        return sendDataURL();
+        getLocation();
+        return Adress;
     }
-    private void splitCellData(String data) {
-        String paramsbody[] = data.split(",");
+public String getCellLocation(String message)
+{
+     splitCellData(message);
+      getCellCoordinates();
+      String answer=Double.toString(lat)+";"+Double.toString(lon);
+     return answer;
+}
+    private void splitCellData(String message) {
+        String paramsbody[] = message.split(",");
         HashMap<String, String> parameters = new HashMap<String, String>();
         for (String paramsbody1 : paramsbody) {
             String[] value = paramsbody1.split(":");
@@ -76,22 +83,13 @@ public class YandexRequest {
                 case "CID":
                     this.cid = Integer.parseInt(parameters.get(key));
                     break;
-     
 
             }
 
         }
     }
 
-    
-
-    public static void main(String args[]) {
-        new YandexRequest("IDX:1:8774,DEV:3:0x0290,MCC:1:250,MNC:1:1,LAC:1:717,CID:1:29016,Vext:1:0,IN1:1:0,IN2:1:0",false);
-    }
-
-  
-
-    public String[] sendDataURL() {
+    public void getCellCoordinates() {
 
 //   json={"common": {"version": "1.0","api_key": "AAwkGkwBAAAA9muWLAMAKp9XjTBZtmOLeiBQJqHX6YEqNdUAAAAAAAAAAAAoEP1ZsBlcVFA_OpP55MK3Ek1r8A=="},
 //   "gsm_cells": [{"countrycode": 250,"operatorid": 1,"cellid": 29016,"lac": 717,"signal_strength": -80,"age": 5555}],
@@ -101,19 +99,12 @@ public class YandexRequest {
         try {
             conn = new URL(host).openConnection();
         } catch (MalformedURLException ex) {
-            Logger.getLogger(YandexRequest.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("YandexRequest:getCellCoordinates:MalformedURLException: " + ex.getMessage());
         } catch (IOException ex) {
-            Logger.getLogger(YandexRequest.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("YandexRequest:getCellCoordinates:IOException: " + ex.getMessage());
         }
         String jsonA = "json=" + makeJson().toString();
         int k = jsonA.getBytes().length;
-        String header = "POST /geolocation HTTP/1.1\n"
-                + "Host:api.lbs.yandex.net\n"
-                + "Accept-Encoding: identity\n"
-                + "Content-length:" + k + "\n"
-                + "Content-type: application/x-www-form-urlencoded\n"
-                + "Cache-Control: no-cache\n"
-                + "Postman-Token: f7308c39-1a7f-4326-459e-305d491d65c4\n";
         conn.setDoOutput(true);// Triggers POST.
         //conn.setRequestProperty("POST", "/geolocation HTTP/1.1\n");
         conn.setRequestProperty("Host", "api.lbs.yandex.net");
@@ -125,12 +116,6 @@ public class YandexRequest {
 
         // пишем туда HTTP request
         String request = jsonA;
-        // String request = "json=" + makeJson() + "";
-
-        System.out.println("request=");
-        System.out.println(request);
-        System.err.println("======================================");
-
         try {
             out = new OutputStreamWriter(conn.getOutputStream(), "ASCII");
             out.write(request);
@@ -138,16 +123,15 @@ public class YandexRequest {
             out.flush();
             out.close();
         } catch (IOException ex) {
-            Logger.getLogger(YandexRequest.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("YandexRequest:getCellCoordinates:IOException2: " + ex.getMessage());
         }
 
         try {
             in = conn.getInputStream();
-
             incoming = new byte[64 * 1024];
             length = in.read(incoming);
         } catch (IOException ex) {
-            Logger.getLogger(YandexRequest.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("YandexRequest:getCellCoordinates:IOException3: " + ex.getMessage());
         }
         System.out.println("Client query(" + length + " bytes):\n" + new String(incoming).trim());
         JSONObject jAnsw = new JSONObject(new String(incoming));
@@ -155,128 +139,80 @@ public class YandexRequest {
         try {
             out.close();
             in.close();
-
         } catch (IOException ex) {
-            Logger.getLogger(YandexRequest.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("YandexRequest:getCellCoordinates:IOException4: " + ex.getMessage());
         }
 
-// ----------------------------------------------------------------------------        
-//         вариант 1        
-        System.err.println(jAnsw.keySet().toString());
         JSONObject jAnsw1 = jAnsw.getJSONObject("position");
-        System.out.println("-=-=-=-=-=-=-=-=-=-==-");
-        System.err.println(jAnsw1.keySet().toString());
         lat = (Double) jAnsw1.getDouble("latitude");
         lon = (Double) jAnsw1.getDouble("longitude");
-// ----------------------------------------------------------------------------
-////         вариант 2          не пашет - в keyset только position почему-то
-// ----------------------------------------------------------------------------        
-//        System.err.println(jAnsw.keySet().toString());
-//        lat = jAnsw.optDouble("latitude");
-//        lon = jAnsw.optDouble("longitude");
-
-        //https://geocode-maps.yandex.ru/1.x/?format=json&geocode=37.470653,55.664897
-      return  getLocation();
+        geoRequest = "https://geocode-maps.yandex.ru/1.x/?format=json&geocode=" + lon + "," + lat + "";
     }
 
-    private String[] getLocation() {
-        String host = "https://geocode-maps.yandex.ru/1.x/?format=json&geocode=" + lon + "," + lat + "";
+    private void getLocation() {
 
         try {
-            conn = new URL(host).openConnection();
+            conn = new URL(geoRequest).openConnection();
         } catch (MalformedURLException ex) {
-            Logger.getLogger(YandexRequest.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("YandexRequest:getLocation:MalformedURLException: " + ex.getMessage());
         } catch (IOException ex) {
-            Logger.getLogger(YandexRequest.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("YandexRequest:getLocation:IOException: " + ex.getMessage());
         }
         // conn.setDoOutput(false);
         conn.setDoInput(true);
-// -----------------------------------------------------------------------------------------------        
-        //вариант номер 1
+
         StringBuilder strBuilder = new StringBuilder();
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-            String line = null;
+            String line = "";
             while ((line = in.readLine()) != null) {
-                strBuilder.append(line + '\n');
+                strBuilder.append(line).append('\n');
             }
         } catch (IOException ex) {
-            System.err.println("IOEx" + ex);
+            System.err.println("YandexRequest:getLocation:IOException2: " + ex.getMessage());
         }
         System.out.println(strBuilder);
         System.err.println("--=-=-=-=-=-=-=-=-=-=-=-=");
         JSONObject jAnsw = new JSONObject(strBuilder.toString());
 
-// ----------------------------------------------------------------------------------------------        
-//        //вариант номер 2
-//         char[] incoming = new char[8192];
-//        try {
-//            InputStreamReader in = new InputStreamReader(conn.getInputStream());
-//
-//           
-//            length = in.read(incoming);
-//        } catch (IOException ex) {
-//            Logger.getLogger(YandexRequest.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        System.out.println("Client query(" + length + " bytes):\n" + new String(incoming).trim());
-//
-//        JSONObject jAnsw = new JSONObject(new String(incoming).trim());
         System.out.println("jAnsw=" + jAnsw.toString());
-        try {
-            out.close();
-            in.close();
+//        try {
+//            out.close();
+//            in.close();
+//
+//        } catch (IOException ex) {
+//            System.err.println("YandexRequest:getLocation:IOException3: " + ex.getMessage());
+//        }
+        getAdressfromReceivedJson(jAnsw);
 
-        } catch (IOException ex) {
-            Logger.getLogger(YandexRequest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        for (String street : getAdress(jAnsw)) {
-          
-            System.out.println("Street: " + street);
-        }
-        return getAdress(jAnsw);
+        System.out.println("Adress: " + Adress);
+
     }
 
-    private String[] getAdress(JSONObject jsonObj) {
+    private String getAdressfromReceivedJson(JSONObject jsonObj) {
 
-        System.out.println(jsonObj.keySet());
         JSONObject response = jsonObj.getJSONObject("response");
-        System.out.println("response keyset=\n" + response.keySet());
-        System.err.println("--=-=-=-=-=-=-=-=-=-=-=-=");
-
         JSONObject GeoObjectCollection = response.getJSONObject("GeoObjectCollection");
-        System.out.println("\tGeoObjectCollection keyset=\n\t" + GeoObjectCollection.keySet());
-        System.err.println("\t--=-=-=-=-=-=-=-=-=-=-=-=\n");
-
         JSONObject metaDataProperty = GeoObjectCollection.getJSONObject("metaDataProperty");
-        System.out.println("\t\tmetaDataProperty keyset=\n\t\t" + metaDataProperty.keySet());
+        JSONObject GeocoderResponseMetaData = metaDataProperty.getJSONObject("GeocoderResponseMetaData");
 
+        int results = GeocoderResponseMetaData.getInt("results");
         JSONArray featureMember = GeoObjectCollection.getJSONArray("featureMember");
-        System.out.println("\t\tfeatureMember toString=\n\t\t" + featureMember.toString());
-        System.err.println("\t\t--=-=-=-=-=-=-=-=-=-=-=-=");
-        int streetNum = 2;
-        for (int i = 0; i < featureMember.length(); i++) {
-            System.err.println("Step=" + i + " String=" + featureMember.get(i).toString());
+
+
+        for (int i = 0; i < results; i++) {
+            JSONObject GeoObject = featureMember.getJSONObject(0);
+
+            if (GeoObject.getJSONObject("GeoObject").getJSONObject("metaDataProperty").getJSONObject("GeocoderMetaData").getString("kind").equals("street")) {
+                Adress = GeoObject.getJSONObject("GeoObject").getJSONObject("metaDataProperty").getJSONObject("GeocoderMetaData").getString("text");
+            }
+            if (GeoObject.getJSONObject("GeoObject").getJSONObject("metaDataProperty").getJSONObject("GeocoderMetaData").getString("kind").equals("house")) {
+                Adress = GeoObject.getJSONObject("GeoObject").getJSONObject("metaDataProperty").getJSONObject("GeocoderMetaData").getString("text");
+            }
         }
-        System.err.println("\t\t--=-=-=-=-=-=-=-=-=-=-=-=");
-//                да хрен так просто это работает..                
-        String ThoroughfareName = featureMember.optString(0);
-        System.out.println("\t\t\tThoroughfareName =\n\t\t\t" + ThoroughfareName);
-        System.err.println("\t\t\t+-+-+-++-+-+-+-+--+-+-+-+-+");
-
-        JSONObject GeoObject = featureMember.getJSONObject(0);
-        System.out.println("\tGeoObject keyset=\n\t" + GeoObject.keySet());
-        System.err.println("\t--=-=-=-=-=-=-=-=-=-=-=-=\n");
-
-        JSONObject Thoroughfare = GeoObject.getJSONObject("GeoObject").getJSONObject("metaDataProperty").getJSONObject("GeocoderMetaData").getJSONObject("AddressDetails").getJSONObject("Country").getJSONObject("AdministrativeArea").getJSONObject("SubAdministrativeArea").getJSONObject("Locality").getJSONObject("Thoroughfare");
-        System.err.println("  Thoroughfare.getString(ThoroughfareName)=" + Thoroughfare.getString("ThoroughfareName"));
-
-        JSONObject LocalityName = GeoObject.getJSONObject("GeoObject").getJSONObject("metaDataProperty").getJSONObject("GeocoderMetaData").getJSONObject("AddressDetails").getJSONObject("Country").getJSONObject("AdministrativeArea").getJSONObject("SubAdministrativeArea").getJSONObject("Locality");
-        String[] streets = new String[streetNum];
-        streets[0] = Thoroughfare.getString("ThoroughfareName");
-        streets[1] = LocalityName.getString("LocalityName");
-        return streets;
+        return Adress;
     }
-    
+
     private JSONObject makeJson() {
         JSONObject json = new JSONObject();
         Map common = new LinkedHashMap();

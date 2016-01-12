@@ -5,7 +5,6 @@
  */
 package ultracrm;
 
-
 import ultracrm.kontragent.JPanelKontr;
 import ultracrm.treker.JPanelTreker;
 import ultracrm.dogovor.JPanelDogovor;
@@ -19,9 +18,11 @@ import ultracrm.oborud.JPanelOborud;
 public class MainFrame extends javax.swing.JFrame {
 
     public static ServerDb sDb;
-    private static String connectionString = "jdbc:sqlserver://ASUSG46:1433;databaseName=UltraFiolet";
+    //private static String connectionString = "jdbc:sqlserver://ASUSG46:1433;databaseName=UltraFiolet";
+    private static String connectionString = "jdbc:sqlserver://MAIN:1433;databaseName=UltraFiolet";
     private static String userName = "sa";
-    private static String userPwd = "sa";
+    //private static String userPwd = "sa";
+    private static String userPwd = "Zx3d2818!";
 
     /**
      * Creates new form MainFrame
