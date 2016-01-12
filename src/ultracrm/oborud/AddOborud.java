@@ -223,13 +223,14 @@ public class AddOborud extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
       YandexRequest yr = new YandexRequest();
-      deviceId.setText(yr.getLocation(MainFrame.sDb.getCellKoordinats(deviceId.getText()),false));
+    //  deviceId.setText(yr.getLocation(MainFrame.sDb.getCellKoordinats(deviceId.getSelectedItem().toString()),false));
       deviceId.updateUI();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void portActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_portActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_portActionPerformed
+
 
     /**
      * @param args the command line arguments
