@@ -267,7 +267,6 @@ public class AddOborud extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_butSaveCloseActionPerformed
 
-<<<<<<< HEAD
     private void clearGrupButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearGrupButActionPerformed
         idGrupOborud.setSelectedItem(null);
     }//GEN-LAST:event_clearGrupButActionPerformed
@@ -280,19 +279,15 @@ public class AddOborud extends javax.swing.JDialog {
         TrekerChooser trekChoose = new TrekerChooser(null, true,this);
         trekChoose.setVisible(true);
     }//GEN-LAST:event_addTrekerButActionPerformed
-=======
+
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-      YandexRequest yr = new YandexRequest();
-    //  deviceId.setText(yr.getLocation(MainFrame.sDb.getCellKoordinats(deviceId.getSelectedItem().toString()),false));
-      deviceId.updateUI();
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void portActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_portActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_portActionPerformed
 
->>>>>>> origin/master
+    }//GEN-LAST:event_portActionPerformed
 
     /**
      * @param args the command line arguments
