@@ -89,6 +89,9 @@ public class JPanelOborud extends javax.swing.JPanel {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 dOborudTableMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                dOborudTableMouseEntered(evt);
+            }
         });
         dOborudTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         jScrollPane1.setViewportView(dOborudTable);
@@ -149,6 +152,10 @@ public class JPanelOborud extends javax.swing.JPanel {
             addForm.setVisible(true);
         }
     }//GEN-LAST:event_dOborudTableMouseClicked
+
+    private void dOborudTableMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dOborudTableMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dOborudTableMouseEntered
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

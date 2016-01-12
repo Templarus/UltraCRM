@@ -136,6 +136,12 @@ public class ServerDb implements Constatnts {
         return selectDb(sql);
     }
 
+    public ResultSet getSTreker(String deviceId) {
+        sql = "SELECT deviceId as Устройство, port as Порт, password as Пароль FROM STreker "
+                + "WHERE deviceId Like N'%" + deviceId + "%' ORDER BY deviceId DESC";
+        return selectDb(sql);
+    }
+    
     public ResultSet getDeviceTimeWork() {
         String deviceId = "";
         try {
@@ -648,7 +654,11 @@ public class ServerDb implements Constatnts {
         sql = "SELECT dOborud.idOborud AS Код, dOborud.nameOborud AS [Наименование оборудования], dOborud.deviceId AS Трекер, sGrupOborud.nameGrupOborud AS [Группа оборудования] FROM dOborud LEFT OUTER JOIN sGrupOborud ON dOborud.idGrupOborud = sGrupOborud.idGrupOborud";
         return selectDb(sql);
     }
-    
+    public ResultSet getDOborud(String name) {
+        sql = "SELECT dOborud.idOborud AS Код, dOborud.nameOborud AS [Наименование оборудования], dOborud.deviceId AS Трекер, sGrupOborud.nameGrupOborud AS [Группа оборудования] FROM dOborud LEFT OUTER JOIN sGrupOborud ON dOborud.idGrupOborud = sGrupOborud.idGrupOborud "
+                + "WHERE dOborud.nameOborud LIKE N'%" + name + "%'";
+        return selectDb(sql);
+    }
         public int setOborud(DOborud ob) {
         sql = "INSERT INTO dOborud \n"
                 + "       (nameOborud, deviceId, idGrupOborud) \n"
