@@ -17,6 +17,8 @@ import ultracrm.dogovor.DDogovor;
 import ultracrm.dogovor.SUslovieDogovor;
 import ultracrm.dogovor.SVidOplat;
 import ultracrm.kontragent.DKontr;
+import ultracrm.oborud.DOborud;
+import ultracrm.oborud.SGrupOborud;
 import ultracrm.treker.Device;
 import ultracrm.treker.DeviceTimeWork;
 
@@ -602,7 +604,57 @@ public class ServerDb implements Constatnts {
         return insertDb(sql);
 
     }
+    //Работа с оборудованием
+    public SGrupOborud[] getSGrupOborud() {
 
+        int countRec = 0;
+        SGrupOborud sGrupOborud;
+
+        sql = "SELECT idGrupOborud, nameGrupOborud FROM sGrupOborud ORDER BY idGrupOborud";
+        selectDb(sql);
+
+        try {
+            while (rs.next()) {
+                countRec = countRec + 1;
+            }
+        } catch (SQLException ex) {
+            System.out.println("ServerDb:getSGrupOborud():Ошибка подключения или создание Statement(метод подсчета кол-ва записей в таблице Группы оборудования) - " + ex + " sql: " + sql);
+        }
+
+        if (countRec == 0) {
+            return new SGrupOborud[0];
+        }
+
+        SGrupOborud[] arrGrupOborud = new SGrupOborud[countRec];
+
+        try {
+
+            selectDb(sql);
+
+            while (rs.next()) {
+                //System.out.println("Получаем с базы : " + rs.getString(2));
+                sGrupOborud = new SGrupOborud(new Integer(rs.getInt(1)), rs.getString(2));
+                arrGrupOborud[countRec - 1] = sGrupOborud;
+                countRec = countRec - 1;
+            }
+        } catch (SQLException ex) {
+            System.out.println("ServerDb:getSGrupOborud():Ошибка подключения или создание Statement(метод заполнения массива Группы оборудования) - " + ex + " sql: " + sql);
+        }
+
+        return arrGrupOborud;
+    }
+    
+    public ResultSet getDOborud() {
+        sql = "SELECT dOborud.idOborud AS Код, dOborud.nameOborud AS [Наименование оборудования], dOborud.deviceId AS Трекер, sGrupOborud.nameGrupOborud AS [Группа оборудования] FROM dOborud LEFT OUTER JOIN sGrupOborud ON dOborud.idGrupOborud = sGrupOborud.idGrupOborud";
+        return selectDb(sql);
+    }
+    
+        public int setOborud(DOborud ob) {
+        sql = "INSERT INTO dOborud \n"
+                + "       (nameOborud, deviceId, idGrupOborud) \n"
+                + "VALUES ('" + ob.getNameOborud() + "','" + ob.getTreker().getId() + "'," + ob.getIdGrupOborud().getIdGrupOborud() + ")";
+        return insertDb(sql);
+    }
     @Override
     public int disconnect() {
         try {

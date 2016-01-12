@@ -32,6 +32,15 @@ public class DOborud {
         this.nameOborud = nameOborud;
     }
 
+    public DOborud(Integer idOborud, String nameOborud, SGrupOborud idGrupOborud, Device treker) {
+        this.idOborud = idOborud;
+        this.nameOborud = nameOborud;
+        this.idGrupOborud = idGrupOborud;
+        this.treker = treker;
+    }
+
+    
+    
     public Integer getIdOborud() {
         return idOborud;
     }

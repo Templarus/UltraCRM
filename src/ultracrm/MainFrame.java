@@ -9,6 +9,7 @@ import ultracrm.kontragent.JPanelKontr;
 import ultracrm.treker.JPanelTreker;
 import ultracrm.dogovor.JPanelDogovor;
 import server.ServerDb;
+import ultracrm.oborud.JPanelOborud;
 
 /**
  *
@@ -47,7 +48,7 @@ public class MainFrame extends javax.swing.JFrame {
         butTreker = new javax.swing.JButton();
         butKontr = new javax.swing.JButton();
         butDogovor1 = new javax.swing.JButton();
-        butDogovor2 = new javax.swing.JButton();
+        butOborud = new javax.swing.JButton();
         jPanelContainer = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -104,15 +105,15 @@ public class MainFrame extends javax.swing.JFrame {
         jPanelMenuBar.add(butDogovor1);
         butDogovor1.setBounds(510, 0, 130, 90);
 
-        butDogovor2.setText("Оборудование");
-        butDogovor2.setPreferredSize(new java.awt.Dimension(120, 95));
-        butDogovor2.addActionListener(new java.awt.event.ActionListener() {
+        butOborud.setText("Оборудование");
+        butOborud.setPreferredSize(new java.awt.Dimension(120, 95));
+        butOborud.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                butDogovor2ActionPerformed(evt);
+                butOborudActionPerformed(evt);
             }
         });
-        jPanelMenuBar.add(butDogovor2);
-        butDogovor2.setBounds(380, 0, 130, 90);
+        jPanelMenuBar.add(butOborud);
+        butOborud.setBounds(380, 0, 130, 90);
 
         getContentPane().add(jPanelMenuBar);
         jPanelMenuBar.setBounds(0, 0, 1600, 90);
@@ -166,9 +167,14 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_butDogovor1ActionPerformed
 
-    private void butDogovor2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butDogovor2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_butDogovor2ActionPerformed
+    private void butOborudActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butOborudActionPerformed
+        clearJPanelComponent();
+        JPanelOborud jPanOborud = new JPanelOborud();
+        jPanOborud.setBounds(0, 0, 1600, 780);
+        jPanOborud.setVisible(true);
+        jPanelContainer.add(jPanOborud);
+        jPanelContainer.updateUI();      
+    }//GEN-LAST:event_butOborudActionPerformed
 
     private void clearJPanelComponent() {
         jPanelContainer.removeAll();
@@ -212,8 +218,8 @@ public class MainFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton butDogovor;
     private javax.swing.JButton butDogovor1;
-    private javax.swing.JButton butDogovor2;
     private javax.swing.JButton butKontr;
+    private javax.swing.JButton butOborud;
     private javax.swing.JButton butTreker;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
