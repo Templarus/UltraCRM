@@ -11,6 +11,7 @@ import ultracrm.kontragent.*;
 import javax.swing.JOptionPane;
 import ultracrm.MainFrame;
 import java.sql.Date;
+import ultracrm.Start;
 import yandexPack.YandexRequest;
 
 /**
@@ -22,17 +23,30 @@ public class AddOborud extends javax.swing.JDialog {
     /**
      * Creates new form AddKontr
      */
-    public AddOborud(java.awt.Frame parent, boolean modal, String title, Device dev) {
+    public AddOborud(java.awt.Frame parent, boolean modal, String title, DOborud oborud) {
         super(parent, modal);
         initComponents();
         this.setTitle(title);
-        idGrupOborud.setSelectedItem(null);
+        if (null != oborud) {
+            idOborud.setText(oborud.getIdOborud().toString());
+            nameOborud.setText(oborud.getNameOborud());
+            idGrupOborud.setSelectedItem(oborud.getIdGrupOborud());
+            if (oborud.getTreker() == null) {
+                deviceId.setSelectedItem(null);
+            } else {
+                deviceId.setSelectedItem(oborud.getTreker());
+            }
+
+        } else {
+            idGrupOborud.setSelectedItem(null);
+            deviceId.setSelectedItem(null);
+        }
     }
-    
-    public void setTrekerCombo(Device dev){
+
+    public void setTrekerCombo(Device dev) {
         deviceId.setSelectedItem(dev);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -208,9 +222,9 @@ public class AddOborud extends javax.swing.JDialog {
                             .addComponent(jLabel6)
                             .addComponent(clearTrekerBut)
                             .addComponent(addTrekerBut))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(butSaveClose, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+                    .addComponent(butSaveClose, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
                     .addComponent(butCancel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(22, 22, 22))
         );
@@ -226,43 +240,47 @@ public class AddOborud extends javax.swing.JDialog {
         int reply = JOptionPane.showConfirmDialog(this, "Изменения будут потеряны", "Внимание", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
             dispose();
-        }    
+        }
     }//GEN-LAST:event_butCancelActionPerformed
 
     private void butSaveCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butSaveCloseActionPerformed
+
         int rezult;
-        
+
         if (nameOborud.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Необходимо заполнить наименование оборудования", "Внимание", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            if (this.getTitle().equals("Добавление нового оборудования")) {
-                
-                Device device = (Device) deviceId.getSelectedItem();
-                SGrupOborud grup = (SGrupOborud) idGrupOborud.getSelectedItem();
-                
-                rezult = MainFrame.sDb.setOborud(new DOborud(0, nameOborud.getText(), grup, device));
-                
-                if (MainFrame.sDb.err.equals("")) {
-                    if (rezult != 0) {
-                        JOptionPane.showMessageDialog(this, "Оборудование успешно добавлено", "Внимание", JOptionPane.INFORMATION_MESSAGE);
-                        dispose();
-                    }
-                    
-                } else {
-                    JOptionPane.showMessageDialog(this, "Произошла ошибка " + MainFrame.sDb.err, "Внимание", JOptionPane.INFORMATION_MESSAGE);
+        } else if (null == idGrupOborud.getSelectedItem()) {
+            JOptionPane.showMessageDialog(this, "Необходимо выбрать группу оборудования", "Внимание", JOptionPane.INFORMATION_MESSAGE);
+        } else if (this.getTitle().equals("Добавление нового оборудования")) {
+
+            Device device = (Device) deviceId.getSelectedItem();
+            SGrupOborud grup = (SGrupOborud) idGrupOborud.getSelectedItem();
+
+            rezult = MainFrame.sDb.setOborud(new DOborud(0, nameOborud.getText(), grup, device));
+
+            if (MainFrame.sDb.err.equals("")) {
+                if (rezult != 0) {
+                    JOptionPane.showMessageDialog(this, "Оборудование успешно добавлено", "Внимание", JOptionPane.INFORMATION_MESSAGE);
+                    dispose();
                 }
+
             } else {
-////            rezult = MainFrame.sDb.updKontr(new DKontr(new Integer(idDogovor.getText()),nameDogovor.getText(), urNameKontr.getText(), innKontr.getText(), kppKontr.getText(), adressKontr.getText()));
-////
-////            if (MainFrame.sDb.err.equals("")) {
-////                if (rezult != 0) {
-////                    JOptionPane.showMessageDialog(this, "Контрагент успешно обновлен", "Внимание", JOptionPane.INFORMATION_MESSAGE);
-////                    dispose();
-////                }
-////
-////            } else {
-////                JOptionPane.showMessageDialog(this, "Произошла ошибка " + MainFrame.sDb.err, "Внимание", JOptionPane.INFORMATION_MESSAGE);
-////            }
+                JOptionPane.showMessageDialog(this, "Произошла ошибка " + MainFrame.sDb.err, "Внимание", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else {
+            Device device = (Device) deviceId.getSelectedItem();
+            SGrupOborud grup = (SGrupOborud) idGrupOborud.getSelectedItem();
+
+            rezult = MainFrame.sDb.updOborud(new DOborud(new Integer(idOborud.getText()), nameOborud.getText(), grup, device));
+
+            if (MainFrame.sDb.err.equals("")) {
+                if (rezult != 0) {
+                    JOptionPane.showMessageDialog(this, "Оборудование успешно обновлено", "Внимание", JOptionPane.INFORMATION_MESSAGE);
+                    dispose();
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Произошла ошибка " + MainFrame.sDb.err, "Внимание", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }//GEN-LAST:event_butSaveCloseActionPerformed
@@ -276,14 +294,10 @@ public class AddOborud extends javax.swing.JDialog {
     }//GEN-LAST:event_clearTrekerButActionPerformed
 
     private void addTrekerButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTrekerButActionPerformed
-        TrekerChooser trekChoose = new TrekerChooser(null, true,this);
+        TrekerChooser trekChoose = new TrekerChooser(null, true, this);
         trekChoose.setVisible(true);
     }//GEN-LAST:event_addTrekerButActionPerformed
 
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void portActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_portActionPerformed
 

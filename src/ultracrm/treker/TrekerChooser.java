@@ -12,19 +12,20 @@ import ultracrm.MainFrame;
 import ultracrm.Start;
 import ultracrm.dogovor.AddDogovor;
 import ultracrm.dogovor.DDogovor;
+import ultracrm.oborud.AddOborud;
 
 /**
  *
  * @author Asus
  */
 public class TrekerChooser extends javax.swing.JDialog {
-    JDialog addOborud;
+    AddOborud addOborud;
     private DatabaseTableModel dbm = new DatabaseTableModel(false);
 
     /**
      * Creates new form trekerChooser
      */
-    public TrekerChooser(java.awt.Frame parent, boolean modal, JDialog dialog) {
+    public TrekerChooser(java.awt.Frame parent, boolean modal, AddOborud dialog) {
         super(parent, modal);
         this.addOborud = dialog;
         initComponents();
@@ -176,7 +177,14 @@ public class TrekerChooser extends javax.swing.JDialog {
 
     private void sTreekerTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sTreekerTableMouseClicked
         if (evt.getClickCount() == 2) {
-            
+            if(Start.mf.sDb.getDeviceOborud((String) sTreekerTable.getValueAt(sTreekerTable.getSelectedRow(), 0))){
+                JOptionPane.showMessageDialog(this, "Данный трекер уже привязан к оборудованию", "Внимание", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                Device dev = Start.mf.sDb.getDevice((String) sTreekerTable.getValueAt(sTreekerTable.getSelectedRow(), 0));
+                dispose();
+                addOborud.setTrekerCombo(dev);
+                
+            }       
         }
     }//GEN-LAST:event_sTreekerTableMouseClicked
 

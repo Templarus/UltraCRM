@@ -131,11 +131,11 @@ public class JPanelOborud extends javax.swing.JPanel {
 
     private void butUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butUpdateActionPerformed
         if (dOborudTable.getSelectedRow() != -1) {
-            DDogovor dog = MainFrame.sDb.getDogovor((int) dOborudTable.getValueAt(dOborudTable.getSelectedRow(), 0));
-            AddDogovor addForm = new AddDogovor(Start.mf, true, "Редактирование договора", dog);
+            DOborud oborud = MainFrame.sDb.getOborud((int) dOborudTable.getValueAt(dOborudTable.getSelectedRow(), 0));
+            AddOborud addForm = new AddOborud(Start.mf, true, "Редактирование оборудования", oborud);
             addForm.setVisible(true);
         } else {
-            JOptionPane.showMessageDialog(this, "Необходимо выделить договор", "Внимание", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Необходимо выделить оборудование", "Внимание", JOptionPane.INFORMATION_MESSAGE);
         }
 
 
@@ -147,8 +147,8 @@ public class JPanelOborud extends javax.swing.JPanel {
 
     private void dOborudTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dOborudTableMouseClicked
         if (evt.getClickCount() == 2) {
-            DDogovor dog = MainFrame.sDb.getDogovor((int) dOborudTable.getValueAt(dOborudTable.getSelectedRow(), 0));
-            AddDogovor addForm = new AddDogovor(Start.mf, true, "Редактирование договора", dog);
+               DOborud oborud = MainFrame.sDb.getOborud((int) dOborudTable.getValueAt(dOborudTable.getSelectedRow(), 0));
+            AddOborud addForm = new AddOborud(Start.mf, true, "Редактирование оборудования", oborud);
             addForm.setVisible(true);
         }
     }//GEN-LAST:event_dOborudTableMouseClicked

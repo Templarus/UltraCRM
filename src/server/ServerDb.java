@@ -132,16 +132,16 @@ public class ServerDb implements Constatnts {
 //работа с трекерами
 
     public ResultSet getSTreker() {
-        sql = "SELECT deviceId as Устройство, port as Порт, password as Пароль FROM STreker ORDER BY deviceId DESC";
+        sql = "SELECT deviceId as Устройство, port as Порт, dbo.f_getOborudTreker(deviceId) as [Привязан к оборудованию] FROM STreker ORDER BY deviceId DESC";
         return selectDb(sql);
     }
 
     public ResultSet getSTreker(String deviceId) {
-        sql = "SELECT deviceId as Устройство, port as Порт, password as Пароль FROM STreker "
+        sql = "SELECT deviceId as Устройство, port as Порт, dbo.f_getOborudTreker(deviceId) as [Привязан к оборудованию] FROM STreker "
                 + "WHERE deviceId Like N'%" + deviceId + "%' ORDER BY deviceId DESC";
         return selectDb(sql);
     }
-    
+
     public ResultSet getDeviceTimeWork() {
         String deviceId = "";
         try {
@@ -202,6 +202,41 @@ public class ServerDb implements Constatnts {
             System.out.println("ServerDb:getDeviceList():Ошибка подключения или создание Statement");
         }
         return deviceList;
+    }
+
+    public Device getDevice(String deviceId) {
+        Device device = null;
+        try {
+            sql = "SELECT deviceId, port, password FROM STreker WHERE deviceId = '" + deviceId + "'";
+            ResultSet rs = selectDb(sql);
+            while (rs.next()) {
+                device = new Device(rs.getString(1), rs.getInt(2), rs.getString(3));
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            System.out.println("ServerDb:getDevice():Ошибка подключения или создание Statement");
+        }
+        return device;
+    }
+
+    public boolean getDeviceOborud(String deviceId) {
+        boolean fl = false;
+
+        try {
+            sql = "SELECT [dbo].[f_getOborudTreker]('" + deviceId + "')";
+            ResultSet rs = selectDb(sql);
+            while (rs.next()) {
+                String otvet = rs.getString(1);
+                if (otvet.equals("Да")) {
+                    fl = true;
+                }
+
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            System.out.println("ServerDb:getDeviceOborud():Ошибка подключения или создание Statement");
+        }
+        return fl;
     }
 
     public void updDeviceTimeWork() {
@@ -459,7 +494,7 @@ public class ServerDb implements Constatnts {
 //работа с договорами
 
     public int setDogovor(DDogovor dog) {
-        sql = "INSERT INTO dDogovor\n"
+        sql = "INSERT INTO dDogovor \n"
                 + "       (idKontr, idUslovie, idVidOplat, dtBegin, dtEnd, nameDogovor, flclose, prim)"
                 + "VALUES (" + dog.getKontr().getIdKontr() + "," + dog.getSUslovieDogovor().getIdUslovie() + "," + dog.getSVidOplat().getIdVidOplat() + ",'" + dog.getDtBegin() + "','" + dog.getDtEnd() + "','" + dog.getNameDogovor() + "','" + dog.getFlclose() + "','" + dog.getPrim() + "')";
         System.out.println("SQL - " + sql);
@@ -504,7 +539,7 @@ public class ServerDb implements Constatnts {
                         break;
                     }
                 }
-                
+
                 dog.setDtBegin(rsQ.getDate(5));
                 dog.setDtEnd(rsQ.getDate(6));
                 dog.setNameDogovor(rsQ.getString(7));
@@ -610,6 +645,7 @@ public class ServerDb implements Constatnts {
         return insertDb(sql);
 
     }
+
     //Работа с оборудованием
     public SGrupOborud[] getSGrupOborud() {
 
@@ -649,22 +685,71 @@ public class ServerDb implements Constatnts {
 
         return arrGrupOborud;
     }
-    
+
+    public SGrupOborud getGrupOborud(int idGrup) {
+        SGrupOborud sGrupOborud = null;
+        sql = "SELECT idGrupOborud, nameGrupOborud FROM sGrupOborud WHERE idGrupOborud = " + idGrup + " ORDER BY idGrupOborud";
+        selectDb(sql);
+        try {
+            while (rs.next()) {
+                sGrupOborud = new SGrupOborud(new Integer(rs.getInt(1)), rs.getString(2));
+            }
+        } catch (SQLException ex) {
+            System.out.println("ServerDb:getSGrupOborud():Ошибка подключения или создание Statement - " + ex + " sql: " + sql);
+        }
+
+        return sGrupOborud;
+    }
+
     public ResultSet getDOborud() {
         sql = "SELECT dOborud.idOborud AS Код, dOborud.nameOborud AS [Наименование оборудования], dOborud.deviceId AS Трекер, sGrupOborud.nameGrupOborud AS [Группа оборудования] FROM dOborud LEFT OUTER JOIN sGrupOborud ON dOborud.idGrupOborud = sGrupOborud.idGrupOborud";
         return selectDb(sql);
     }
+
     public ResultSet getDOborud(String name) {
         sql = "SELECT dOborud.idOborud AS Код, dOborud.nameOborud AS [Наименование оборудования], dOborud.deviceId AS Трекер, sGrupOborud.nameGrupOborud AS [Группа оборудования] FROM dOborud LEFT OUTER JOIN sGrupOborud ON dOborud.idGrupOborud = sGrupOborud.idGrupOborud "
                 + "WHERE dOborud.nameOborud LIKE N'%" + name + "%'";
         return selectDb(sql);
     }
-        public int setOborud(DOborud ob) {
+
+    public int setOborud(DOborud ob) {
+        String deviceId = ob.getTreker() == null ? "" : ob.getTreker().getId();
         sql = "INSERT INTO dOborud \n"
                 + "       (nameOborud, deviceId, idGrupOborud) \n"
-                + "VALUES ('" + ob.getNameOborud() + "','" + ob.getTreker().getId() + "'," + ob.getIdGrupOborud().getIdGrupOborud() + ")";
+                + "VALUES ('" + ob.getNameOborud() + "','" + deviceId + "'," + ob.getIdGrupOborud().getIdGrupOborud() + ")";
         return insertDb(sql);
     }
+
+    public int updOborud(DOborud ob) {
+        String deviceId = ob.getTreker() == null ? "" : ob.getTreker().getId();
+        sql = "UPDATE       dOborud \n"
+                + "SET  nameOborud = '" + ob.getNameOborud() + "', deviceId ='" + deviceId + "', idGrupOborud =" + ob.getIdGrupOborud().getIdGrupOborud() + " WHERE idOborud = " + ob.getIdOborud() + "";
+        return updateDb(sql);
+    }
+
+    public DOborud getOborud(int idOborud) {
+        ResultSet rsQ;
+        DOborud oborud = new DOborud();
+        sql = "SELECT idOborud, nameOborud, ISNULL(deviceId,''), idGrupOborud FROM dOborud WHERE (idOborud = " + idOborud + ")";
+        rsQ = selectDb(sql);
+        try {
+            while (rs.next()) {
+                oborud.setIdOborud(rsQ.getInt(1));
+                oborud.setNameOborud(rsQ.getString(2));
+                String deviceId = rsQ.getString(3);
+                if (!deviceId.equals("")) {
+                    Device dev = getDevice(rsQ.getString(3));
+                    oborud.setTreker(dev);
+                }
+                oborud.setIdGrupOborud(getGrupOborud(rsQ.getInt(4)));
+            }
+        } catch (SQLException ex) {
+            System.out.println("ServerDb:getOborud():Ошибка подключения или создание Statement - " + ex + " sql: " + sql);
+        }
+
+        return oborud;
+    }
+
     @Override
     public int disconnect() {
         try {

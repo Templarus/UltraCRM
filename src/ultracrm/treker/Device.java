@@ -1,5 +1,7 @@
 package ultracrm.treker;
 
+import java.util.Objects;
+
 
 // класс предназначенный для комплексного хранения информации об устройстве в его полях.(сущность)
 public class Device {
@@ -68,6 +70,31 @@ public class Device {
     @Override
     public String toString() {
         return id;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Device other = (Device) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
     }
     
     
