@@ -45,6 +45,20 @@ public class DDogovor {
         this.prim = prim;
     }
 
+    public DDogovor(Integer idDogovor,DKontr kontr, Date dtBegin, Date dtEnd, String nameDogovor, boolean flclose, SUslovieDogovor sUslovieDogovor, SVidOplat sVidOplat, String prim) {
+        this.idDogovor = idDogovor;
+        this.kontr = kontr;
+        this.dtBegin = dtBegin;
+        this.dtEnd = dtEnd;
+        this.nameDogovor = nameDogovor;
+        this.flclose = flclose;
+        this.sUslovieDogovor = sUslovieDogovor;
+        this.sVidOplat = sVidOplat;
+        this.prim = prim;
+    }
+    
+    
+    
     public DKontr getKontr() {
         return kontr;
     }

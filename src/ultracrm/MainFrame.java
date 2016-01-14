@@ -18,10 +18,12 @@ import ultracrm.oborud.JPanelOborud;
 public class MainFrame extends javax.swing.JFrame {
 
     public static ServerDb sDb;
+    //private static String connectionString = "jdbc:sqlserver://188.120.254.195:1433;databaseName=UltraFiolet";
     private static String connectionString = "jdbc:sqlserver://ASUSG46:1433;databaseName=UltraFiolet";
     //private static String connectionString = "jdbc:sqlserver://MAIN:1433;databaseName=UltraFiolet";
     private static String userName = "sa";
     private static String userPwd = "sa";
+    //private static String userPwd = "Pa$$w0rd";
     //private static String userPwd = "Zx3d2818!";
 
     /**

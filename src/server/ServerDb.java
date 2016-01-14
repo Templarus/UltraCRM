@@ -420,6 +420,16 @@ public class ServerDb implements Constatnts {
         return selectDb(sql);
     }
 
+    public ResultSet getDKontr(String nameKontr) {
+        sql = "SELECT idKontr AS Код, userNameKontr AS Наименование, urNameKontr AS [Полное наименование], innKontr AS ИНН, kppKontr AS КПП, adressKontr AS Адрес FROM dKontr WHERE userNameKontr like N'%" + nameKontr + "%' ORDER BY userNameKontr";
+        return selectDb(sql);
+    }
+
+    public ResultSet getDKontrUr(String nameKontr) {
+        sql = "SELECT idKontr AS Код, userNameKontr AS Наименование, urNameKontr AS [Полное наименование], innKontr AS ИНН, kppKontr AS КПП, adressKontr AS Адрес FROM dKontr WHERE urNameKontr like N'%" + nameKontr + "%' ORDER BY userNameKontr";
+        return selectDb(sql);
+    }
+
     public DKontr getKontr(int idKontr) {
 
         DKontr kontr = new DKontr();
@@ -499,7 +509,12 @@ public class ServerDb implements Constatnts {
                 + "VALUES (" + dog.getKontr().getIdKontr() + "," + dog.getSUslovieDogovor().getIdUslovie() + "," + dog.getSVidOplat().getIdVidOplat() + ",'" + dog.getDtBegin() + "','" + dog.getDtEnd() + "','" + dog.getNameDogovor() + "','" + dog.getFlclose() + "','" + dog.getPrim() + "')";
         System.out.println("SQL - " + sql);
         return insertDb(sql);
+    }
 
+    public int updDogovor(DDogovor dog) {
+        sql = "UPDATE dDogovor "
+                + " SET  idKontr = " + dog.getKontr().getIdKontr() + ", idUslovie =  " + dog.getSUslovieDogovor().getIdUslovie() + ", idVidOplat = " + dog.getSVidOplat().getIdVidOplat() + ", dtBegin = '" + dog.getDtBegin() + "', dtEnd = '" + dog.getDtEnd() + "', nameDogovor = '" + dog.getNameDogovor() + "', flclose = '" + dog.getFlclose() + "', prim = '" + dog.getPrim() + "'   WHERE idDogovor = " + dog.getIdDogovor() + "";
+        return updateDb(sql);
     }
 
     public ResultSet getDDogovor() {

@@ -5,13 +5,9 @@
  */
 package ultracrm.treker;
 
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import ultracrm.DatabaseTableModel;
-import ultracrm.MainFrame;
 import ultracrm.Start;
-import ultracrm.dogovor.AddDogovor;
-import ultracrm.dogovor.DDogovor;
 import ultracrm.oborud.AddOborud;
 
 /**
@@ -103,6 +99,11 @@ public class TrekerChooser extends javax.swing.JDialog {
         });
 
         jButton1.setText("Выбрать");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Отменить");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -223,6 +224,18 @@ public class TrekerChooser extends javax.swing.JDialog {
             System.out.println("Создание таблицы перенаправленные ошибка доступа к RS" + ex);
         }
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+                       if(sTreekerTable.getSelectedRow() != -1){  
+            Device dev = Start.mf.sDb.getDevice((String) sTreekerTable.getValueAt(sTreekerTable.getSelectedRow(), 0));
+                dispose();
+                addOborud.setTrekerCombo(dev);
+      } else {
+          JOptionPane.showMessageDialog(this, "Необходимо выделить трекер", "Внимание", JOptionPane.INFORMATION_MESSAGE);
+      }     
+      
+               
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
