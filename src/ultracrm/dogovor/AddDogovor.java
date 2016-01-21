@@ -10,6 +10,9 @@ import ultracrm.kontragent.*;
 import javax.swing.JOptionPane;
 import ultracrm.MainFrame;
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import ultracrm.DatabaseTableModel;
 import ultracrm.Start;
 import ultracrm.oborud.OborudChooser;
@@ -63,6 +66,16 @@ public class AddDogovor extends javax.swing.JDialog {
     public void setKontrCombo(DKontr kontr) {
         kontrBox.setSelectedItem(kontr);
     }
+    
+    public void addDateTable(){
+        try {
+            dbm.addData();
+        } catch (Exception ex) {
+            System.out.println("Обновление таблицы оборудование в договоре ошибка доступа к RS" + ex);
+        }
+    }
+    
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -391,8 +404,8 @@ public class AddDogovor extends javax.swing.JDialog {
         if(idDogovor.getText().equals("")){
             JOptionPane.showMessageDialog(this, "Необходимо сохранить договор", "Внимание", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            OborudChooser obChooser = new OborudChooser(null,true, this);
-            obChooser.setVisible(true);
+            AddOborudDogovor obDog = new AddOborudDogovor(null,true,"Title",this);
+            obDog.setVisible(true);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import ultracrm.dogovor.DDogOborud;
 import ultracrm.dogovor.DDogovor;
 import ultracrm.dogovor.SUslovieDogovor;
 import ultracrm.dogovor.SVidOplat;
@@ -129,8 +130,20 @@ public class ServerDb implements Constatnts {
         }
         return rs;
     }
-//работа с трекерами
 
+    public int exBatch() {
+        try {
+            conn.setAutoCommit(false);
+            st.executeBatch();
+            conn.commit();
+        } catch (SQLException ex) {
+            System.out.println("ServerDb:exBatch():Ошибка выполнения пакета - " + ex + " sql: " + sql);
+            err = "ServerDb:exBatch():Ошибка выполнения пакета - " + ex + " sql: " + sql;
+        }
+        return 1;
+    }
+
+//работа с трекерами
     public ResultSet getSTreker() {
         sql = "SELECT deviceId as Устройство, port as Порт, dbo.f_getOborudTreker(deviceId) as [Привязан к оборудованию] FROM STreker ORDER BY deviceId DESC";
         return selectDb(sql);
@@ -647,7 +660,8 @@ public class ServerDb implements Constatnts {
     }
 
     public ResultSet getDDogovorOborud(int idDogovor) {
-        sql = "SELECT dOborud.nameOborud AS Оборудование, ISNULL(dDogOborud.gorod,'') + ', ' + ISNULL(dDogOborud.ulica,'') + ', ' + ISNULL(dDogOborud.dom,'') + ', '+ ISNULL(dDogOborud.korp,'') as Адрес,dDogOborud.kolvo AS [Кол-во],dDogOborud.cenaPoTarif AS Цена FROM dDogOborud INNER JOIN dOborud ON dDogOborud.idOborud = dOborud.idOborud WHERE idDogovor = " + idDogovor + "";
+        //sql = "SELECT dOborud.nameOborud AS Оборудование, ISNULL(dDogOborud.gorod,'') + ', ' + ISNULL(dDogOborud.ulica,'') + ', ' + ISNULL(dDogOborud.dom,'') + ', '+ ISNULL(dDogOborud.korp,'') as Адрес,dDogOborud.kolvo AS [Кол-во],dDogOborud.cenaPoTarif AS Цена FROM dDogOborud INNER JOIN dOborud ON dDogOborud.idOborud = dOborud.idOborud WHERE idDogovor = " + idDogovor + "";
+        sql = "SELECT dOborud.nameOborud AS Оборудование FROM dDogOborud INNER JOIN dOborud ON dDogOborud.idOborud = dOborud.idOborud WHERE idDogovor = " + idDogovor + "";
         return selectDb(sql);
     }
 
@@ -734,6 +748,25 @@ public class ServerDb implements Constatnts {
                 + "VALUES ('" + ob.getNameOborud() + "','" + deviceId + "'," + ob.getIdGrupOborud().getIdGrupOborud() + ")";
         return insertDb(sql);
     }
+
+//    public int setOborudVrem(DDogOborud dogOborud, int ob, int idDogovor) {
+
+//        try {
+//            sql = "IF OBJECT_ID('tempdb.dbo.#dDogOborud') IS NOT NULL DROP TABLE tempdb.dbo.#dDogOborud";
+//            st.addBatch(sql);
+//            sql = "IF OBJECT_ID('tempdb.dbo.#dDogOborud') IS NOT NULL DROP TABLE tempdb.dbo.#dDogOborud";
+//            st.addBatch(sql);
+//            sql = "INSERT INTO tempdb.dbo.#dDogOborud"
+//                    + "       (idDogovor, idOborud, kolvo, dtEndArenda, gorod, ulica, dom, korp, office, prim, cenaPoTarif, idUslovie)\n"
+//                    + "VALUES        (,,,,,,,,,,,)";
+//            st.addBatch(sql);
+//        } catch (SQLException ex) {
+//            System.out.println("ServerDb:setOborudVrem():Ошибка добавления в пакет - " + ex + " sql: " + sql);
+//            err = "ServerDb:setOborudVrem():Ошибка добавления в пакет  - " + ex + " sql: " + sql;
+//        }
+//
+//        return 1;
+ //   }
 
     public int updOborud(DOborud ob) {
         String deviceId = ob.getTreker() == null ? "" : ob.getTreker().getId();

@@ -5,38 +5,18 @@
  */
 package ultracrm.dogovor;
 
-import java.io.Serializable;
-import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+
 
 /**
  *
- * @author Asus
+ * @author EvgenyVart
  */
-@Entity
-@Table(name = "sUslovieDogovor")
-@NamedQueries({
-    @NamedQuery(name = "SUslovieDogovor.findAll", query = "SELECT s FROM SUslovieDogovor s")})
-public class SUslovieDogovor implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @Column(name = "idUslovie")
+public class SUslovieDogovor {
+
+
     private Integer idUslovie;
-    @Basic(optional = false)
-    @Column(name = "nameUslovie")
     private String nameUslovie;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sUslovieDogovor")
-    private Collection<DDogovor> dDogovorCollection;
 
     public SUslovieDogovor() {
     }
@@ -66,13 +46,7 @@ public class SUslovieDogovor implements Serializable {
         this.nameUslovie = nameUslovie;
     }
 
-    public Collection<DDogovor> getDDogovorCollection() {
-        return dDogovorCollection;
-    }
 
-    public void setDDogovorCollection(Collection<DDogovor> dDogovorCollection) {
-        this.dDogovorCollection = dDogovorCollection;
-    }
 
     @Override
     public int hashCode() {

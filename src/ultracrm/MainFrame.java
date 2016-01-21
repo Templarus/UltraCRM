@@ -34,6 +34,7 @@ public class MainFrame extends javax.swing.JFrame {
         sDb = new ServerDb(connectionString, userName, userPwd);
 
         initComponents();
+       
     }
 
     /**

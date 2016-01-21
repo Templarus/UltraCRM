@@ -13,20 +13,22 @@ import ultracrm.DatabaseTableModel;
 import ultracrm.MainFrame;
 import ultracrm.Start;
 import ultracrm.dogovor.AddDogovor;
+import ultracrm.dogovor.AddOborudDogovor;
+import ultracrm.dogovor.DDogOborud;
 import ultracrm.dogovor.DDogovor;
-import ultracrm.oborud.AddOborud;
 
 /**
  *
  * @author Asus
  */
 public class OborudChooser extends javax.swing.JDialog {
-    AddDogovor addODogovor;
+
+    AddOborudDogovor dogOborud;
     private DatabaseTableModel dbm = new DatabaseTableModel(false);
 
-    public OborudChooser(java.awt.Frame parent, boolean modal, AddDogovor dialog) {
+    public OborudChooser(java.awt.Frame parent, boolean modal, AddOborudDogovor dialog) {
         super(parent, modal);
-        this.addODogovor = dialog;
+        this.dogOborud = dialog;
         initComponents();
 
         try {
@@ -178,9 +180,9 @@ public class OborudChooser extends javax.swing.JDialog {
 
     private void oborudTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_oborudTableMouseClicked
         if (evt.getClickCount() == 2) {
-                DKontr kontr = Start.mf.sDb.getKontr((int) oborudTable.getValueAt(oborudTable.getSelectedRow(), 0));
-                dispose();
-                addODogovor.setKontrCombo(kontr);
+            DOborud oborud = Start.mf.sDb.getOborud((int) oborudTable.getValueAt(oborudTable.getSelectedRow(), 0));
+            dispose();
+            dogOborud.setNameOborud(oborud);
         }
     }//GEN-LAST:event_oborudTableMouseClicked
 
@@ -204,12 +206,11 @@ public class OborudChooser extends javax.swing.JDialog {
     }//GEN-LAST:event_nameOborudKeyTyped
 
     private void nameOborudKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameOborudKeyReleased
-//        nameKontrUr.setText("");
-//        try {
-//            dbm.setDataSource(Start.mf.sDb.getDKontr(nameOborud.getText()));
-//        } catch (Exception ex) {
-//            System.out.println("Создание таблицы отфильтрованных по наименованию контрагента ошибка доступа к RS" + ex);
-//        }
+        try {
+            dbm.setDataSource(Start.mf.sDb.getDOborud(nameOborud.getText()));
+        } catch (Exception ex) {
+            System.out.println("Создание таблицы отфильтрованных по наименованию оборудования ошибка доступа к RS" + ex);
+        }
     }//GEN-LAST:event_nameOborudKeyReleased
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -222,15 +223,13 @@ public class OborudChooser extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-                if(oborudTable.getSelectedRow() != -1){  
-        DKontr kontr = Start.mf.sDb.getKontr((int) oborudTable.getValueAt(oborudTable.getSelectedRow(), 0));
-                dispose();
-                addODogovor.setKontrCombo(kontr); 
-      } else {
-          JOptionPane.showMessageDialog(this, "Необходимо выделить контрагента", "Внимание", JOptionPane.INFORMATION_MESSAGE);
-      }     
-      
-                
+        if (oborudTable.getSelectedRow() != -1) {
+            DOborud oborud = Start.mf.sDb.getOborud((int) oborudTable.getValueAt(oborudTable.getSelectedRow(), 0));
+            dispose();
+            dogOborud.setNameOborud(oborud);
+        } else {
+            JOptionPane.showMessageDialog(this, "Необходимо выделить оборудование", "Внимание", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

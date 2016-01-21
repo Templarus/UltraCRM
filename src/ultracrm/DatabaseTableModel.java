@@ -165,4 +165,19 @@ public class DatabaseTableModel extends AbstractTableModel {
             }
         }
     }
+    
+    public void addData() throws Exception {
+        ArrayList row = new ArrayList();
+
+            
+                    row.add("Новое оборудование");
+                
+            
+            synchronized (data) {
+                data.add(row);
+                // сообщаем о прибавлении строки
+                fireTableRowsInserted(data.size() - 1, data.size() - 1);
+            }
+    }
+    
 }
