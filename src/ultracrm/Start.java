@@ -1,9 +1,15 @@
 package ultracrm;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 public class Start extends javax.swing.JFrame {
-public static MainFrame mf;
+
+    public static double interfaceScalingFactor;
+    public static MainFrame mf;
+
     public Start() {
-        
+
         initComponents();
     }
 
@@ -45,10 +51,17 @@ public static MainFrame mf;
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-     mf = new MainFrame();
         
+        Dimension sSize = Toolkit.getDefaultToolkit().getScreenSize();
+        System.out.println("sSize=" + sSize.toString() + "sSize.width=" + sSize.width + "sSize.getWidth()=" + sSize.getWidth());
+        
+        //Start.interfaceScalingFactor = sSize.width / 1600.0;
+        Start.interfaceScalingFactor = 1366/1680.0 ;
+        System.err.println("Start interfaceScalingFactor=" + Start.interfaceScalingFactor);
+
+        mf = new MainFrame();
+
         dispose();
-        mf.setBounds(300, 400, mf.getPreferredSize().width, mf.getPreferredSize().height);
         mf.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 

@@ -5,6 +5,14 @@
  */
 package ultracrm;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JMenuBar;
+import javax.swing.JPanel;
 import ultracrm.kontragent.JPanelKontr;
 import ultracrm.treker.JPanelTreker;
 import ultracrm.dogovor.JPanelDogovor;
@@ -18,13 +26,14 @@ import ultracrm.oborud.JPanelOborud;
 public class MainFrame extends javax.swing.JFrame {
 
     public static ServerDb sDb;
-    //private static String connectionString = "jdbc:sqlserver://188.120.254.195:1433;databaseName=UltraFiolet";
-    private static String connectionString = "jdbc:sqlserver://ASUSG46:1433;databaseName=UltraFiolet";
+    private static String connectionString = "jdbc:sqlserver://188.120.254.195:1433;databaseName=UltraFiolet";
+    //private static String connectionString = "jdbc:sqlserver://ASUSG46:1433;databaseName=UltraFiolet";
     //private static String connectionString = "jdbc:sqlserver://MAIN:1433;databaseName=UltraFiolet";
     private static String userName = "sa";
-    private static String userPwd = "sa";
-    //private static String userPwd = "Pa$$w0rd";
+    //private static String userPwd = "sa";
+    private static String userPwd = "Pa$$w0rd";
     //private static String userPwd = "Zx3d2818!";
+    private double scalingfactor = 1.0;
 
     /**
      * Creates new form MainFrame
@@ -34,7 +43,7 @@ public class MainFrame extends javax.swing.JFrame {
         sDb = new ServerDb(connectionString, userName, userPwd);
 
         initComponents();
-       
+        rescaling();
     }
 
     /**
@@ -59,17 +68,18 @@ public class MainFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAlwaysOnTop(true);
-        setMaximumSize(new java.awt.Dimension(1600, 900));
-        setMinimumSize(new java.awt.Dimension(1600, 900));
+        setMaximumSize(new java.awt.Dimension(1920, 1080));
+        setMinimumSize(null);
         setPreferredSize(new java.awt.Dimension(1600, 900));
         getContentPane().setLayout(null);
 
-        jPanelMenuBar.setMaximumSize(new java.awt.Dimension(1600, 90));
-        jPanelMenuBar.setMinimumSize(new java.awt.Dimension(1600, 90));
+        jPanelMenuBar.setMaximumSize(new java.awt.Dimension(1920, 1080));
         jPanelMenuBar.setPreferredSize(new java.awt.Dimension(1600, 90));
         jPanelMenuBar.setLayout(null);
 
         butDogovor.setText("Договора");
+        butDogovor.setMaximumSize(new java.awt.Dimension(1920, 1080));
+        butDogovor.setMinimumSize(null);
         butDogovor.setPreferredSize(new java.awt.Dimension(120, 95));
         butDogovor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -80,6 +90,8 @@ public class MainFrame extends javax.swing.JFrame {
         butDogovor.setBounds(250, 0, 130, 90);
 
         butTreker.setText("Трекеры");
+        butTreker.setMaximumSize(new java.awt.Dimension(1920, 1080));
+        butTreker.setMinimumSize(null);
         butTreker.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 butTrekerActionPerformed(evt);
@@ -89,6 +101,8 @@ public class MainFrame extends javax.swing.JFrame {
         butTreker.setBounds(0, 0, 120, 90);
 
         butKontr.setText("Контрагент");
+        butKontr.setMaximumSize(new java.awt.Dimension(1920, 1080));
+        butKontr.setMinimumSize(null);
         butKontr.setPreferredSize(new java.awt.Dimension(120, 95));
         butKontr.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -99,6 +113,8 @@ public class MainFrame extends javax.swing.JFrame {
         butKontr.setBounds(120, 0, 130, 90);
 
         butDogovor1.setText("Справочники");
+        butDogovor1.setMaximumSize(new java.awt.Dimension(1920, 1080));
+        butDogovor1.setMinimumSize(null);
         butDogovor1.setPreferredSize(new java.awt.Dimension(120, 95));
         butDogovor1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -109,6 +125,8 @@ public class MainFrame extends javax.swing.JFrame {
         butDogovor1.setBounds(510, 0, 130, 90);
 
         butOborud.setText("Оборудование");
+        butOborud.setMaximumSize(new java.awt.Dimension(1920, 1080));
+        butOborud.setMinimumSize(null);
         butOborud.setPreferredSize(new java.awt.Dimension(120, 95));
         butOborud.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -121,11 +139,14 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().add(jPanelMenuBar);
         jPanelMenuBar.setBounds(0, 0, 1600, 90);
 
-        jPanelContainer.setMaximumSize(new java.awt.Dimension(1600, 780));
+        jPanelContainer.setMaximumSize(new java.awt.Dimension(1920, 1080));
         jPanelContainer.setPreferredSize(new java.awt.Dimension(1600, 780));
         jPanelContainer.setLayout(null);
         getContentPane().add(jPanelContainer);
         jPanelContainer.setBounds(0, 90, 1600, 790);
+
+        jMenuBar1.setMaximumSize(new java.awt.Dimension(1920, 1080));
+        jMenuBar1.setMinimumSize(null);
 
         jMenu1.setText("Файл");
         jMenuBar1.add(jMenu1);
@@ -176,11 +197,65 @@ public class MainFrame extends javax.swing.JFrame {
         jPanOborud.setBounds(0, 0, 1600, 780);
         jPanOborud.setVisible(true);
         jPanelContainer.add(jPanOborud);
-        jPanelContainer.updateUI();      
+        jPanelContainer.updateUI();
     }//GEN-LAST:event_butOborudActionPerformed
 
     private void clearJPanelComponent() {
         jPanelContainer.removeAll();
+    }
+
+    private void rescaling() //method used to rescale UI
+    {
+        scalingfactor = Start.interfaceScalingFactor;
+
+        System.out.println("getPreferredSize().width=" + getPreferredSize().width);
+        System.out.println("getPreferredSize().height=" + getPreferredSize().height);
+
+        int width = (int) (getPreferredSize().width * scalingfactor);
+        int height = (int) (getPreferredSize().height * scalingfactor);
+        System.out.println("MainFrame scalingfactor=" + scalingfactor + " width=" + width + " height=" + height);
+
+        setPreferredSize(new Dimension((int) (getPreferredSize().width * scalingfactor), (int) (getPreferredSize().height * scalingfactor)));
+        setBounds(0, 0, (int) (1680 * scalingfactor), (int) (1050 * scalingfactor));
+        for (Component comp : this.getContentPane().getComponents()) {
+            comp.setPreferredSize(new Dimension((int) (comp.getPreferredSize().width * scalingfactor), (int) (comp.getPreferredSize().height * scalingfactor)));
+            comp.setBounds((int) (comp.getX() * scalingfactor), (int) (comp.getY() * scalingfactor), (int) (comp.getWidth() * scalingfactor), (int) (comp.getHeight() * scalingfactor));
+
+            //comp=rescaleComponent(comp);
+            rescaleComponent(comp);
+
+            if (comp instanceof JMenuBar) {
+                JMenuBar jM = (JMenuBar) comp;
+                for (Component lComp : jM.getComponents()) {
+                    rescaleComponent(lComp);
+                }
+            }
+            if (comp instanceof JPanel) {
+                JPanel jP = (JPanel) comp;
+                for (Component lComp : jP.getComponents()) {
+                    rescaleComponent(lComp);
+                }
+            }
+        }
+        repaint();
+        revalidate();
+    }
+
+    private Component rescaleComponent(Component comp) {
+        if (comp instanceof JButton) {
+            JButton jb = (JButton) comp;
+            comp.setBounds((int) (comp.getX() * scalingfactor), (int) (comp.getY() * scalingfactor), (int) (comp.getWidth() * scalingfactor), (int) (comp.getHeight() * scalingfactor));
+            // jb.setFont(new Font("Tahoma", Font.PLAIN, (int) (jb.getFont().getSize() * scalingfactor)));
+        }
+        if (comp instanceof JLabel) {
+            JLabel jl = (JLabel) comp;
+            //jl.setFont(new Font("Tahoma", Font.PLAIN, (int) (jl.getFont().getSize() * scalingfactor)));
+        }
+        if (comp instanceof JComboBox) {
+            JComboBox jl = (JComboBox) comp;
+            // jl.setFont(new Font("Tahoma", Font.PLAIN, (int) (jl.getFont().getSize() * scalingfactor)));
+        }
+        return comp;
     }
 
     /**
