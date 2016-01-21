@@ -5,13 +5,22 @@
  */
 package ultracrm.dogovor;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
+import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JViewport;
 import javax.swing.UIManager;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
@@ -29,7 +38,7 @@ import ultracrm.kontragent.DKontr;
  * @author Asus
  */
 public class JPanelDogovor extends javax.swing.JPanel {
-
+  private double scalingfactor = 1.0;
     private DatabaseTableModel dbm = new DatabaseTableModel(false);
 
     /**
@@ -78,7 +87,7 @@ public class JPanelDogovor extends javax.swing.JPanel {
         dDogovorTable.getColumnModel().getColumn(3).setPreferredWidth(80);
         dDogovorTable.getColumnModel().getColumn(4).setPreferredWidth(80);
         dDogovorTable.getColumnModel().getColumn(5).setPreferredWidth(800);
-
+        rescaling();
     }
 
     /**
@@ -101,36 +110,61 @@ public class JPanelDogovor extends javax.swing.JPanel {
         fileChooser.setDialogTitle("Выбор файла для импорта");
         fileChooser.setFileFilter(new FilterXML());
 
+        setMaximumSize(new java.awt.Dimension(1920, 1280));
+        setMinimumSize(null);
+        setLayout(null);
+
         butAdd.setText("Добавить");
+        butAdd.setMaximumSize(new java.awt.Dimension(1920, 1280));
+        butAdd.setMinimumSize(null);
         butAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 butAddActionPerformed(evt);
             }
         });
+        add(butAdd);
+        butAdd.setBounds(0, 0, 210, 30);
 
         butUpdate.setText("Редактировать");
+        butUpdate.setMaximumSize(new java.awt.Dimension(1920, 1280));
+        butUpdate.setMinimumSize(null);
         butUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 butUpdateActionPerformed(evt);
             }
         });
+        add(butUpdate);
+        butUpdate.setBounds(210, 0, 210, 30);
 
         butDel.setText("Удалить");
+        butDel.setMaximumSize(new java.awt.Dimension(1920, 1280));
+        butDel.setMinimumSize(null);
         butDel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 butDelActionPerformed(evt);
             }
         });
+        add(butDel);
+        butDel.setBounds(420, 0, 210, 30);
 
         butImport.setText("Импорт");
+        butImport.setMaximumSize(new java.awt.Dimension(1920, 1280));
+        butImport.setMinimumSize(null);
         butImport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 butImportActionPerformed(evt);
             }
         });
+        add(butImport);
+        butImport.setBounds(630, 0, 210, 30);
+
+        jScrollPane1.setMaximumSize(new java.awt.Dimension(1920, 1280));
+        jScrollPane1.setMinimumSize(null);
 
         dDogovorTable.setAutoCreateRowSorter(true);
         dDogovorTable.setModel(dbm);
+        dDogovorTable.setMaximumSize(new java.awt.Dimension(1920, 1280));
+        dDogovorTable.setMinimumSize(null);
         dDogovorTable.setToolTipText("");
         dDogovorTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -142,38 +176,15 @@ public class JPanelDogovor extends javax.swing.JPanel {
         dDogovorTable.setFocusable(false);
         dDogovorTable.getTableHeader().setReorderingAllowed(false);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(butAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(butUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(butDel, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(butImport, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 870, Short.MAX_VALUE))
-            .addComponent(jScrollPane1)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(butAdd)
-                    .addComponent(butUpdate)
-                    .addComponent(butDel)
-                    .addComponent(butImport))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 740, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        add(jScrollPane1);
+        jScrollPane1.setBounds(0, 29, 1600, 740);
     }// </editor-fold>//GEN-END:initComponents
 
     private void butAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butAddActionPerformed
         AddDogovor addForm = new AddDogovor(Start.mf, true, "Добавление нового договора", null);
         addForm.setVisible(true);
+                addForm.setBounds(0, 0,addForm.getSize().width, addForm.getSize().height);
+
     }//GEN-LAST:event_butAddActionPerformed
 
     private void butUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butUpdateActionPerformed
@@ -227,6 +238,98 @@ public class JPanelDogovor extends javax.swing.JPanel {
             addForm.setVisible(true);
         }
     }//GEN-LAST:event_dDogovorTableMouseClicked
+   private void rescaling() //method used to rescale UI
+    {
+        scalingfactor = Start.interfaceScalingFactor;
+
+        System.out.println("getPreferredSize().width=" + getPreferredSize().width);
+        System.out.println("getPreferredSize().height=" + getPreferredSize().height);
+
+        int width = (int) (getPreferredSize().width * scalingfactor);
+        int height = (int) (getPreferredSize().height * scalingfactor);
+        System.out.println("MainFrame scalingfactor=" + scalingfactor + " width=" + width + " height=" + height);
+
+        setPreferredSize(new Dimension((int) (getPreferredSize().width * scalingfactor), (int) (getPreferredSize().height * scalingfactor)));
+        setBounds(0, 0, (int) (1680 * scalingfactor), (int) (1050 * scalingfactor));
+        for (Component comp : this.getComponents()) {
+            comp.setPreferredSize(new Dimension((int) (comp.getPreferredSize().width * scalingfactor), (int) (comp.getPreferredSize().height * scalingfactor)));
+            comp.setBounds((int) (comp.getX() * scalingfactor), (int) (comp.getY() * scalingfactor), (int) (comp.getWidth() * scalingfactor), (int) (comp.getHeight() * scalingfactor));
+
+            //comp=rescaleComponent(comp);
+            rescaleComponent(comp);
+
+            if (comp instanceof JMenuBar) {
+                JMenuBar jM = (JMenuBar) comp;
+                for (Component lComp : jM.getComponents()) {
+                    rescaleComponent(lComp);
+                }
+            }
+            if (comp instanceof JPanel) {
+                JPanel jP = (JPanel) comp;
+                for (Component lComp : jP.getComponents()) {
+                    rescaleComponent(lComp);
+                }
+            }
+            if (comp instanceof JScrollPane) {
+                JScrollPane jSp = (JScrollPane) comp;
+                for (Component lComp : jSp.getComponents()) {
+                    rescaleComponent(lComp);
+                }
+            }
+        }
+        repaint();
+        revalidate();
+    }
+
+    private Component rescaleComponent(Component comp) {
+//        if (comp instanceof JButton) {
+//            JButton jb = (JButton) comp;
+//            comp.setBounds((int) (comp.getX() * scalingfactor), (int) (comp.getY() * scalingfactor), (int) (comp.getWidth() * scalingfactor), (int) (comp.getHeight() * scalingfactor));
+//            jb.setFont(new Font("Tahoma", Font.PLAIN, (int) (jb.getFont().getSize() * scalingfactor)));
+//        }
+//        if (comp instanceof JLabel) {
+//            JLabel jl = (JLabel) comp;
+//            jl.setFont(new Font("Tahoma", Font.PLAIN, (int) (jl.getFont().getSize() * scalingfactor)));
+//        }
+        if (comp instanceof JComboBox) {
+            JComboBox jl = (JComboBox) comp;
+            jl.setFont(new Font("Tahoma", Font.PLAIN, (int) (jl.getFont().getSize() * scalingfactor)));
+            comp.setBounds((int) (comp.getX() * scalingfactor), (int) (comp.getY() * scalingfactor), (int) (comp.getWidth() * scalingfactor), (int) (comp.getHeight() * scalingfactor));
+        }
+        if (comp instanceof JTable) {
+            JTable jT = (JTable) comp;
+            jT.setFont(new Font("Tahoma", Font.PLAIN, (int) (jT.getFont().getSize() * scalingfactor)));
+            for (int i = 0; i < jT.getColumnModel().getColumnCount(); i++) {
+                System.err.println("123123123132");
+                System.out.println("widtbefore="+jT.getColumnModel().getColumn(i).getPreferredWidth()+" AFTER="+(int) (jT.getColumnModel().getColumn(i).getPreferredWidth() * scalingfactor));
+                
+                
+                jT.getColumnModel().getColumn(i).setPreferredWidth((int) (jT.getColumnModel().getColumn(i).getPreferredWidth() * scalingfactor));
+                jT.getColumnModel().getColumn(i).setWidth((int) (jT.getColumnModel().getColumn(i).getWidth() * scalingfactor));
+                
+                comp.repaint();
+                comp.revalidate();
+            }
+            
+            comp.setBounds((int) (comp.getX() * scalingfactor), (int) (comp.getY() * scalingfactor), (int) (comp.getWidth() * scalingfactor), (int) (comp.getHeight() * scalingfactor));
+        }
+        
+        
+        if (comp instanceof JViewport) {
+            JViewport jV = (JViewport) comp;
+             for (Component lComp : jV.getComponents()) {
+                    System.err.println("00001111");
+                    System.err.println(lComp.toString());
+                    rescaleComponent(lComp);
+                }
+            jV.setFont(new Font("Tahoma", Font.PLAIN, (int) (jV.getFont().getSize() * scalingfactor)));
+            comp.setBounds((int) (comp.getX() * scalingfactor), (int) (comp.getY() * scalingfactor), (int) (comp.getWidth() * scalingfactor), (int) (comp.getHeight() * scalingfactor));
+        }
+        
+        
+        return comp;
+    }
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

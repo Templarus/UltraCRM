@@ -5,9 +5,20 @@
  */
 package ultracrm.treker;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
 import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
 import java.sql.Date;
 import java.util.ArrayList;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JMenuBar;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JViewport;
 import ultracrm.DatabaseTableModel;
 import ultracrm.MainFrame;
 import ultracrm.Start;
@@ -18,6 +29,7 @@ import ultracrm.Start;
  */
 public class JPanelTreker extends javax.swing.JPanel {
 
+    private double scalingfactor = 1.0;
     private DatabaseTableModel dbm = new DatabaseTableModel(false);
     private DatabaseTableModel dbmDeviceTimeWork = new DatabaseTableModel(false);
     private DatabaseTableModel dbmDeviceTimeWorkExtend = new DatabaseTableModel(false);
@@ -27,7 +39,7 @@ public class JPanelTreker extends javax.swing.JPanel {
      */
     public JPanelTreker() {
         initComponents();
-
+        
         try {
             dbm.setDataSource(MainFrame.sDb.getSTreker());
         } catch (Exception ex) {
@@ -65,6 +77,7 @@ public class JPanelTreker extends javax.swing.JPanel {
         if (DeviceTimeWorkForDay.getRowCount() != 0) {
             DeviceTimeWorkForDay.setRowSelectionInterval(0, 0);
         }
+        rescaling();
     }
 
     /**
@@ -92,36 +105,58 @@ public class JPanelTreker extends javax.swing.JPanel {
         butRaschet = new javax.swing.JButton();
         butGeoInfo = new javax.swing.JButton();
 
-        setMaximumSize(new java.awt.Dimension(1600, 780));
-        setMinimumSize(new java.awt.Dimension(1600, 780));
+        setBorder(javax.swing.BorderFactory.createCompoundBorder());
+        setMaximumSize(new java.awt.Dimension(1920, 1680));
         setPreferredSize(new java.awt.Dimension(1600, 780));
+        setLayout(null);
 
         butAdd.setText("Добавить");
+        butAdd.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        butAdd.setMinimumSize(null);
         butAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 butAddActionPerformed(evt);
             }
         });
+        add(butAdd);
+        butAdd.setBounds(0, 0, 210, 30);
 
         butUpdate.setText("Редактировать");
+        butUpdate.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        butUpdate.setMinimumSize(null);
         butUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 butUpdateActionPerformed(evt);
             }
         });
+        add(butUpdate);
+        butUpdate.setBounds(210, 0, 210, 30);
 
         butDel.setText("Удалить");
+        butDel.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        butDel.setMinimumSize(null);
         butDel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 butDelActionPerformed(evt);
             }
         });
+        add(butDel);
+        butDel.setBounds(420, 0, 210, 30);
+
+        jSeparator1.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        add(jSeparator1);
+        jSeparator1.setBounds(0, 29, 1600, 2);
+
+        jScrollPane1.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        jScrollPane1.setMinimumSize(null);
 
         sTreker.setAutoCreateRowSorter(true);
         sTreker.setModel(dbm);
         sTreker.setToolTipText("");
         sTreker.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         sTreker.setFocusable(false);
+        sTreker.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        sTreker.setMinimumSize(null);
         sTreker.getTableHeader().setReorderingAllowed(false);
         sTreker.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -131,13 +166,33 @@ public class JPanelTreker extends javax.swing.JPanel {
         jScrollPane1.setViewportView(sTreker);
         sTreker.getTableHeader().setReorderingAllowed(false);
 
+        add(jScrollPane1);
+        jScrollPane1.setBounds(0, 73, 422, 707);
+
         jLabel3.setText("Список трекеров");
+        jLabel3.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        jLabel3.setMinimumSize(null);
+        add(jLabel3);
+        jLabel3.setBounds(0, 37, 323, 30);
 
         jLabel4.setText("Расшифровка работы трекера");
+        jLabel4.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        jLabel4.setMinimumSize(null);
+        add(jLabel4);
+        jLabel4.setBounds(862, 37, 277, 30);
 
         jLabel2.setText("Время работы по дням");
+        jLabel2.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        jLabel2.setMinimumSize(null);
+        add(jLabel2);
+        jLabel2.setBounds(422, 37, 422, 30);
+
+        jScrollPane3.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        jScrollPane3.setMinimumSize(null);
 
         DeviceTimeWorkForDay.setModel(dbmDeviceTimeWork);
+        DeviceTimeWorkForDay.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        DeviceTimeWorkForDay.setMinimumSize(null);
         DeviceTimeWorkForDay.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 DeviceTimeWorkForDayMouseClicked(evt);
@@ -145,85 +200,42 @@ public class JPanelTreker extends javax.swing.JPanel {
         });
         jScrollPane3.setViewportView(DeviceTimeWorkForDay);
 
+        add(jScrollPane3);
+        jScrollPane3.setBounds(422, 73, 422, 707);
+
+        jScrollPane2.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        jScrollPane2.setMinimumSize(null);
+
         DeviceTimeWorkForDayExtend.setModel(dbmDeviceTimeWorkExtend);
+        DeviceTimeWorkForDayExtend.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        DeviceTimeWorkForDayExtend.setMinimumSize(null);
         jScrollPane2.setViewportView(DeviceTimeWorkForDayExtend);
+
+        add(jScrollPane2);
+        jScrollPane2.setBounds(850, 73, 740, 707);
 
         butRaschet.setText("Рассчитать данные");
         butRaschet.setToolTipText("");
+        butRaschet.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        butRaschet.setMinimumSize(null);
         butRaschet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 butRaschetActionPerformed(evt);
             }
         });
+        add(butRaschet);
+        butRaschet.setBounds(1281, 0, 320, 30);
 
         butGeoInfo.setText("Гео информация");
+        butGeoInfo.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        butGeoInfo.setMinimumSize(null);
         butGeoInfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 butGeoInfoActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator1)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(butAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(butUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(butDel, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(butGeoInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(butRaschet, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 99, Short.MAX_VALUE)))
-                        .addGap(0, 0, 0)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(butAdd)
-                    .addComponent(butUpdate)
-                    .addComponent(butDel)
-                    .addComponent(butRaschet)
-                    .addComponent(butGeoInfo))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 707, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 707, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2)))))
-        );
+        add(butGeoInfo);
+        butGeoInfo.setBounds(630, 0, 210, 30);
     }// </editor-fold>//GEN-END:initComponents
 
     private void butAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butAddActionPerformed
@@ -282,18 +294,108 @@ public class JPanelTreker extends javax.swing.JPanel {
 
     private void butGeoInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butGeoInfoActionPerformed
 
-        String deviceId = (String) sTreker.getValueAt(sTreker.getSelectedRow(), 0);   
-       ArrayList<Device> devlist=MainFrame.sDb.getDeviceList();
-       for(Device d:devlist)
-       {
-           if (d.getId().equals(deviceId))
-                   {
-                        CheckGeo checkGeo = new CheckGeo(Start.mf, true, "Геоинформация о трекете",d  );
-                         checkGeo.setVisible(true);
-                   }
-       }
+        String deviceId = (String) sTreker.getValueAt(sTreker.getSelectedRow(), 0);
+        ArrayList<Device> devlist = MainFrame.sDb.getDeviceList();
+        for (Device d : devlist) {
+            if (d.getId().equals(deviceId)) {
+                CheckGeo checkGeo = new CheckGeo(Start.mf, true, "Геоинформация о трекете", d);
+                checkGeo.setVisible(true);
+            }
+        }
     }//GEN-LAST:event_butGeoInfoActionPerformed
+    private void rescaling() //method used to rescale UI
+    {
+        scalingfactor = Start.interfaceScalingFactor;
 
+        System.out.println("getPreferredSize().width=" + getPreferredSize().width);
+        System.out.println("getPreferredSize().height=" + getPreferredSize().height);
+
+        int width = (int) (getPreferredSize().width * scalingfactor);
+        int height = (int) (getPreferredSize().height * scalingfactor);
+        System.out.println("MainFrame scalingfactor=" + scalingfactor + " width=" + width + " height=" + height);
+
+        setPreferredSize(new Dimension((int) (getPreferredSize().width * scalingfactor), (int) (getPreferredSize().height * scalingfactor)));
+        setBounds(0, 0, (int) (1680 * scalingfactor), (int) (1050 * scalingfactor));
+        for (Component comp : this.getComponents()) {
+            comp.setPreferredSize(new Dimension((int) (comp.getPreferredSize().width * scalingfactor), (int) (comp.getPreferredSize().height * scalingfactor)));
+            comp.setBounds((int) (comp.getX() * scalingfactor), (int) (comp.getY() * scalingfactor), (int) (comp.getWidth() * scalingfactor), (int) (comp.getHeight() * scalingfactor));
+
+            //comp=rescaleComponent(comp);
+            rescaleComponent(comp);
+
+            if (comp instanceof JMenuBar) {
+                JMenuBar jM = (JMenuBar) comp;
+                for (Component lComp : jM.getComponents()) {
+                    rescaleComponent(lComp);
+                }
+            }
+            if (comp instanceof JPanel) {
+                JPanel jP = (JPanel) comp;
+                for (Component lComp : jP.getComponents()) {
+                    rescaleComponent(lComp);
+                }
+            }
+            if (comp instanceof JScrollPane) {
+                JScrollPane jSp = (JScrollPane) comp;
+                for (Component lComp : jSp.getComponents()) {
+                    rescaleComponent(lComp);
+                }
+            }
+        }
+        repaint();
+        revalidate();
+    }
+
+    private Component rescaleComponent(Component comp) {
+//        if (comp instanceof JButton) {
+//            JButton jb = (JButton) comp;
+//            comp.setBounds((int) (comp.getX() * scalingfactor), (int) (comp.getY() * scalingfactor), (int) (comp.getWidth() * scalingfactor), (int) (comp.getHeight() * scalingfactor));
+//            jb.setFont(new Font("Tahoma", Font.PLAIN, (int) (jb.getFont().getSize() * scalingfactor)));
+//        }
+//        if (comp instanceof JLabel) {
+//            JLabel jl = (JLabel) comp;
+//            jl.setFont(new Font("Tahoma", Font.PLAIN, (int) (jl.getFont().getSize() * scalingfactor)));
+//        }
+        if (comp instanceof JComboBox) {
+            JComboBox jl = (JComboBox) comp;
+            jl.setFont(new Font("Tahoma", Font.PLAIN, (int) (jl.getFont().getSize() * scalingfactor)));
+            comp.setBounds((int) (comp.getX() * scalingfactor), (int) (comp.getY() * scalingfactor), (int) (comp.getWidth() * scalingfactor), (int) (comp.getHeight() * scalingfactor));
+        }
+        if (comp instanceof JTable) {
+            JTable jT = (JTable) comp;
+            jT.setFont(new Font("Tahoma", Font.PLAIN, (int) (jT.getFont().getSize() * scalingfactor)));
+            for (int i = 0; i < jT.getColumnModel().getColumnCount(); i++) {
+                System.err.println("123123123132");
+                System.out.println("widtbefore="+jT.getColumnModel().getColumn(i).getPreferredWidth()+" AFTER="+(int) (jT.getColumnModel().getColumn(i).getPreferredWidth() * scalingfactor));
+                
+                
+                jT.getColumnModel().getColumn(i).setPreferredWidth((int) (jT.getColumnModel().getColumn(i).getPreferredWidth() * scalingfactor));
+                jT.getColumnModel().getColumn(i).setWidth((int) (jT.getColumnModel().getColumn(i).getWidth() * scalingfactor));
+                
+                //jT.getColumnModel().getColumn(i).setPreferredWidth(5);
+                //jT.getColumnModel().getColumn(i).setWidth(5);
+                comp.repaint();
+                comp.revalidate();
+            }
+            
+            comp.setBounds((int) (comp.getX() * scalingfactor), (int) (comp.getY() * scalingfactor), (int) (comp.getWidth() * scalingfactor), (int) (comp.getHeight() * scalingfactor));
+        }
+        
+        
+        if (comp instanceof JViewport) {
+            JViewport jV = (JViewport) comp;
+             for (Component lComp : jV.getComponents()) {
+                    System.err.println("00001111");
+                    System.err.println(lComp.toString());
+                    rescaleComponent(lComp);
+                }
+            jV.setFont(new Font("Tahoma", Font.PLAIN, (int) (jV.getFont().getSize() * scalingfactor)));
+            comp.setBounds((int) (comp.getX() * scalingfactor), (int) (comp.getY() * scalingfactor), (int) (comp.getWidth() * scalingfactor), (int) (comp.getHeight() * scalingfactor));
+        }
+        
+        
+        return comp;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable DeviceTimeWorkForDay;

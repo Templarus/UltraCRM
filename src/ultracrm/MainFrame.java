@@ -71,6 +71,7 @@ public class MainFrame extends javax.swing.JFrame {
         setMaximumSize(new java.awt.Dimension(1920, 1080));
         setMinimumSize(null);
         setPreferredSize(new java.awt.Dimension(1600, 900));
+        setResizable(false);
         getContentPane().setLayout(null);
 
         jPanelMenuBar.setMaximumSize(new java.awt.Dimension(1920, 1080));
@@ -87,7 +88,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         jPanelMenuBar.add(butDogovor);
-        butDogovor.setBounds(250, 0, 130, 90);
+        butDogovor.setBounds(450, 0, 230, 90);
 
         butTreker.setText("Трекеры");
         butTreker.setMaximumSize(new java.awt.Dimension(1920, 1080));
@@ -98,7 +99,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         jPanelMenuBar.add(butTreker);
-        butTreker.setBounds(0, 0, 120, 90);
+        butTreker.setBounds(0, 0, 220, 90);
 
         butKontr.setText("Контрагент");
         butKontr.setMaximumSize(new java.awt.Dimension(1920, 1080));
@@ -110,7 +111,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         jPanelMenuBar.add(butKontr);
-        butKontr.setBounds(120, 0, 130, 90);
+        butKontr.setBounds(220, 0, 230, 90);
 
         butDogovor1.setText("Справочники");
         butDogovor1.setMaximumSize(new java.awt.Dimension(1920, 1080));
@@ -122,7 +123,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         jPanelMenuBar.add(butDogovor1);
-        butDogovor1.setBounds(510, 0, 130, 90);
+        butDogovor1.setBounds(910, 0, 230, 90);
 
         butOborud.setText("Оборудование");
         butOborud.setMaximumSize(new java.awt.Dimension(1920, 1080));
@@ -134,7 +135,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         jPanelMenuBar.add(butOborud);
-        butOborud.setBounds(380, 0, 130, 90);
+        butOborud.setBounds(680, 0, 230, 90);
 
         getContentPane().add(jPanelMenuBar);
         jPanelMenuBar.setBounds(0, 0, 1600, 90);

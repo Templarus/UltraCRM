@@ -55,9 +55,17 @@ public class KontrChooser extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setAlwaysOnTop(true);
+        setMaximumSize(new java.awt.Dimension(1920, 1680));
+        setMinimumSize(null);
+        getContentPane().setLayout(null);
+
+        jScrollPane1.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        jScrollPane1.setMinimumSize(null);
 
         sKontrTable.setAutoCreateRowSorter(true);
         sKontrTable.setModel(dbm);
+        sKontrTable.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        sKontrTable.setMinimumSize(null);
         sKontrTable.setToolTipText("");
         sKontrTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -69,23 +77,50 @@ public class KontrChooser extends javax.swing.JDialog {
         sKontrTable.setFocusable(false);
         sKontrTable.getTableHeader().setReorderingAllowed(false);
 
+        getContentPane().add(jScrollPane1);
+        jScrollPane1.setBounds(10, 170, 588, 467);
+
+        jSeparator1.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        jSeparator1.setMinimumSize(null);
+        getContentPane().add(jSeparator1);
+        jSeparator1.setBounds(10, 44, 588, 2);
+
+        jSeparator2.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        jSeparator2.setMinimumSize(null);
+        getContentPane().add(jSeparator2);
+        jSeparator2.setBounds(10, 162, 588, 2);
+
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         jLabel1.setText("Выбор контрагента");
+        jLabel1.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        jLabel1.setMinimumSize(null);
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(10, 0, 369, 38);
 
         jLabel2.setText("Фильтр");
+        jLabel2.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        jLabel2.setMinimumSize(null);
+        getContentPane().add(jLabel2);
+        jLabel2.setBounds(10, 52, 85, 14);
 
         jLabel3.setText("Наименование");
+        jLabel3.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        jLabel3.setMinimumSize(null);
+        getContentPane().add(jLabel3);
+        jLabel3.setBounds(10, 75, 112, 14);
 
+        nameKontr.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        nameKontr.setMinimumSize(null);
         nameKontr.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
                 nameKontrCaretUpdate(evt);
             }
         });
         nameKontr.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 nameKontrInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         nameKontr.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -96,38 +131,54 @@ public class KontrChooser extends javax.swing.JDialog {
                 nameKontrKeyTyped(evt);
             }
         });
+        getContentPane().add(nameKontr);
+        nameKontr.setBounds(126, 72, 291, 20);
 
         jButton1.setText("Выбрать");
+        jButton1.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        jButton1.setMinimumSize(null);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
+        getContentPane().add(jButton1);
+        jButton1.setBounds(388, 4, 102, 34);
 
         jButton2.setText("Отменить");
+        jButton2.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        jButton2.setMinimumSize(null);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
+        getContentPane().add(jButton2);
+        jButton2.setBounds(496, 4, 102, 34);
 
         jButton3.setText("Очистить фильтр");
+        jButton3.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        jButton3.setMinimumSize(null);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
+        getContentPane().add(jButton3);
+        jButton3.setBounds(388, 133, 210, 23);
 
+        nameKontrUr.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        nameKontrUr.setMinimumSize(null);
         nameKontrUr.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
                 nameKontrUrCaretUpdate(evt);
             }
         });
         nameKontrUr.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 nameKontrUrInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         nameKontrUr.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -138,70 +189,14 @@ public class KontrChooser extends javax.swing.JDialog {
                 nameKontrUrKeyTyped(evt);
             }
         });
+        getContentPane().add(nameKontrUr);
+        nameKontrUr.setBounds(126, 98, 291, 20);
 
         jLabel4.setText("Юр.  наименование");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jSeparator1)
-                    .addComponent(jSeparator2)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(378, 378, 378)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(nameKontr, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(nameKontrUr, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(nameKontr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(nameKontrUr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
-                .addComponent(jButton3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        jLabel4.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        jLabel4.setMinimumSize(null);
+        getContentPane().add(jLabel4);
+        jLabel4.setBounds(10, 101, 112, 14);
 
         pack();
         setLocationRelativeTo(null);

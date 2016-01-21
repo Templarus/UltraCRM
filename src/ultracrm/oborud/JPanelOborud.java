@@ -5,8 +5,17 @@
  */
 package ultracrm.oborud;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import javax.swing.JComboBox;
+import javax.swing.JMenuBar;
 import ultracrm.dogovor.*;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JViewport;
 import ultracrm.DatabaseTableModel;
 import ultracrm.FilterXML;
 import ultracrm.MainFrame;
@@ -19,13 +28,14 @@ import ultracrm.dogovor.AddDogovor;
  */
 public class JPanelOborud extends javax.swing.JPanel {
 
+    private double scalingfactor = 1.0;
     private DatabaseTableModel dbm = new DatabaseTableModel(false);
 
     /**
      * Creates new form JPanelKontr
      */
     public JPanelOborud() {
-   
+
         initComponents();
         try {
             dbm.setDataSource(Start.mf.sDb.getDOborud());
@@ -39,7 +49,7 @@ public class JPanelOborud extends javax.swing.JPanel {
         dOborudTable.getColumnModel().getColumn(3).setPreferredWidth(80);
 //       dOborudTable.getColumnModel().getColumn(4).setPreferredWidth(80);
 //        dOborudTable.getColumnModel().getColumn(5).setPreferredWidth(800);
-
+        rescaling();
     }
 
     /**
@@ -61,29 +71,56 @@ public class JPanelOborud extends javax.swing.JPanel {
         fileChooser.setDialogTitle("Выбор файла для импорта");
         fileChooser.setFileFilter(new FilterXML());
 
+        setMaximumSize(new java.awt.Dimension(1920, 1280));
+        setMinimumSize(null);
+        setName(""); // NOI18N
+        setLayout(null);
+
         butAdd.setText("Добавить");
+        butAdd.setMaximumSize(new java.awt.Dimension(1920, 1280));
+        butAdd.setMinimumSize(null);
+        butAdd.setName(""); // NOI18N
         butAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 butAddActionPerformed(evt);
             }
         });
+        add(butAdd);
+        butAdd.setBounds(0, 0, 210, 30);
 
         butUpdate.setText("Редактировать");
+        butUpdate.setMaximumSize(new java.awt.Dimension(1920, 1280));
+        butUpdate.setMinimumSize(null);
+        butUpdate.setName(""); // NOI18N
         butUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 butUpdateActionPerformed(evt);
             }
         });
+        add(butUpdate);
+        butUpdate.setBounds(210, 0, 210, 30);
 
         butDel.setText("Удалить");
+        butDel.setMaximumSize(new java.awt.Dimension(1920, 1280));
+        butDel.setMinimumSize(null);
+        butDel.setName(""); // NOI18N
         butDel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 butDelActionPerformed(evt);
             }
         });
+        add(butDel);
+        butDel.setBounds(420, 0, 210, 30);
+
+        jScrollPane1.setMaximumSize(new java.awt.Dimension(1920, 1280));
+        jScrollPane1.setMinimumSize(null);
+        jScrollPane1.setName(""); // NOI18N
 
         dOborudTable.setAutoCreateRowSorter(true);
         dOborudTable.setModel(dbm);
+        dOborudTable.setMaximumSize(new java.awt.Dimension(1920, 1280));
+        dOborudTable.setMinimumSize(null);
+        dOborudTable.setName(""); // NOI18N
         dOborudTable.setToolTipText("");
         dOborudTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -98,30 +135,8 @@ public class JPanelOborud extends javax.swing.JPanel {
         dOborudTable.setFocusable(false);
         dOborudTable.getTableHeader().setReorderingAllowed(false);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(butAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(butUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(butDel, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 1054, Short.MAX_VALUE))
-            .addComponent(jScrollPane1)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(butAdd)
-                    .addComponent(butUpdate)
-                    .addComponent(butDel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 740, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        add(jScrollPane1);
+        jScrollPane1.setBounds(0, 29, 1600, 740);
     }// </editor-fold>//GEN-END:initComponents
 
     private void butAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butAddActionPerformed
@@ -147,7 +162,7 @@ public class JPanelOborud extends javax.swing.JPanel {
 
     private void dOborudTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dOborudTableMouseClicked
         if (evt.getClickCount() == 2) {
-               DOborud oborud = MainFrame.sDb.getOborud((int) dOborudTable.getValueAt(dOborudTable.getSelectedRow(), 0));
+            DOborud oborud = MainFrame.sDb.getOborud((int) dOborudTable.getValueAt(dOborudTable.getSelectedRow(), 0));
             AddOborud addForm = new AddOborud(Start.mf, true, "Редактирование оборудования", oborud);
             addForm.setVisible(true);
         }
@@ -156,6 +171,85 @@ public class JPanelOborud extends javax.swing.JPanel {
     private void dOborudTableMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dOborudTableMouseEntered
         // TODO add your handling code here:
     }//GEN-LAST:event_dOborudTableMouseEntered
+    private void rescaling() //method used to rescale UI
+    {
+        scalingfactor = Start.interfaceScalingFactor;
+
+        System.out.println("getPreferredSize().width=" + getPreferredSize().width);
+        System.out.println("getPreferredSize().height=" + getPreferredSize().height);
+
+        int width = (int) (getPreferredSize().width * scalingfactor);
+        int height = (int) (getPreferredSize().height * scalingfactor);
+        System.out.println("MainFrame scalingfactor=" + scalingfactor + " width=" + width + " height=" + height);
+
+        setPreferredSize(new Dimension((int) (getPreferredSize().width * scalingfactor), (int) (getPreferredSize().height * scalingfactor)));
+        setBounds(0, 0, (int) (1680 * scalingfactor), (int) (1050 * scalingfactor));
+        for (Component comp : this.getComponents()) {
+            comp.setPreferredSize(new Dimension((int) (comp.getPreferredSize().width * scalingfactor), (int) (comp.getPreferredSize().height * scalingfactor)));
+            comp.setBounds((int) (comp.getX() * scalingfactor), (int) (comp.getY() * scalingfactor), (int) (comp.getWidth() * scalingfactor), (int) (comp.getHeight() * scalingfactor));
+
+            //comp=rescaleComponent(comp);
+            rescaleComponent(comp);
+
+            if (comp instanceof JMenuBar) {
+                JMenuBar jM = (JMenuBar) comp;
+                for (Component lComp : jM.getComponents()) {
+                    rescaleComponent(lComp);
+                }
+            }
+            if (comp instanceof JPanel) {
+                JPanel jP = (JPanel) comp;
+                for (Component lComp : jP.getComponents()) {
+                    rescaleComponent(lComp);
+                }
+            }
+            if (comp instanceof JScrollPane) {
+                JScrollPane jSp = (JScrollPane) comp;
+                for (Component lComp : jSp.getComponents()) {
+                    rescaleComponent(lComp);
+                }
+            }
+        }
+        repaint();
+        revalidate();
+    }
+
+    private Component rescaleComponent(Component comp) {
+        if (comp instanceof JComboBox) {
+            JComboBox jl = (JComboBox) comp;
+            jl.setFont(new Font("Tahoma", Font.PLAIN, (int) (jl.getFont().getSize() * scalingfactor)));
+            comp.setBounds((int) (comp.getX() * scalingfactor), (int) (comp.getY() * scalingfactor), (int) (comp.getWidth() * scalingfactor), (int) (comp.getHeight() * scalingfactor));
+        }
+        if (comp instanceof JTable) {
+            JTable jT = (JTable) comp;
+            jT.setFont(new Font("Tahoma", Font.PLAIN, (int) (jT.getFont().getSize() * scalingfactor)));
+            for (int i = 0; i < jT.getColumnModel().getColumnCount(); i++) {
+                System.err.println("123123123132");
+                System.out.println("widtbefore=" + jT.getColumnModel().getColumn(i).getPreferredWidth() + " AFTER=" + (int) (jT.getColumnModel().getColumn(i).getPreferredWidth() * scalingfactor));
+
+                jT.getColumnModel().getColumn(i).setPreferredWidth((int) (jT.getColumnModel().getColumn(i).getPreferredWidth() * scalingfactor));
+                jT.getColumnModel().getColumn(i).setWidth((int) (jT.getColumnModel().getColumn(i).getWidth() * scalingfactor));
+
+                comp.repaint();
+                comp.revalidate();
+            }
+
+            comp.setBounds((int) (comp.getX() * scalingfactor), (int) (comp.getY() * scalingfactor), (int) (comp.getWidth() * scalingfactor), (int) (comp.getHeight() * scalingfactor));
+        }
+
+        if (comp instanceof JViewport) {
+            JViewport jV = (JViewport) comp;
+            for (Component lComp : jV.getComponents()) {
+                System.err.println("00001111");
+                System.err.println(lComp.toString());
+                rescaleComponent(lComp);
+            }
+            jV.setFont(new Font("Tahoma", Font.PLAIN, (int) (jV.getFont().getSize() * scalingfactor)));
+            comp.setBounds((int) (comp.getX() * scalingfactor), (int) (comp.getY() * scalingfactor), (int) (comp.getWidth() * scalingfactor), (int) (comp.getHeight() * scalingfactor));
+        }
+
+        return comp;
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
