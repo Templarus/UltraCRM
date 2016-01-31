@@ -8,6 +8,7 @@ package ultracrm;
 import javax.swing.table.*;
 import java.sql.*;
 import java.util.*;
+import ultracrm.dogovor.DDogOborud;
 
 public class DatabaseTableModel extends AbstractTableModel {
 // здесь мы будем хранить названия столбцов
@@ -166,18 +167,24 @@ public class DatabaseTableModel extends AbstractTableModel {
         }
     }
     
-    public void addData() throws Exception {
-        ArrayList row = new ArrayList();
+    public void addData(DDogOborud obor) throws Exception {
+        
+        ArrayList row = new ArrayList();   
+  
+             for (int i = 0; i < 2; i++) {
+                    row.add(obor.getIdOborud());
+                    row.add(obor.getNameOborud());
+                    //row.add(obor.getAdress());
+                    //row.add(obor.getKolvo());
+            }
 
-            
-                    row.add("Новое оборудование");
-                
-            
             synchronized (data) {
                 data.add(row);
                 // сообщаем о прибавлении строки
                 fireTableRowsInserted(data.size() - 1, data.size() - 1);
             }
+           
+            
     }
     
 }

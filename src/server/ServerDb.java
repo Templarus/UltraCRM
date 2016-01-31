@@ -1,6 +1,7 @@
 package server;
 
 import EventManagment.Event;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import ultracrm.dogovor.AddDogovor;
 import ultracrm.dogovor.DDogOborud;
 import ultracrm.dogovor.DDogovor;
 import ultracrm.dogovor.SUslovieDogovor;
@@ -659,10 +661,65 @@ public class ServerDb implements Constatnts {
         return arrUslovieDogovor;
     }
 
+    public SUslovieDogovor getSUslovie(int idUslovie) {
+
+        SUslovieDogovor uslovieEdit = null;
+
+        try {
+            sql = "SELECT [idUslovie] as Код,[nameUslovie] as Наименование FROM [sUslovieDogovor] WHERE [idUslovie] = " + idUslovie + "";
+            rs = selectDb(sql);
+            while (rs.next()) {
+                uslovieEdit = new SUslovieDogovor(rs.getInt(1), rs.getString(2));
+            }
+        } catch (SQLException ex) {
+            System.out.println("ServerDb:getSUslovie():Ошибка подключения или создание Statement(метод заполнения массива Условия договора) - " + ex + " sql: " + sql);
+        }
+
+        return uslovieEdit;
+    }
+
     public ResultSet getDDogovorOborud(int idDogovor) {
-        //sql = "SELECT dOborud.nameOborud AS Оборудование, ISNULL(dDogOborud.gorod,'') + ', ' + ISNULL(dDogOborud.ulica,'') + ', ' + ISNULL(dDogOborud.dom,'') + ', '+ ISNULL(dDogOborud.korp,'') as Адрес,dDogOborud.kolvo AS [Кол-во],dDogOborud.cenaPoTarif AS Цена FROM dDogOborud INNER JOIN dOborud ON dDogOborud.idOborud = dOborud.idOborud WHERE idDogovor = " + idDogovor + "";
-        sql = "SELECT dOborud.nameOborud AS Оборудование FROM dDogOborud INNER JOIN dOborud ON dDogOborud.idOborud = dOborud.idOborud WHERE idDogovor = " + idDogovor + "";
+        sql = "SELECT '1' AS Код,'1' AS Оборудование FROM dDogOborud INNER JOIN dOborud ON dDogOborud.idOborud = dOborud.idOborud WHERE idDogovor = " + idDogovor + "";
+
         return selectDb(sql);
+    }
+
+    public ArrayList<DDogOborud> getDDogOborud(int idDogovor) {
+
+        ArrayList<DDogOborud> arr = new ArrayList<>();
+        DDogOborud dogOborud;
+        ResultSet rsQ;
+//        sql = "SELECT\n"
+//                + "	dDogOborud.idOborud AS Код, "
+//                + "	dOborud.nameOborud AS Наименование, "
+//                + "	RTRIM(LTRIM(ISNULL(dDogOborud.gorod,'') + ' ' + "
+//                + "	ISNULL(dDogOborud.ulica,'') + "
+//                + "	CASE WHEN ISNULL(dDogOborud.dom,'') = '' THEN '' ELSE ' д. ' + dDogOborud.dom END + "
+//                + "	CASE WHEN ISNULL(dDogOborud.korp,'') = '' THEN '' ELSE ' корп. ' + dDogOborud.korp END + "
+//                + "	CASE WHEN ISNULL(dDogOborud.office,'') = '' THEN '' ELSE ' оф. ' + dDogOborud.office END))  as Адрес, "
+//                + "	dDogOborud.kolvo as [Кол-во] "
+//                + "FROM dDogOborud "
+//                + "INNER JOIN dOborud "
+//                + "	ON dDogOborud.idOborud = dOborud.idOborud WHERE idDogovor = " + idDogovor + "";
+       
+        sql = "SELECT        dDogOborud.idDogovor, dDogOborud.idOborud, dDogOborud.kolvo, dDogOborud.dtEndArenda, dDogOborud.gorod, dDogOborud.ulica, dDogOborud.dom, dDogOborud.korp, dDogOborud.office, dDogOborud.prim, "
+                + "                         dDogOborud.cenaPoTarif, dDogOborud.idUslovie, dOborud.nameOborud "
+                + "FROM            dDogOborud INNER JOIN "
+                + "                         dOborud ON dDogOborud.idOborud = dOborud.idOborud WHERE idDogovor = " + idDogovor + "";
+        rsQ = selectDb(sql);
+
+        try {
+            while (rsQ.next()) {
+                dogOborud = new DDogOborud(rsQ.getInt(1), rsQ.getInt(2), rsQ.getInt(3), rsQ.getDate(4), rsQ.getString(5), rsQ.getString(6), rsQ.getString(7), rsQ.getString(8), rsQ.getString(9), rsQ.getString(10), rsQ.getBigDecimal(11));
+                dogOborud.setIdUslovie(getSUslovie(rsQ.getInt(12)));
+                dogOborud.setNameOborud(rsQ.getString(13));
+                arr.add(dogOborud);
+            }
+        } catch (SQLException ex) {
+            System.out.println("ServerDb:getDDogovorOborud():Ошибка подключения или создание Statement - " + ex + " sql: " + sql);
+        }
+
+        return arr;
     }
 
     //Работа с событиями
@@ -735,50 +792,84 @@ public class ServerDb implements Constatnts {
         return selectDb(sql);
     }
 
+    public ResultSet getDOborud(int idDogovor, String oborDog) {
+
+        sql = "SELECT dOborud.idOborud AS Код, dOborud.nameOborud AS [Наименование оборудования], dOborud.deviceId AS Трекер, sGrupOborud.nameGrupOborud AS [Группа оборудования] FROM dOborud LEFT OUTER JOIN sGrupOborud ON dOborud.idGrupOborud = sGrupOborud.idGrupOborud WHERE idOborud NOT IN (SELECT idOborud FROM dDogOborud WHERE idDogovor = " + idDogovor + ")";
+        if (!oborDog.equals("")) {
+            sql = sql + " AND dOborud.idOborud NOT IN (" + oborDog + ")";
+        }
+        return selectDb(sql);
+    }
+
     public ResultSet getDOborud(String name) {
         sql = "SELECT dOborud.idOborud AS Код, dOborud.nameOborud AS [Наименование оборудования], dOborud.deviceId AS Трекер, sGrupOborud.nameGrupOborud AS [Группа оборудования] FROM dOborud LEFT OUTER JOIN sGrupOborud ON dOborud.idGrupOborud = sGrupOborud.idGrupOborud "
                 + "WHERE dOborud.nameOborud LIKE N'%" + name + "%'";
         return selectDb(sql);
     }
 
+    public ResultSet getDopHarac(int IdOborud) {
+        sql = "SELECT sDopHarac.nameDopHarac AS Наименование, dOborudDopHarac.pokaz AS Показатель FROM dOborudDopHarac INNER JOIN sDopHarac ON dOborudDopHarac.idDopHarac = sDopHarac.idDopHarac WHERE idOborud = " + IdOborud + "";
+        return selectDb(sql);
+    }
+
+    public ResultSet getZamRash(int IdOborud) {
+        sql = "SELECT dOborud.nameOborud AS Расходник, dOborudZamenaRash.dtZam AS [Дт замены], dOborudZamenaRash.kolvo AS [Кол-во], dOborudZamenaRash.pokaz AS Счетчик FROM  dOborudZamenaRash INNER JOIN dOborud ON dOborudZamenaRash.idOborudRas = dOborud.idOborud WHERE (dOborudZamenaRash.idOborud = " + IdOborud + ")";
+        return selectDb(sql);
+    }
+
+    public int setOborDogovor(DDogOborud obor) {
+
+        sql = "INSERT INTO dDogOborud "
+                + "      (idDogovor, idOborud, kolvo, dtEndArenda, gorod, ulica, dom, korp, office, prim, cenaPoTarif, idUslovie) "
+                + "VALUES(" + obor.getIdDogovor() + "," + obor.getIdOborud() + "," + obor.getKolvo() + ",'" + obor.getDtEndArenda() + "','" + obor.getGorod() + "','" + obor.getUlica() + "','" + obor.getDom() + "','" + obor.getKorp() + "','" + obor.getOffice() + "','" + obor.getPrim() + "'," + obor.getCenaPoTarif() + "," + obor.getIdUslovie().getIdUslovie() + ")";
+        return insertDb(sql);
+
+    }
+
+    public int updOborDogovor(DDogOborud obor) {
+
+        sql = "UPDATE       dDogOborud "
+                + "SET                idDogovor =" + obor.getIdDogovor() + ", idOborud =" + obor.getIdOborud() + ", kolvo =" + obor.getKolvo() + ", dtEndArenda ='" + obor.getDtEndArenda() + "', gorod ='" + obor.getGorod() + "', ulica ='" + obor.getUlica() + "', dom = '" + obor.getDom() + "', korp = '" + obor.getKorp() + "', office = '" + obor.getOffice() + "', prim = '" + obor.getPrim() + "', cenaPoTarif = " + obor.getCenaPoTarif() + ", idUslovie = " + obor.getIdUslovie().getIdUslovie() + "";
+        return insertDb(sql);
+
+    }
+
+    public int getOborInDog(int idDogovor, int idOborud) {
+        int rezult = 0;
+        sql = "SELECT COUNT(*) FROM dDogOborud WHERE (idOborud = " + idOborud + ") AND (idDogovor = " + idDogovor + ")";
+
+        selectDb(sql);
+        try {
+            while (rs.next()) {
+                rezult = rs.getInt(1);
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            System.out.println("ServerDb:setDogovor():Ошибка подключения или создание Statement");
+        }
+        return rezult;
+    }
+
     public int setOborud(DOborud ob) {
         String deviceId = ob.getTreker() == null ? "" : ob.getTreker().getId();
         sql = "INSERT INTO dOborud \n"
-                + "       (nameOborud, deviceId, idGrupOborud) \n"
-                + "VALUES ('" + ob.getNameOborud() + "','" + deviceId + "'," + ob.getIdGrupOborud().getIdGrupOborud() + ")";
+                + "       (nameOborud, deviceId, idGrupOborud,sn,inventNum,osnPok,schet) "
+                + "VALUES ('" + ob.getNameOborud() + "','" + deviceId + "'," + ob.getIdGrupOborud().getIdGrupOborud() + ",'" + ob.getSn() + "','" + ob.getInventNum() + "','" + ob.getOsnPok() + "','" + ob.getSchet() + "')";
         return insertDb(sql);
     }
-
-//    public int setOborudVrem(DDogOborud dogOborud, int ob, int idDogovor) {
-
-//        try {
-//            sql = "IF OBJECT_ID('tempdb.dbo.#dDogOborud') IS NOT NULL DROP TABLE tempdb.dbo.#dDogOborud";
-//            st.addBatch(sql);
-//            sql = "IF OBJECT_ID('tempdb.dbo.#dDogOborud') IS NOT NULL DROP TABLE tempdb.dbo.#dDogOborud";
-//            st.addBatch(sql);
-//            sql = "INSERT INTO tempdb.dbo.#dDogOborud"
-//                    + "       (idDogovor, idOborud, kolvo, dtEndArenda, gorod, ulica, dom, korp, office, prim, cenaPoTarif, idUslovie)\n"
-//                    + "VALUES        (,,,,,,,,,,,)";
-//            st.addBatch(sql);
-//        } catch (SQLException ex) {
-//            System.out.println("ServerDb:setOborudVrem():Ошибка добавления в пакет - " + ex + " sql: " + sql);
-//            err = "ServerDb:setOborudVrem():Ошибка добавления в пакет  - " + ex + " sql: " + sql;
-//        }
-//
-//        return 1;
- //   }
 
     public int updOborud(DOborud ob) {
         String deviceId = ob.getTreker() == null ? "" : ob.getTreker().getId();
         sql = "UPDATE       dOborud \n"
-                + "SET  nameOborud = '" + ob.getNameOborud() + "', deviceId ='" + deviceId + "', idGrupOborud =" + ob.getIdGrupOborud().getIdGrupOborud() + " WHERE idOborud = " + ob.getIdOborud() + "";
+                + "SET  nameOborud = '" + ob.getNameOborud() + "', deviceId ='" + deviceId + "', idGrupOborud =" + ob.getIdGrupOborud().getIdGrupOborud() + ", "
+                + "sn = '" + ob.getSn() + "', inventNum = '" + ob.getInventNum() + "', osnPok = '" + ob.getOsnPok() + "', schet = '" + ob.getSchet() + "'  WHERE idOborud = " + ob.getIdOborud() + "";
         return updateDb(sql);
     }
 
     public DOborud getOborud(int idOborud) {
         ResultSet rsQ;
         DOborud oborud = new DOborud();
-        sql = "SELECT idOborud, nameOborud, ISNULL(deviceId,''), idGrupOborud FROM dOborud WHERE (idOborud = " + idOborud + ")";
+        sql = "SELECT idOborud, nameOborud, ISNULL(deviceId,''), idGrupOborud,sn,inventNum,osnPok,schet FROM dOborud WHERE (idOborud = " + idOborud + ")";
         rsQ = selectDb(sql);
         try {
             while (rs.next()) {
@@ -790,6 +881,10 @@ public class ServerDb implements Constatnts {
                     oborud.setTreker(dev);
                 }
                 oborud.setIdGrupOborud(getGrupOborud(rsQ.getInt(4)));
+                oborud.setSn(rsQ.getString(5));
+                oborud.setInventNum(rsQ.getString(6));
+                oborud.setOsnPok(rsQ.getString(7));
+                oborud.setSchet(rsQ.getString(8));
             }
         } catch (SQLException ex) {
             System.out.println("ServerDb:getOborud():Ошибка подключения или создание Statement - " + ex + " sql: " + sql);

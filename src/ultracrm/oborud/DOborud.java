@@ -19,6 +19,11 @@ public class DOborud {
     private String nameOborud;
     private SGrupOborud idGrupOborud;
     private Device treker;
+    private String sn = "";
+    private String inventNum = "";
+    private String osnPok = "";
+    private String schet = "";
+    
     
     public DOborud() {
     }
@@ -32,13 +37,52 @@ public class DOborud {
         this.nameOborud = nameOborud;
     }
 
-    public DOborud(Integer idOborud, String nameOborud, SGrupOborud idGrupOborud, Device treker) {
+
+
+    public DOborud(Integer idOborud, String nameOborud, SGrupOborud idGrupOborud, Device treker, String sn, String inventNum, String osnPok, String schet) {
         this.idOborud = idOborud;
         this.nameOborud = nameOborud;
         this.idGrupOborud = idGrupOborud;
         this.treker = treker;
+        this.sn = sn;
+        this.inventNum = inventNum;
+        this.osnPok = osnPok;
+        this.schet = schet;
     }
 
+    public String getSn() {
+        return sn;
+    }
+
+    public void setSn(String sn) {
+        this.sn = sn;
+    }
+
+    public String getInventNum() {
+        return inventNum;
+    }
+
+    public void setInventNum(String inventNum) {
+        this.inventNum = inventNum;
+    }
+
+    public String getOsnPok() {
+        return osnPok;
+    }
+
+    public void setOsnPok(String osnPok) {
+        this.osnPok = osnPok;
+    }
+
+    public String getSchet() {
+        return schet;
+    }
+
+    public void setSchet(String schet) {
+        this.schet = schet;
+    }
+
+    
     
     
     public Integer getIdOborud() {

@@ -25,14 +25,18 @@ public class OborudChooser extends javax.swing.JDialog {
 
     AddOborudDogovor dogOborud;
     private DatabaseTableModel dbm = new DatabaseTableModel(false);
-
-    public OborudChooser(java.awt.Frame parent, boolean modal, AddOborudDogovor dialog) {
+    int idDogovor;
+    String oborDog;
+    
+    public OborudChooser(java.awt.Frame parent, boolean modal, AddOborudDogovor dialog,int idDogovor, String oborDog) {
         super(parent, modal);
         this.dogOborud = dialog;
+        this.idDogovor = idDogovor;
+        this.oborDog = oborDog;
         initComponents();
 
         try {
-            dbm.setDataSource(Start.mf.sDb.getDOborud());
+            dbm.setDataSource(Start.mf.sDb.getDOborud(this.idDogovor, this.oborDog));
         } catch (Exception ex) {
             System.out.println("Создание таблицы перенаправленные ошибка доступа к RS" + ex);
         }
@@ -102,10 +106,10 @@ public class OborudChooser extends javax.swing.JDialog {
             }
         });
         nameOborud.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 nameOborudInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         nameOborud.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -246,7 +250,7 @@ public class OborudChooser extends javax.swing.JDialog {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         nameOborud.setText("");
         try {
-            dbm.setDataSource(Start.mf.sDb.getDOborud());
+            dbm.setDataSource(Start.mf.sDb.getDOborud(this.idDogovor,this.oborDog));
         } catch (Exception ex) {
             System.out.println("Создание таблицы оборудования ошибка доступа к RS" + ex);
         }
@@ -299,7 +303,7 @@ public class OborudChooser extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                OborudChooser dialog = new OborudChooser(new javax.swing.JFrame(), true, null);
+                OborudChooser dialog = new OborudChooser(new javax.swing.JFrame(), true, null,0,"");
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

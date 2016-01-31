@@ -17,7 +17,7 @@ public class DDogOborud {
 
     private Integer idDogovor;
     private Integer idOborud;
-    private int kolvo;
+    private Integer kolvo;
     private Date dtEndArenda;
     private String gorod;
     private String ulica;
@@ -27,8 +27,17 @@ public class DDogOborud {
     private String prim;
     private BigDecimal cenaPoTarif;
     private SUslovieDogovor idUslovie;
-    
+    private String adress;
+    private String nameOborud;
+
     public DDogOborud() {
+    }
+
+    public DDogOborud(Integer idOborud, String nameOborud, String adress, int kolvo) {
+        this.idOborud = idOborud;
+        this.kolvo = kolvo;
+        this.adress = adress;
+        this.nameOborud = nameOborud;
     }
 
     public DDogOborud(Integer idDogovor, Integer idOborud, int kolvo, Date dtEndArenda, String gorod, String ulica, String dom, String korp, String office, String prim, BigDecimal cenaPoTarif) {
@@ -45,11 +54,39 @@ public class DDogOborud {
         this.cenaPoTarif = cenaPoTarif;
     }
 
+    public void convertAdress() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(gorod);
+        if (gorod.length() > 0) {
+            sb.append(" ");
+        }
+        sb.append(ulica);
+        if (ulica.length() > 0) {
+            sb.append(" ");
+        }
+        if (dom.length() > 0) {
+            sb.append("д.");
+            sb.append(dom);
+            sb.append(" ");
+        }
+         if (korp.length() > 0) {
+            sb.append("корп.");
+            sb.append(korp);
+            sb.append(" ");
+        }
+        if (office.length() > 0) {
+            sb.append("оф.");
+            sb.append(office);
+            sb.append(" ");
+        }
+        adress = sb.toString();
+    }
+
     public int getKolvo() {
         return kolvo;
     }
 
-    public void setKolvo(int kolvo) {
+    public void setKolvo(Integer kolvo) {
         this.kolvo = kolvo;
     }
 
@@ -141,10 +178,22 @@ public class DDogOborud {
         this.idUslovie = idUslovie;
     }
 
-    
-    
-    
-    
+    public String getAdress() {
+        return adress;
+    }
+
+    public void setAdress(String adress) {
+        this.adress = adress;
+    }
+
+    public String getNameOborud() {
+        return nameOborud;
+    }
+
+    public void setNameOborud(String nameOborud) {
+        this.nameOborud = nameOborud;
+    }
+
     @Override
     public int hashCode() {
         int hash = 5;

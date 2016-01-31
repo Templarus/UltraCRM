@@ -11,8 +11,10 @@ import javax.swing.JOptionPane;
 import ultracrm.MainFrame;
 import java.sql.Date;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
 import ultracrm.DatabaseTableModel;
 import ultracrm.Start;
 import ultracrm.oborud.OborudChooser;
@@ -25,6 +27,9 @@ import ultracrm.treker.Device;
 public class AddDogovor extends javax.swing.JDialog {
 
     private DatabaseTableModel dbm = new DatabaseTableModel(false);
+    private DDogovor dogovor;
+    private DDogOborud obor;
+    private static ArrayList<DDogOborud> oborArr = new ArrayList<>();
 
     /**
      * Creates new form AddKontr
@@ -33,7 +38,18 @@ public class AddDogovor extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.setTitle(title);
+        this.dogovor = dog;
+   try {
+            int idDog = 0;
+            if (!idDogovor.getText().equals("")) {
+                idDog = new Integer(idDogovor.getText()).intValue();
+            }
+            dbm.setDataSource(Start.mf.sDb.getDDogovorOborud(idDog));
+        } catch (Exception ex) {
+            System.out.println("Создание таблицы оборудование в договоре ошибка доступа к RS" + ex);
+        }
         if (null != dog) {
+
             idDogovor.setText(new Integer(dog.getIdDogovor()).toString());
             nameDogovor.setText(dog.getNameDogovor());
             kontrBox.setSelectedItem(dog.getKontr());
@@ -43,39 +59,66 @@ public class AddDogovor extends javax.swing.JDialog {
             idUslovie.setSelectedItem(dog.getSUslovieDogovor());
             flClose.setSelected(dog.getFlclose());
             prim.setText(dog.getPrim());
-        }
-        try {
-            int idDog = 0;
-            if (!idDogovor.getText().equals("")) {
-                idDog = new Integer(idDogovor.getText()).intValue();
-                //System.out.println("Код договора : " + idDog);
+            dogovor.setDogOborudArr(Start.mf.sDb.getDDogOborud(dog.getIdDogovor()));
+            for(DDogOborud ob : dogovor.getDogOborudArr()){
+                addDateTable(ob);
             }
-            dbm.setDataSource(Start.mf.sDb.getDDogovorOborud(idDog));
-        } catch (Exception ex) {
-            System.out.println("Создание таблицы оборудование в договоре ошибка доступа к RS" + ex);
+            oborArr = dogovor.getDogOborudArr();
         }
+     
 
-//        dDogovorOborudTable.getColumnModel().getColumn(0).setPreferredWidth(40);
-//        dDogovorOborudTable.getColumnModel().getColumn(1).setPreferredWidth(120);
-//        dDogovorOborudTable.getColumnModel().getColumn(2).setPreferredWidth(250);
-//        dDogovorOborudTable.getColumnModel().getColumn(3).setPreferredWidth(80);
-//        dDogovorOborudTable.getColumnModel().getColumn(4).setPreferredWidth(80);
-//        dDogovorOborudTable.getColumnModel().getColumn(5).setPreferredWidth(800);
+        dDogovorOborudTable.getColumnModel().getColumn(0).setPreferredWidth(10);
+        dDogovorOborudTable.getColumnModel().getColumn(1).setPreferredWidth(200);
+
+    }
+
+    public String getIdDogovor() {
+        return idDogovor.getText();
     }
 
     public void setKontrCombo(DKontr kontr) {
         kontrBox.setSelectedItem(kontr);
     }
-    
-    public void addDateTable(){
+
+    public String getOborudDogovor() {
+        StringBuilder sb = new StringBuilder();
+        for (DDogOborud ob : oborArr) {
+            sb.append(ob.getIdOborud());
+            sb.append(",");
+        }
+        if (sb.length() != 0) {
+            sb.delete(sb.length() - 1, sb.length());
+        }
+        System.out.println("Cnhby" + sb.toString());
+        return sb.toString();
+    }
+
+    public void addDateTable(DDogOborud obor) {
         try {
-            dbm.addData();
+            dbm.addData(obor);
         } catch (Exception ex) {
             System.out.println("Обновление таблицы оборудование в договоре ошибка доступа к RS" + ex);
         }
     }
-    
-    
+
+    public DDogOborud getObor() {
+        return obor;
+    }
+
+    public void setObor(DDogOborud obor) {
+        this.obor = obor;
+        this.oborArr.add(obor);
+        addDateTable(obor);
+    }
+
+    public void updObor(DDogOborud obor) {
+        for (DDogOborud ob : oborArr) {
+            if (ob.getIdOborud() == obor.getIdOborud()) {
+                oborArr.remove(ob);
+                oborArr.add(obor);
+            }
+        }
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -105,11 +148,12 @@ public class AddDogovor extends javax.swing.JDialog {
         prim = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel11 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        addOborudBut = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         dDogovorOborudTable = new javax.swing.JTable();
         addKontrBut = new javax.swing.JButton();
         clearKontrBut = new javax.swing.JButton();
+        changeOborudBut = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -244,12 +288,12 @@ public class AddDogovor extends javax.swing.JDialog {
         jLabel11.setMaximumSize(new java.awt.Dimension(1920, 1680));
         jLabel11.setMinimumSize(null);
 
-        jButton1.setText("Добавить");
-        jButton1.setMaximumSize(new java.awt.Dimension(1920, 1680));
-        jButton1.setMinimumSize(null);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        addOborudBut.setText("Добавить");
+        addOborudBut.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        addOborudBut.setMinimumSize(null);
+        addOborudBut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                addOborudButActionPerformed(evt);
             }
         });
 
@@ -282,6 +326,14 @@ public class AddDogovor extends javax.swing.JDialog {
             }
         });
 
+        changeOborudBut.setText("Редактировать");
+        changeOborudBut.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        changeOborudBut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changeOborudButActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -289,17 +341,6 @@ public class AddDogovor extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 1103, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(70, 70, 70)
-                .addComponent(idDogovor, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(309, 309, 309)
-                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -338,13 +379,29 @@ public class AddDogovor extends javax.swing.JDialog {
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(addOborudBut, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(changeOborudBut, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)))
             .addGroup(layout.createSequentialGroup()
                 .addGap(77, 77, 77)
                 .addComponent(butCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(116, 116, 116)
                 .addComponent(butSaveClose, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 960, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(70, 70, 70)
+                        .addComponent(idDogovor, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(426, 426, 426)
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -356,10 +413,13 @@ public class AddDogovor extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(4, 4, 4)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(idDogovor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(3, 3, 3)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(idDogovor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -398,14 +458,18 @@ public class AddDogovor extends javax.swing.JDialog {
                         .addComponent(prim, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(addOborudBut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(6, 6, 6)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(6, 6, 6)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(changeOborudBut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(butCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(butSaveClose, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(butSaveClose, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(butCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(9, 9, 9))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {butCancel, butSaveClose});
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -424,38 +488,50 @@ public class AddDogovor extends javax.swing.JDialog {
     private void butSaveCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butSaveCloseActionPerformed
 
         int rezult;
-
+        int rezult1;
         if (nameDogovor.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Необходимо заполнить наименование договора", "Внимание", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            if (kontrBox.getSelectedItem()==null) {
-                JOptionPane.showMessageDialog(this, "Необходимо выбрать контрагента", "Внимание", JOptionPane.INFORMATION_MESSAGE);
-            } else if (this.getTitle().equals("Добавление нового договора")) {
-                DKontr kontr = (DKontr) kontrBox.getSelectedItem();
-                rezult = MainFrame.sDb.setDogovor(new DDogovor(kontr, new Date(dtBegin.getDate().getTime()), new Date(dtEnd.getDate().getTime()), nameDogovor.getText(), flClose.isSelected(), (SUslovieDogovor) idUslovie.getSelectedItem(), (SVidOplat) idVidOplat.getSelectedItem(), prim.getText()));
-
-                if (MainFrame.sDb.err.equals("")) {
-                    if (rezult != 0) {
-                        JOptionPane.showMessageDialog(this, "Контрагент успешно добавлен", "Внимание", JOptionPane.INFORMATION_MESSAGE);
-                        dispose();
-                    }
-
+        } else if (kontrBox.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(this, "Необходимо выбрать контрагента", "Внимание", JOptionPane.INFORMATION_MESSAGE);
+        } else if (this.getTitle().equals("Добавление нового договора")) {
+            DKontr kontr = (DKontr) kontrBox.getSelectedItem();
+            rezult = MainFrame.sDb.setDogovor(new DDogovor(kontr, new Date(dtBegin.getDate().getTime()), new Date(dtEnd.getDate().getTime()), nameDogovor.getText(), flClose.isSelected(), (SUslovieDogovor) idUslovie.getSelectedItem(), (SVidOplat) idVidOplat.getSelectedItem(), prim.getText()));
+            for (DDogOborud ob : oborArr) {
+                System.out.println("MainFrame.sDb.getOborInDog(ob.getIdDogovor(),ob.getIdOborud() = " + MainFrame.sDb.getOborInDog(ob.getIdDogovor(), ob.getIdOborud()));
+                if (MainFrame.sDb.getOborInDog(ob.getIdDogovor(), ob.getIdOborud()) == 0) {
+                    rezult1 = MainFrame.sDb.setOborDogovor(ob);
                 } else {
-                    JOptionPane.showMessageDialog(this, "Произошла ошибка " + MainFrame.sDb.err, "Внимание", JOptionPane.INFORMATION_MESSAGE);
+                    rezult1 = MainFrame.sDb.updOborDogovor(ob);
                 }
+            }
+            if (MainFrame.sDb.err.equals("")) {
+                if (rezult != 0) {
+                    JOptionPane.showMessageDialog(this, "Договор успешно добавлен", "Внимание", JOptionPane.INFORMATION_MESSAGE);
+                    dispose();
+                }
+
             } else {
-                DKontr kontr = (DKontr) kontrBox.getSelectedItem();
-                rezult = MainFrame.sDb.updDogovor(new DDogovor(new Integer(idDogovor.getText()),kontr, new Date(dtBegin.getDate().getTime()), new Date(dtEnd.getDate().getTime()), nameDogovor.getText(), flClose.isSelected(), (SUslovieDogovor) idUslovie.getSelectedItem(), (SVidOplat) idVidOplat.getSelectedItem(), prim.getText()));
-
-                if (MainFrame.sDb.err.equals("")) {
-                    if (rezult != 0) {
-                        JOptionPane.showMessageDialog(this, "Контрагент успешно обновлен", "Внимание", JOptionPane.INFORMATION_MESSAGE);
-                        dispose();
-                    }
-
+                JOptionPane.showMessageDialog(this, "Произошла ошибка " + MainFrame.sDb.err, "Внимание", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else {
+            DKontr kontr = (DKontr) kontrBox.getSelectedItem();
+            rezult = MainFrame.sDb.updDogovor(new DDogovor(new Integer(idDogovor.getText()), kontr, new Date(dtBegin.getDate().getTime()), new Date(dtEnd.getDate().getTime()), nameDogovor.getText(), flClose.isSelected(), (SUslovieDogovor) idUslovie.getSelectedItem(), (SVidOplat) idVidOplat.getSelectedItem(), prim.getText()));
+            for (DDogOborud ob : oborArr) {
+                System.out.println("MainFrame.sDb.getOborInDog(ob.getIdDogovor(),ob.getIdOborud() = " + MainFrame.sDb.getOborInDog(ob.getIdDogovor(), ob.getIdOborud()));
+                if (MainFrame.sDb.getOborInDog(ob.getIdDogovor(), ob.getIdOborud()) == 0) {
+                    rezult1 = MainFrame.sDb.setOborDogovor(ob);
                 } else {
-                    JOptionPane.showMessageDialog(this, "Произошла ошибка " + MainFrame.sDb.err, "Внимание", JOptionPane.INFORMATION_MESSAGE);
+                    rezult1 = MainFrame.sDb.updOborDogovor(ob);
                 }
+            }
+            if (MainFrame.sDb.err.equals("")) {
+                if (rezult != 0) {
+                    JOptionPane.showMessageDialog(this, "Договор успешно обновлен", "Внимание", JOptionPane.INFORMATION_MESSAGE);
+                    dispose();
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Произошла ошибка " + MainFrame.sDb.err, "Внимание", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }//GEN-LAST:event_butSaveCloseActionPerformed
@@ -468,14 +544,14 @@ public class AddDogovor extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_primActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if(idDogovor.getText().equals("")){
+    private void addOborudButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addOborudButActionPerformed
+        if (idDogovor.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Необходимо сохранить договор", "Внимание", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            AddOborudDogovor obDog = new AddOborudDogovor(null,true,"Title",this);
+            AddOborudDogovor obDog = new AddOborudDogovor(null, true, "Добавление оборудования в договор", this, null);
             obDog.setVisible(true);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_addOborudButActionPerformed
 
     private void addKontrButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addKontrButActionPerformed
         KontrChooser kontrChoose = new KontrChooser(null, true, this);
@@ -485,6 +561,23 @@ public class AddDogovor extends javax.swing.JDialog {
     private void clearKontrButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearKontrButActionPerformed
         kontrBox.setSelectedItem(null);
     }//GEN-LAST:event_clearKontrButActionPerformed
+
+    private void changeOborudButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeOborudButActionPerformed
+        if (dDogovorOborudTable.getSelectedRow() != -1) {
+            DDogOborud oborud = null;
+
+            for (DDogOborud ob : oborArr) {
+                if (ob.getIdOborud() == dDogovorOborudTable.getValueAt(dDogovorOborudTable.getSelectedRow(), 0)) {
+                    oborud = ob;
+                }
+            }
+
+            AddOborudDogovor obDog = new AddOborudDogovor(null, true, "Редактирование оборудования в договоре", this, oborud);
+            obDog.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Необходимо выделить оборудование", "Внимание", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_changeOborudButActionPerformed
 
     /**
      * @param args the command line arguments
@@ -531,8 +624,10 @@ public class AddDogovor extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addKontrBut;
+    private javax.swing.JButton addOborudBut;
     private javax.swing.JButton butCancel;
     private javax.swing.JButton butSaveClose;
+    private javax.swing.JButton changeOborudBut;
     private javax.swing.JButton clearKontrBut;
     private javax.swing.JTable dDogovorOborudTable;
     private com.toedter.calendar.JDateChooser dtBegin;
@@ -541,7 +636,6 @@ public class AddDogovor extends javax.swing.JDialog {
     private javax.swing.JLabel idDogovor;
     private javax.swing.JComboBox<String> idUslovie;
     private javax.swing.JComboBox<String> idVidOplat;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

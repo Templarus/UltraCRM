@@ -26,12 +26,12 @@ import ultracrm.oborud.JPanelOborud;
 public class MainFrame extends javax.swing.JFrame {
 
     public static ServerDb sDb;
-    private static String connectionString = "jdbc:sqlserver://188.120.254.195:1433;databaseName=UltraFiolet";
-    //private static String connectionString = "jdbc:sqlserver://ASUSG46:1433;databaseName=UltraFiolet";
+    //private static String connectionString = "jdbc:sqlserver://188.120.254.195:1433;databaseName=UltraFiolet";
+    private static String connectionString = "jdbc:sqlserver://ASUSG46:1433;databaseName=UltraFiolet";
     //private static String connectionString = "jdbc:sqlserver://MAIN:1433;databaseName=UltraFiolet";
     private static String userName = "sa";
-    //private static String userPwd = "sa";
-    private static String userPwd = "Pa$$w0rd";
+    private static String userPwd = "sa";
+    //private static String userPwd = "Pa$$w0rd";
     //private static String userPwd = "Zx3d2818!";
     private double scalingfactor = 1.0;
 
@@ -209,15 +209,15 @@ public class MainFrame extends javax.swing.JFrame {
     {
         scalingfactor = Start.interfaceScalingFactor;
 
-        System.out.println("getPreferredSize().width=" + getPreferredSize().width);
-        System.out.println("getPreferredSize().height=" + getPreferredSize().height);
+        //System.out.println("getPreferredSize().width=" + getPreferredSize().width);
+        //System.out.println("getPreferredSize().height=" + getPreferredSize().height);
 
         int width = (int) (getPreferredSize().width * scalingfactor);
         int height = (int) (getPreferredSize().height * scalingfactor);
-        System.out.println("MainFrame scalingfactor=" + scalingfactor + " width=" + width + " height=" + height);
+        //System.out.println("MainFrame scalingfactor=" + scalingfactor + " width=" + width + " height=" + height);
 
         setPreferredSize(new Dimension((int) (getPreferredSize().width * scalingfactor), (int) (getPreferredSize().height * scalingfactor)));
-        setBounds(0, 0, (int) (1680 * scalingfactor), (int) (1050 * scalingfactor));
+        setBounds(0, 0, (int) (1600 * scalingfactor), (int) (900 * scalingfactor));
         for (Component comp : this.getContentPane().getComponents()) {
             comp.setPreferredSize(new Dimension((int) (comp.getPreferredSize().width * scalingfactor), (int) (comp.getPreferredSize().height * scalingfactor)));
             comp.setBounds((int) (comp.getX() * scalingfactor), (int) (comp.getY() * scalingfactor), (int) (comp.getWidth() * scalingfactor), (int) (comp.getHeight() * scalingfactor));

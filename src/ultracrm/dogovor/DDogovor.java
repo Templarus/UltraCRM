@@ -6,6 +6,7 @@
 package ultracrm.dogovor;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import ultracrm.kontragent.DKontr;
 
 public class DDogovor {
@@ -18,7 +19,8 @@ public class DDogovor {
     private SUslovieDogovor sUslovieDogovor;
     private SVidOplat sVidOplat;
     private String prim;
-
+    private ArrayList<DDogOborud> dogOborudArr = new ArrayList<>();
+    
     public DDogovor() {
     }
 
@@ -65,6 +67,30 @@ public class DDogovor {
 
     public void setKontr(DKontr kontr) {
         this.kontr = kontr;
+    }
+
+    public SUslovieDogovor getsUslovieDogovor() {
+        return sUslovieDogovor;
+    }
+
+    public void setsUslovieDogovor(SUslovieDogovor sUslovieDogovor) {
+        this.sUslovieDogovor = sUslovieDogovor;
+    }
+
+    public SVidOplat getsVidOplat() {
+        return sVidOplat;
+    }
+
+    public void setsVidOplat(SVidOplat sVidOplat) {
+        this.sVidOplat = sVidOplat;
+    }
+
+    public ArrayList<DDogOborud> getDogOborudArr() {
+        return dogOborudArr;
+    }
+
+    public void setDogOborudArr(ArrayList<DDogOborud> dogOborudArr) {
+        this.dogOborudArr = dogOborudArr;
     }
 
     
