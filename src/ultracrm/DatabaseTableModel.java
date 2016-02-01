@@ -9,6 +9,7 @@ import javax.swing.table.*;
 import java.sql.*;
 import java.util.*;
 import ultracrm.dogovor.DDogOborud;
+import ultracrm.kontragent.DKontakt;
 
 public class DatabaseTableModel extends AbstractTableModel {
 // здесь мы будем хранить названия столбцов
@@ -25,6 +26,16 @@ public class DatabaseTableModel extends AbstractTableModel {
         this.editable = editable;
     }
 
+    
+    //Очистить данные
+    public void clearData(){
+       synchronized (data) {
+                data.clear();
+                // сообщаем о прибавлении строки
+                fireTableRowsInserted(data.size() - 1, data.size() - 1);
+            }
+    }
+    
 // количество строк
     @Override
     public int getRowCount() {
@@ -176,6 +187,27 @@ public class DatabaseTableModel extends AbstractTableModel {
                     row.add(obor.getNameOborud());
                     //row.add(obor.getAdress());
                     //row.add(obor.getKolvo());
+            }
+
+            synchronized (data) {
+                data.add(row);
+                // сообщаем о прибавлении строки
+                fireTableRowsInserted(data.size() - 1, data.size() - 1);
+            }
+           
+            
+    }
+    
+    public void addData(DKontakt kont) throws Exception {
+        
+        ArrayList row = new ArrayList();   
+  
+             for (int i = 0; i < 4; i++) {
+                    row.add(kont.getIdKontackt());
+                    row.add(kont.getNameKontakt());
+                    row.add(kont.getTelKontakt());
+                    row.add(kont.getEmailKontakt());
+                    
             }
 
             synchronized (data) {

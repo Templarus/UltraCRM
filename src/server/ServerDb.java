@@ -19,6 +19,7 @@ import ultracrm.dogovor.DDogOborud;
 import ultracrm.dogovor.DDogovor;
 import ultracrm.dogovor.SUslovieDogovor;
 import ultracrm.dogovor.SVidOplat;
+import ultracrm.kontragent.DKontakt;
 import ultracrm.kontragent.DKontr;
 import ultracrm.oborud.DOborud;
 import ultracrm.oborud.SGrupOborud;
@@ -428,8 +429,84 @@ public class ServerDb implements Constatnts {
 
         return koordinat;
     }
-//работа с контрагентом
+//работа с контактами
 
+    public ResultSet getKontakt() {
+        sql = "SELECT    '1' as Код, '1' as Имя, '1' as Телефон, '1' as [e-mail] "
+                + " FROM  dKontakt WHERE idKontackt = -101";
+        return selectDb(sql);
+    }
+
+    public ArrayList<DKontakt> getKontakt(int idKontr) {
+        ResultSet rsQ;
+        ArrayList<DKontakt> kontrArr = new ArrayList<>();
+        DKontakt kontrEdit;
+        sql = "SELECT    dKontakt.idKontackt, dKontakt.nameKontakt, dKontakt.telKontakt, dKontakt.emailKontakt, dKontrKontakt.idKontr "
+                + "FROM  dKontakt INNER JOIN "
+                + "      dKontrKontakt ON dKontakt.idKontackt = dKontrKontakt.idKontackt "
+                + "WHERE (dKontrKontakt.idKontr = " + idKontr + ")";
+        rsQ = selectDb(sql);
+        try {
+            while (rsQ.next()) {
+                kontrEdit = new DKontakt(rsQ.getInt(1), rsQ.getString(2), rsQ.getString(3), rsQ.getString(4));
+                kontrArr.add(kontrEdit);
+            }
+        } catch (SQLException ex) {
+            System.out.println("ServerDb:getKontakt():Ошибка подключения или создание Statement - " + ex + " sql: " + sql);
+        }
+        return kontrArr;
+    }
+
+    public int setKontakt(DKontakt kont, int idKont) {
+        int rez = 0;
+        sql = "INSERT INTO dKontakt "
+                + "       (nameKontakt, telKontakt, emailKontakt)\n"
+                + "VALUES ('" + kont.getNameKontakt() + "','" + kont.getTelKontakt() + "','" + kont.getEmailKontakt() + "')";
+
+        rez = insertDb(sql);
+
+        sql = "INSERT INTO dKontrKontakt "
+                + "       (idKontackt, idKontr) "
+                + "VALUES ((SELECT MAX(idKontackt) FROM dKontakt)," + idKont + ")";
+
+        rez = insertDb(sql);
+
+        return rez;
+
+    }
+
+    public int updKontakt(DKontakt kont, int idKont) {
+        int rez = 0;
+
+        sql = "UPDATE       dKontakt "
+                + "SET nameKontakt ='" + kont.getNameKontakt() + "', telKontakt ='" + kont.getTelKontakt() + "', emailKontakt ='" + kont.getEmailKontakt() + "' "
+                + "WHERE idKontackt = " + kont.getIdKontackt() + "";
+
+        rez = updateDb(sql);
+
+        return rez;
+
+    }
+
+    public DKontakt getKont(int idKontakt) {
+
+        DKontakt kont = null;
+        ResultSet rsQ;
+        sql = "SELECT        idKontackt, nameKontakt, telKontakt, emailKontakt "
+                + "FROM            dKontakt "
+                + "WHERE        (idKontackt = " + idKontakt + ")";
+        rsQ = selectDb(sql);
+        try {
+            while (rsQ.next()) {
+                kont = new DKontakt(rsQ.getInt(1), rsQ.getString(2), rsQ.getString(3), rsQ.getString(4));
+            }
+        } catch (SQLException ex) {
+            System.out.println("ServerDb:getKont():Ошибка подключения или создание Statement - " + ex + " sql: " + sql);
+        }
+        return kont;
+    }
+
+//работа с контрагентом
     public ResultSet getDKontr() {
         sql = "SELECT idKontr AS Код, userNameKontr AS Наименование, urNameKontr AS [Полное наименование], innKontr AS ИНН, kppKontr AS КПП, adressKontr AS Адрес FROM dKontr ORDER BY userNameKontr";
         return selectDb(sql);
@@ -448,21 +525,22 @@ public class ServerDb implements Constatnts {
     public DKontr getKontr(int idKontr) {
 
         DKontr kontr = new DKontr();
+        ResultSet rsQ;
         sql = "SELECT idKontr AS Код, userNameKontr AS Наименование, urNameKontr AS [Полное наименование], innKontr AS ИНН, kppKontr AS КПП, adressKontr AS Адрес FROM dKontr WHERE idKontr = " + idKontr + "";
-        rs = selectDb(sql);
+        rsQ = selectDb(sql);
         try {
-            while (rs.next()) {
-                kontr.setIdKontr(rs.getInt(1));
-                kontr.setUserNameKontr(rs.getString(2));
-                kontr.setUrNameKontr(rs.getString(3));
-                kontr.setInnKontr(rs.getString(4));
-                kontr.setKppKontr(rs.getString(5));
-                kontr.setAdressKontr(rs.getString(6));
+            while (rsQ.next()) {
+                kontr.setIdKontr(rsQ.getInt(1));
+                kontr.setUserNameKontr(rsQ.getString(2));
+                kontr.setUrNameKontr(rsQ.getString(3));
+                kontr.setInnKontr(rsQ.getString(4));
+                kontr.setKppKontr(rsQ.getString(5));
+                kontr.setAdressKontr(rsQ.getString(6));
+                kontr.setKontArr(getKontakt(rsQ.getInt(1)));
             }
         } catch (SQLException ex) {
             System.out.println("ServerDb:getKontr():Ошибка подключения или создание Statement - " + ex + " sql: " + sql);
         }
-
         return kontr;
     }
 
@@ -701,7 +779,7 @@ public class ServerDb implements Constatnts {
 //                + "FROM dDogOborud "
 //                + "INNER JOIN dOborud "
 //                + "	ON dDogOborud.idOborud = dOborud.idOborud WHERE idDogovor = " + idDogovor + "";
-       
+
         sql = "SELECT        dDogOborud.idDogovor, dDogOborud.idOborud, dDogOborud.kolvo, dDogOborud.dtEndArenda, dDogOborud.gorod, dDogOborud.ulica, dDogOborud.dom, dDogOborud.korp, dDogOborud.office, dDogOborud.prim, "
                 + "                         dDogOborud.cenaPoTarif, dDogOborud.idUslovie, dOborud.nameOborud "
                 + "FROM            dDogOborud INNER JOIN "

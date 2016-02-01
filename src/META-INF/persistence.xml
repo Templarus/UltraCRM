@@ -12,6 +12,7 @@
     <class>ultracrm.oborud.SGrupOborud</class>
     <class>ultracrm.oborud.DOborud</class>
     <class>ultracrm.dogovor.DDogOborud</class>
+    <class>ultracrm.kontragent.DKontakt</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://ASUSG46:1433;databaseName=UltraFiolet"/>
       <property name="javax.persistence.jdbc.user" value="sa"/>

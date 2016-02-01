@@ -5,6 +5,8 @@
  */
 package ultracrm.kontragent;
 
+import java.util.ArrayList;
+
 public class DKontr {
 
     private Integer idKontr;
@@ -13,7 +15,10 @@ public class DKontr {
     private String innKontr;
     private String kppKontr;
     private String adressKontr;
-
+    private ArrayList<DKontakt> kontArr;
+    
+    
+    
     public DKontr(String userNameKontr, String urNameKontr, String innKontr, String kppKontr, String adressKontr) {
         this.userNameKontr = userNameKontr;
         this.urNameKontr = urNameKontr;
@@ -29,6 +34,14 @@ public class DKontr {
         this.innKontr = innKontr;
         this.kppKontr = kppKontr;
         this.adressKontr = adressKontr;
+    }
+
+    public ArrayList<DKontakt> getKontArr() {
+        return kontArr;
+    }
+
+    public void setKontArr(ArrayList<DKontakt> kontArr) {
+        this.kontArr = kontArr;
     }
 
 

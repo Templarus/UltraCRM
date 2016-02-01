@@ -298,7 +298,6 @@ public class AddDogovor extends javax.swing.JDialog {
         });
 
         jScrollPane1.setMaximumSize(new java.awt.Dimension(1920, 1680));
-        jScrollPane1.setMinimumSize(null);
 
         dDogovorOborudTable.setAutoCreateRowSorter(true);
         dDogovorOborudTable.setModel(dbm);
