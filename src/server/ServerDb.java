@@ -22,6 +22,9 @@ import ultracrm.dogovor.SVidOplat;
 import ultracrm.kontragent.DKontakt;
 import ultracrm.kontragent.DKontr;
 import ultracrm.oborud.DOborud;
+import ultracrm.oborud.DOborudDopHarac;
+import ultracrm.oborud.DOborudZamenaRash;
+import ultracrm.oborud.SDopHarac;
 import ultracrm.oborud.SGrupOborud;
 import ultracrm.treker.Device;
 import ultracrm.treker.DeviceTimeWork;
@@ -885,14 +888,48 @@ public class ServerDb implements Constatnts {
         return selectDb(sql);
     }
 
-    public ResultSet getDopHarac(int IdOborud) {
-        sql = "SELECT sDopHarac.nameDopHarac AS Наименование, dOborudDopHarac.pokaz AS Показатель FROM dOborudDopHarac INNER JOIN sDopHarac ON dOborudDopHarac.idDopHarac = sDopHarac.idDopHarac WHERE idOborud = " + IdOborud + "";
-        return selectDb(sql);
-    }
+//    public ResultSet getDopHarac(int IdOborud) {
+//        sql = "SELECT sDopHarac.nameDopHarac AS Наименование, dOborudDopHarac.pokaz AS Показатель FROM dOborudDopHarac INNER JOIN sDopHarac ON dOborudDopHarac.idDopHarac = sDopHarac.idDopHarac WHERE idOborud = " + IdOborud + "";
+//        return selectDb(sql);
+//    }
+//
+//    public ResultSet getZamRash(int IdOborud) {
+//        sql = "SELECT dOborud.nameOborud AS Расходник, dOborudZamenaRash.dtZam AS [Дт замены], dOborudZamenaRash.kolvo AS [Кол-во], dOborudZamenaRash.pokaz AS Счетчик FROM  dOborudZamenaRash INNER JOIN dOborud ON dOborudZamenaRash.idOborudRas = dOborud.idOborud WHERE (dOborudZamenaRash.idOborud = " + IdOborud + ")";
+//        return selectDb(sql);
+//    }
+    public SDopHarac[] getSDopHarac() {
+        int countRec = 0;
+        SDopHarac dopHarac;
+        sql = "SELECT COUNT(*) FROM sDopHarac";
+        selectDb(sql);
+        try {
+            while (rs.next()) {
+                countRec = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            System.out.println("ServerDb:getSDopHarac():Ошибка подключения или создание Statement(метод подсчета кол-ва записей в таблице доп характеристик) - " + ex + " sql: " + sql);
+        }
 
-    public ResultSet getZamRash(int IdOborud) {
-        sql = "SELECT dOborud.nameOborud AS Расходник, dOborudZamenaRash.dtZam AS [Дт замены], dOborudZamenaRash.kolvo AS [Кол-во], dOborudZamenaRash.pokaz AS Счетчик FROM  dOborudZamenaRash INNER JOIN dOborud ON dOborudZamenaRash.idOborudRas = dOborud.idOborud WHERE (dOborudZamenaRash.idOborud = " + IdOborud + ")";
-        return selectDb(sql);
+        if (countRec == 0) {
+            return new SDopHarac[0];
+        }
+
+        SDopHarac[] SDopHaracArr = new SDopHarac[countRec];
+
+        try {
+            sql = "SELECT idDopHarac,nameDopHarac FROM sDopHarac";
+            rs = selectDb(sql);
+            while (rs.next()) {
+                //System.out.println("Получаем с базы : " + rs.getString(2));
+                dopHarac = new SDopHarac(rs.getInt(1), rs.getString(2));
+                SDopHaracArr[countRec - 1] = dopHarac;
+                countRec = countRec - 1;
+            }
+        } catch (SQLException ex) {
+            System.out.println("ServerDb:getSDopHarac():Ошибка подключения или создание Statement(метод заполнения массива доп характеристик) - " + ex + " sql: " + sql);
+        }
+
+        return SDopHaracArr;
     }
 
     public int setOborDogovor(DDogOborud obor) {
@@ -904,6 +941,24 @@ public class ServerDb implements Constatnts {
 
     }
 
+    public int setOborudDopHarac(DOborudDopHarac dopHarac) {
+
+        sql = "INSERT INTO dOborudDopHarac "
+                + "      (idOborud,idDopHarac,pokaz) "
+                + "VALUES(" + dopHarac.getIdOborud() + "," + dopHarac.getIdDopHarac().getIdDopHarac() + ",'" + dopHarac.getPokaz() + "')";
+        return insertDb(sql);
+
+    }
+    public int updOborudDopHarac(DOborudDopHarac dopHarac) {
+        sql = "UPDATE dOborudDopHarac "
+                + " SET pokaz = '" + dopHarac.getPokaz() + "' "
+                + " WHERE idOborud = " + dopHarac.getIdOborud() + " AND idDopHarac = " + dopHarac.getIdDopHarac().getIdDopHarac() + "";
+        return insertDb(sql);
+
+    }
+    
+    
+    
     public int updOborDogovor(DDogOborud obor) {
 
         sql = "UPDATE       dDogOborud "
@@ -938,7 +993,7 @@ public class ServerDb implements Constatnts {
 
     public int updOborud(DOborud ob) {
         String deviceId = ob.getTreker() == null ? "" : ob.getTreker().getId();
-        sql = "UPDATE       dOborud \n"
+        sql = "UPDATE       dOborud "
                 + "SET  nameOborud = '" + ob.getNameOborud() + "', deviceId ='" + deviceId + "', idGrupOborud =" + ob.getIdGrupOborud().getIdGrupOborud() + ", "
                 + "sn = '" + ob.getSn() + "', inventNum = '" + ob.getInventNum() + "', osnPok = '" + ob.getOsnPok() + "', schet = '" + ob.getSchet() + "'  WHERE idOborud = " + ob.getIdOborud() + "";
         return updateDb(sql);
@@ -963,12 +1018,102 @@ public class ServerDb implements Constatnts {
                 oborud.setInventNum(rsQ.getString(6));
                 oborud.setOsnPok(rsQ.getString(7));
                 oborud.setSchet(rsQ.getString(8));
+
+                oborud.setHaracArr(getOborudDopHarac(rsQ.getInt(1)));
+                oborud.setRashArr(getOborudZamenaRash(rsQ.getInt(1)));
             }
         } catch (SQLException ex) {
             System.out.println("ServerDb:getOborud():Ошибка подключения или создание Statement - " + ex + " sql: " + sql);
         }
 
         return oborud;
+    }
+
+    public ArrayList<DOborudDopHarac> getOborudDopHarac(int idOborud) {
+
+        ArrayList<DOborudDopHarac> arr = new ArrayList<>();
+        DOborudDopHarac dopHarac;
+        ResultSet rsQ;
+
+        sql = "SELECT idOborud, idDopHarac, pokaz "
+                + "FROM  dOborudDopHarac "
+                + "WHERE idOborud = " + idOborud + "";
+
+        rsQ = selectDb(sql);
+
+        try {
+            while (rsQ.next()) {
+                dopHarac = new DOborudDopHarac(rsQ.getInt(1), getDopHarac(rsQ.getInt(2)), rsQ.getString(3));
+                arr.add(dopHarac);
+            }
+        } catch (SQLException ex) {
+            System.out.println("ServerDb:getOborudDopHarac():Ошибка подключения или создание Statement - " + ex + " sql: " + sql);
+        }
+
+        return arr;
+    }
+
+    public ArrayList<DOborudZamenaRash> getOborudZamenaRash(int idOborud) {
+
+        ArrayList<DOborudZamenaRash> arr = new ArrayList<>();
+        DOborudZamenaRash zamenaResh;
+        ResultSet rsQ;
+
+        sql = "SELECT idOborud, idOborudRas, dtZam, kolvo, pokaz "
+                + "FROM  dOborudZamenaRash "
+                + "WHERE idOborud = " + idOborud + "";
+
+        rsQ = selectDb(sql);
+
+        try {
+            while (rsQ.next()) {
+                zamenaResh = new DOborudZamenaRash(rsQ.getInt(1), getOborud(rsQ.getInt(2)), rsQ.getDate(3), rsQ.getInt(4), rsQ.getInt(5));
+                arr.add(zamenaResh);
+            }
+        } catch (SQLException ex) {
+            System.out.println("ServerDb:getOborudZamenaRash():Ошибка подключения или создание Statement - " + ex + " sql: " + sql);
+        }
+
+        return arr;
+    }
+
+    public ResultSet getOborudZamenaRash() {
+
+        sql = "SELECT '' as Код, '' as [Расходник], '' as [Дата замены], '' as [Кол-во], '' as Показатель "
+                + "FROM  dOborudZamenaRash "
+                + "WHERE idOborud = -101";
+
+        return selectDb(sql);
+    }
+
+    public ResultSet getOborudDopHarac() {
+
+        sql = "SELECT '' as Код,'' as Характеристика, '' as Показатель "
+                + "FROM  dOborudDopHarac "
+                + "WHERE idOborud = -101";
+
+        return selectDb(sql);
+    }
+
+    public SDopHarac getDopHarac(int idDopHarac) {
+
+        SDopHarac dopHarac = null;
+
+        sql = "SELECT        idDopHarac, nameDopHarac "
+                + "FROM            sDopHarac "
+                + "WHERE idDopHarac = " + idDopHarac + "";
+
+        selectDb(sql);
+
+        try {
+            while (rs.next()) {
+                dopHarac = new SDopHarac(rs.getInt(1), rs.getString(2));
+            }
+        } catch (SQLException ex) {
+            System.out.println("ServerDb:getDopHarac():Ошибка подключения или создание Statement - " + ex + " sql: " + sql);
+        }
+
+        return dopHarac;
     }
 
     @Override

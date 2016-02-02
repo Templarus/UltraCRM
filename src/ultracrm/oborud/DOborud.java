@@ -5,16 +5,15 @@
  */
 package ultracrm.oborud;
 
+import java.util.ArrayList;
 import ultracrm.treker.Device;
 
 /**
  *
  * @author EvgenyVart
  */
-
 public class DOborud {
 
-  
     private Integer idOborud;
     private String nameOborud;
     private SGrupOborud idGrupOborud;
@@ -23,8 +22,10 @@ public class DOborud {
     private String inventNum = "";
     private String osnPok = "";
     private String schet = "";
-    
-    
+
+    private ArrayList<DOborudDopHarac> haracArr;
+    private ArrayList<DOborudZamenaRash> rashArr;
+
     public DOborud() {
     }
 
@@ -36,8 +37,6 @@ public class DOborud {
         this.idOborud = idOborud;
         this.nameOborud = nameOborud;
     }
-
-
 
     public DOborud(Integer idOborud, String nameOborud, SGrupOborud idGrupOborud, Device treker, String sn, String inventNum, String osnPok, String schet) {
         this.idOborud = idOborud;
@@ -82,9 +81,6 @@ public class DOborud {
         this.schet = schet;
     }
 
-    
-    
-    
     public Integer getIdOborud() {
         return idOborud;
     }
@@ -117,10 +113,22 @@ public class DOborud {
         this.treker = treker;
     }
 
-    
-    
-    
-    
+    public ArrayList<DOborudDopHarac> getHaracArr() {
+        return haracArr;
+    }
+
+    public void setHaracArr(ArrayList<DOborudDopHarac> haracArr) {
+        this.haracArr = haracArr;
+    }
+
+    public ArrayList<DOborudZamenaRash> getRashArr() {
+        return rashArr;
+    }
+
+    public void setRashArr(ArrayList<DOborudZamenaRash> rashArr) {
+        this.rashArr = rashArr;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -145,5 +153,5 @@ public class DOborud {
     public String toString() {
         return nameOborud;
     }
-    
+
 }

@@ -10,6 +10,8 @@ import java.sql.*;
 import java.util.*;
 import ultracrm.dogovor.DDogOborud;
 import ultracrm.kontragent.DKontakt;
+import ultracrm.oborud.DOborudDopHarac;
+import ultracrm.oborud.DOborudZamenaRash;
 
 public class DatabaseTableModel extends AbstractTableModel {
 // здесь мы будем хранить названия столбцов
@@ -26,16 +28,15 @@ public class DatabaseTableModel extends AbstractTableModel {
         this.editable = editable;
     }
 
-    
     //Очистить данные
-    public void clearData(){
-       synchronized (data) {
-                data.clear();
-                // сообщаем о прибавлении строки
-                fireTableRowsInserted(data.size() - 1, data.size() - 1);
-            }
+    public void clearData() {
+        synchronized (data) {
+            data.clear();
+            // сообщаем о прибавлении строки
+            fireTableRowsInserted(data.size() - 1, data.size() - 1);
+        }
     }
-    
+
 // количество строк
     @Override
     public int getRowCount() {
@@ -177,46 +178,83 @@ public class DatabaseTableModel extends AbstractTableModel {
             }
         }
     }
-    
+
     public void addData(DDogOborud obor) throws Exception {
-        
-        ArrayList row = new ArrayList();   
-  
-             for (int i = 0; i < 2; i++) {
-                    row.add(obor.getIdOborud());
-                    row.add(obor.getNameOborud());
-                    //row.add(obor.getAdress());
-                    //row.add(obor.getKolvo());
-            }
 
-            synchronized (data) {
-                data.add(row);
-                // сообщаем о прибавлении строки
-                fireTableRowsInserted(data.size() - 1, data.size() - 1);
-            }
-           
-            
+        ArrayList row = new ArrayList();
+
+        for (int i = 0; i < 2; i++) {
+            row.add(obor.getIdOborud());
+            row.add(obor.getNameOborud());
+            //row.add(obor.getAdress());
+            //row.add(obor.getKolvo());
+        }
+
+        synchronized (data) {
+            data.add(row);
+            // сообщаем о прибавлении строки
+            fireTableRowsInserted(data.size() - 1, data.size() - 1);
+        }
+
     }
-    
+
     public void addData(DKontakt kont) throws Exception {
-        
-        ArrayList row = new ArrayList();   
-  
-             for (int i = 0; i < 4; i++) {
-                    row.add(kont.getIdKontackt());
-                    row.add(kont.getNameKontakt());
-                    row.add(kont.getTelKontakt());
-                    row.add(kont.getEmailKontakt());
-                    
-            }
 
-            synchronized (data) {
-                data.add(row);
-                // сообщаем о прибавлении строки
-                fireTableRowsInserted(data.size() - 1, data.size() - 1);
-            }
-           
-            
+        ArrayList row = new ArrayList();
+
+        for (int i = 0; i < 4; i++) {
+            row.add(kont.getIdKontackt());
+            row.add(kont.getNameKontakt());
+            row.add(kont.getTelKontakt());
+            row.add(kont.getEmailKontakt());
+
+        }
+
+        synchronized (data) {
+            data.add(row);
+            // сообщаем о прибавлении строки
+            fireTableRowsInserted(data.size() - 1, data.size() - 1);
+        }
+
+    }
+
+    public void addData(DOborudDopHarac dopHarac) throws Exception {
+
+        ArrayList row = new ArrayList();
+
+        for (int i = 0; i < 2; i++) {
+            row.add(dopHarac.getIdDopHarac().getIdDopHarac());
+            row.add(dopHarac.getIdDopHarac());
+            row.add(dopHarac.getPokaz());
+
+        }
+
+        synchronized (data) {
+            data.add(row);
+            // сообщаем о прибавлении строки
+            fireTableRowsInserted(data.size() - 1, data.size() - 1);
+        }
+
     }
     
+   public void addData(DOborudZamenaRash zamRash) throws Exception {
+
+        ArrayList row = new ArrayList();
+
+        for (int i = 0; i < 5; i++) {
+            row.add(zamRash.getIdOborudRas().getIdOborud());
+            row.add(zamRash.getIdOborudRas());
+            row.add(zamRash.getDtZam());
+            row.add(zamRash.getKolvo());
+            row.add(zamRash.getPokaz());
+
+        }
+
+        synchronized (data) {
+            data.add(row);
+            // сообщаем о прибавлении строки
+            fireTableRowsInserted(data.size() - 1, data.size() - 1);
+        }
+
+    }
 }
