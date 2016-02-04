@@ -27,6 +27,7 @@ public class AddOborud extends javax.swing.JDialog {
     DatabaseTableModel dbmZamRash = new DatabaseTableModel(false);
     DatabaseTableModel dbmDopHarac = new DatabaseTableModel(false);
     DOborud oborud;
+
     /**
      * Creates new form AddKontr
      */
@@ -35,16 +36,14 @@ public class AddOborud extends javax.swing.JDialog {
         initComponents();
         this.setTitle(title);
         this.oborud = oborud;
-        
-        
-        
+
         try {
-                dbmDopHarac.setDataSource(MainFrame.sDb.getOborudDopHarac());
-                dbmZamRash.setDataSource(MainFrame.sDb.getOborudZamenaRash());
-            } catch (Exception ex) {
-                System.out.println("Создание таблицы доп. характеристик оборудования ошибка" + ex);
-            }
-        
+            dbmDopHarac.setDataSource(MainFrame.sDb.getOborudDopHarac());
+            dbmZamRash.setDataSource(MainFrame.sDb.getOborudZamenaRash());
+        } catch (Exception ex) {
+            System.out.println("Создание таблицы доп. характеристик оборудования ошибка" + ex);
+        }
+
         if (null != oborud) {
             idOborud.setText(oborud.getIdOborud().toString());
             nameOborud.setText(oborud.getNameOborud());
@@ -58,7 +57,7 @@ public class AddOborud extends javax.swing.JDialog {
             inventNum.setText(oborud.getInventNum());
             osnPok.setText(oborud.getOsnPok());
             schet.setText(oborud.getSchet());
-            
+
 //            for(DOborudDopHarac dopHara : oborud.getHaracArr()){
 //                try {
 //                    dbmDopHarac.addData(dopHara);
@@ -67,16 +66,7 @@ public class AddOborud extends javax.swing.JDialog {
 //                }
 //            }
             updDopHaracTable();
-            for(DOborudZamenaRash zamRash : oborud.getRashArr()){
-                try {
-                    dbmZamRash.addData(zamRash);
-                } catch (Exception ex) {
-                     System.out.println("Создание таблицы замена расходников оборудования ошибка" + ex);
-                }    
-            }
-        
-
-            
+            updZamRashTable();
         } else {
             idGrupOborud.setSelectedItem(null);
             deviceId.setSelectedItem(null);
@@ -87,29 +77,42 @@ public class AddOborud extends javax.swing.JDialog {
         deviceId.setSelectedItem(dev);
     }
 
-    public DOborud getOborud(){
+    public DOborud getOborud() {
         return oborud;
     }
-    
-    public void addDopHarac(DOborudDopHarac dopHarac){
+
+    public void addDopHarac(DOborudDopHarac dopHarac) {
         oborud.getHaracArr().add(dopHarac);
         updDopHaracTable();
     }
-    
-    public void addZamRash(DOborudZamenaRash zamRash){
+
+    public void addZamRash(DOborudZamenaRash zamRash) {
         oborud.getRashArr().add(zamRash);
+        updZamRashTable();
     }
-    
-    public void updDopHaracTable(){
-         dbmDopHarac.clearData();
-         this.oborud = MainFrame.sDb.getOborud(oborud.getIdOborud());
-         for(DOborudDopHarac dopHara : oborud.getHaracArr()){
-                try {
-                    dbmDopHarac.addData(dopHara);
-                } catch (Exception ex) {
-                     System.out.println("Создание таблицы доп. характеристик оборудования ошибка" + ex);
-                }
+
+    public void updDopHaracTable() {
+        dbmDopHarac.clearData();
+        this.oborud = MainFrame.sDb.getOborud(oborud.getIdOborud());
+        for (DOborudDopHarac dopHara : oborud.getHaracArr()) {
+            try {
+                dbmDopHarac.addData(dopHara);
+            } catch (Exception ex) {
+                System.out.println("Создание таблицы доп. характеристик оборудования ошибка" + ex);
             }
+        }
+    }
+
+    public void updZamRashTable() {
+        dbmZamRash.clearData();
+        this.oborud = MainFrame.sDb.getOborud(oborud.getIdOborud());
+        for (DOborudZamenaRash zamRash : oborud.getRashArr()) {
+            try {
+                dbmZamRash.addData(zamRash);
+            } catch (Exception ex) {
+                System.out.println("Создание таблицы замена расходников оборудования ошибка" + ex);
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -150,6 +153,7 @@ public class AddOborud extends javax.swing.JDialog {
         jScrollPane2 = new javax.swing.JScrollPane();
         dOborudZamenaRashTable = new javax.swing.JTable();
         changeOborudBut = new javax.swing.JButton();
+        changeOborudBut1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -334,6 +338,14 @@ public class AddOborud extends javax.swing.JDialog {
             }
         });
 
+        changeOborudBut1.setText("Редактировать");
+        changeOborudBut1.setMaximumSize(new java.awt.Dimension(1920, 1680));
+        changeOborudBut1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changeOborudBut1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -403,7 +415,10 @@ public class AddOborud extends javax.swing.JDialog {
                                 .addComponent(changeOborudBut, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(addZamRashBut, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(addZamRashBut, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(changeOborudBut1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -476,7 +491,9 @@ public class AddOborud extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel5)
                         .addGap(7, 7, 7)
-                        .addComponent(addZamRashBut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(addZamRashBut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(changeOborudBut1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, 0)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -558,16 +575,21 @@ public class AddOborud extends javax.swing.JDialog {
     }//GEN-LAST:event_portActionPerformed
 
     private void addDopHaracButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addDopHaracButActionPerformed
-        if(idOborud.getText().equals("")){
+        if (idOborud.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Необходимо сохранить оборудование", "Внимание", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            AddDopHarac dopHarac = new AddDopHarac(null,true,"Добавление дополнительных характеристик",this,null);
+            AddDopHarac dopHarac = new AddDopHarac(null, true, "Добавление дополнительных характеристик", this, null);
             dopHarac.setVisible(true);
         }
     }//GEN-LAST:event_addDopHaracButActionPerformed
 
     private void addZamRashButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addZamRashButActionPerformed
-        // TODO add your handling code here:
+        if (idOborud.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Необходимо сохранить оборудование", "Внимание", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            AddZamRash zamRash = new AddZamRash(null, true, "Добавление расходных материалов", this, null);
+            zamRash.setVisible(true);
+        }
     }//GEN-LAST:event_addZamRashButActionPerformed
 
     private void changeOborudButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeOborudButActionPerformed
@@ -580,13 +602,31 @@ public class AddOborud extends javax.swing.JDialog {
                 }
             }
 
-           AddDopHarac dopHar = new AddDopHarac(null,true,"Редактирование дополнительных характеристик",this,dopHarac);
-           dopHar.setVisible(true);
+            AddDopHarac dopHar = new AddDopHarac(null, true, "Редактирование дополнительных характеристик", this, dopHarac);
+            dopHar.setVisible(true);
 
         } else {
             JOptionPane.showMessageDialog(this, "Необходимо выделить оборудование", "Внимание", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_changeOborudButActionPerformed
+
+    private void changeOborudBut1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeOborudBut1ActionPerformed
+        if (dOborudZamenaRashTable.getSelectedRow() != -1) {
+            DOborudZamenaRash zamRash = null;
+
+            for (DOborudZamenaRash zam : oborud.getRashArr()) {
+                if (zam.getIdOborudRas().getIdOborud() == dOborudZamenaRashTable.getValueAt(dOborudZamenaRashTable.getSelectedRow(), 0)) {
+                    zamRash = zam;
+                }
+            }
+
+            AddZamRash zamRas = new AddZamRash(null, true, "Редактирование расходных материалов", this, zamRash);
+            zamRas.setVisible(true);
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Необходимо выделить оборудование", "Внимание", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_changeOborudBut1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -645,6 +685,7 @@ public class AddOborud extends javax.swing.JDialog {
     private javax.swing.JButton butCancel;
     private javax.swing.JButton butSaveClose;
     private javax.swing.JButton changeOborudBut;
+    private javax.swing.JButton changeOborudBut1;
     private javax.swing.JButton clearGrupBut;
     private javax.swing.JButton clearTrekerBut;
     private javax.swing.JTable dOborudDopHaracTable;

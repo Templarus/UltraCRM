@@ -18,6 +18,7 @@ import ultracrm.treker.JPanelTreker;
 import ultracrm.dogovor.JPanelDogovor;
 import server.ServerDb;
 import ultracrm.oborud.JPanelOborud;
+import ultracrm.spr.JPanelSpr;
 
 /**
  *
@@ -27,6 +28,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     public static ServerDb sDb;
     //private static String connectionString = "jdbc:sqlserver://188.120.254.195:1433;databaseName=UltraFiolet";
+    //private static String connectionString = "jdbc:sqlserver://185.43.7.183:1433;databaseName=UltraFiolet";
     private static String connectionString = "jdbc:sqlserver://ASUSG46:1433;databaseName=UltraFiolet";
     //private static String connectionString = "jdbc:sqlserver://MAIN:1433;databaseName=UltraFiolet";
     private static String userName = "sa";
@@ -59,7 +61,7 @@ public class MainFrame extends javax.swing.JFrame {
         butDogovor = new javax.swing.JButton();
         butTreker = new javax.swing.JButton();
         butKontr = new javax.swing.JButton();
-        butDogovor1 = new javax.swing.JButton();
+        butSpr = new javax.swing.JButton();
         butOborud = new javax.swing.JButton();
         jPanelContainer = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -113,17 +115,17 @@ public class MainFrame extends javax.swing.JFrame {
         jPanelMenuBar.add(butKontr);
         butKontr.setBounds(220, 0, 230, 90);
 
-        butDogovor1.setText("Справочники");
-        butDogovor1.setMaximumSize(new java.awt.Dimension(1920, 1080));
-        butDogovor1.setMinimumSize(null);
-        butDogovor1.setPreferredSize(new java.awt.Dimension(120, 95));
-        butDogovor1.addActionListener(new java.awt.event.ActionListener() {
+        butSpr.setText("Справочники");
+        butSpr.setMaximumSize(new java.awt.Dimension(1920, 1080));
+        butSpr.setMinimumSize(null);
+        butSpr.setPreferredSize(new java.awt.Dimension(120, 95));
+        butSpr.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                butDogovor1ActionPerformed(evt);
+                butSprActionPerformed(evt);
             }
         });
-        jPanelMenuBar.add(butDogovor1);
-        butDogovor1.setBounds(910, 0, 230, 90);
+        jPanelMenuBar.add(butSpr);
+        butSpr.setBounds(910, 0, 230, 90);
 
         butOborud.setText("Оборудование");
         butOborud.setMaximumSize(new java.awt.Dimension(1920, 1080));
@@ -188,9 +190,14 @@ public class MainFrame extends javax.swing.JFrame {
         jPanelContainer.updateUI();
     }//GEN-LAST:event_butKontrActionPerformed
 
-    private void butDogovor1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butDogovor1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_butDogovor1ActionPerformed
+    private void butSprActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butSprActionPerformed
+        clearJPanelComponent();
+        JPanelSpr jPanSpr = new JPanelSpr();
+        jPanSpr.setBounds(0, 0, 1600, 780);
+        jPanSpr.setVisible(true);
+        jPanelContainer.add(jPanSpr);
+        jPanelContainer.updateUI(); 
+    }//GEN-LAST:event_butSprActionPerformed
 
     private void butOborudActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butOborudActionPerformed
         clearJPanelComponent();
@@ -296,9 +303,9 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton butDogovor;
-    private javax.swing.JButton butDogovor1;
     private javax.swing.JButton butKontr;
     private javax.swing.JButton butOborud;
+    private javax.swing.JButton butSpr;
     private javax.swing.JButton butTreker;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;

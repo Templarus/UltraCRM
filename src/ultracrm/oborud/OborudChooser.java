@@ -27,12 +27,14 @@ public class OborudChooser extends javax.swing.JDialog {
     private DatabaseTableModel dbm = new DatabaseTableModel(false);
     int idDogovor;
     String oborDog;
+    AddZamRash zamRash;
     
-    public OborudChooser(java.awt.Frame parent, boolean modal, AddOborudDogovor dialog,int idDogovor, String oborDog) {
+    public OborudChooser(java.awt.Frame parent, boolean modal, AddOborudDogovor dialog,int idDogovor, String oborDog,AddZamRash zamRash) {
         super(parent, modal);
         this.dogOborud = dialog;
         this.idDogovor = idDogovor;
         this.oborDog = oborDog;
+        this.zamRash = zamRash;
         initComponents();
 
         try {
@@ -214,9 +216,13 @@ public class OborudChooser extends javax.swing.JDialog {
 
     private void oborudTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_oborudTableMouseClicked
         if (evt.getClickCount() == 2) {
-            DOborud oborud = Start.mf.sDb.getOborud((int) oborudTable.getValueAt(oborudTable.getSelectedRow(), 0));
+        DOborud oborud = Start.mf.sDb.getOborud((int) oborudTable.getValueAt(oborudTable.getSelectedRow(), 0));
             dispose();
+            if(idDogovor != 0){
             dogOborud.setNameOborud(oborud);
+            } else {
+            zamRash.setIdOborudRash(oborud);
+            } 
         }
     }//GEN-LAST:event_oborudTableMouseClicked
 
@@ -260,7 +266,12 @@ public class OborudChooser extends javax.swing.JDialog {
         if (oborudTable.getSelectedRow() != -1) {
             DOborud oborud = Start.mf.sDb.getOborud((int) oborudTable.getValueAt(oborudTable.getSelectedRow(), 0));
             dispose();
+            if(idDogovor != 0){
             dogOborud.setNameOborud(oborud);
+            } else {
+            zamRash.setIdOborudRash(oborud);
+            } 
+                
         } else {
             JOptionPane.showMessageDialog(this, "Необходимо выделить оборудование", "Внимание", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -303,7 +314,7 @@ public class OborudChooser extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                OborudChooser dialog = new OborudChooser(new javax.swing.JFrame(), true, null,0,"");
+                OborudChooser dialog = new OborudChooser(new javax.swing.JFrame(), true, null,0,"",null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

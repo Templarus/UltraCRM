@@ -466,7 +466,7 @@ public class AddOborudDogovor extends javax.swing.JDialog {
     }//GEN-LAST:event_portActionPerformed
 
     private void addOborudButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addOborudButActionPerformed
-        OborudChooser obChooser = new OborudChooser(null, true, this,new Integer(idDogovor.getText()).intValue(),d.getOborudDogovor());
+        OborudChooser obChooser = new OborudChooser(null, true, this,new Integer(idDogovor.getText()).intValue(),d.getOborudDogovor(),null);
         obChooser.setVisible(true);
     }//GEN-LAST:event_addOborudButActionPerformed
 

@@ -242,12 +242,12 @@ public class JPanelDogovor extends javax.swing.JPanel {
     {
         scalingfactor = Start.interfaceScalingFactor;
 
-        System.out.println("getPreferredSize().width=" + getPreferredSize().width);
-        System.out.println("getPreferredSize().height=" + getPreferredSize().height);
+       // System.out.println("getPreferredSize().width=" + getPreferredSize().width);
+       // System.out.println("getPreferredSize().height=" + getPreferredSize().height);
 
         int width = (int) (getPreferredSize().width * scalingfactor);
         int height = (int) (getPreferredSize().height * scalingfactor);
-        System.out.println("MainFrame scalingfactor=" + scalingfactor + " width=" + width + " height=" + height);
+       // System.out.println("MainFrame scalingfactor=" + scalingfactor + " width=" + width + " height=" + height);
 
         setPreferredSize(new Dimension((int) (getPreferredSize().width * scalingfactor), (int) (getPreferredSize().height * scalingfactor)));
         setBounds(0, 0, (int) (1680 * scalingfactor), (int) (1050 * scalingfactor));
@@ -300,8 +300,8 @@ public class JPanelDogovor extends javax.swing.JPanel {
             JTable jT = (JTable) comp;
             jT.setFont(new Font("Tahoma", Font.PLAIN, (int) (jT.getFont().getSize() * scalingfactor)));
             for (int i = 0; i < jT.getColumnModel().getColumnCount(); i++) {
-                System.err.println("123123123132");
-                System.out.println("widtbefore="+jT.getColumnModel().getColumn(i).getPreferredWidth()+" AFTER="+(int) (jT.getColumnModel().getColumn(i).getPreferredWidth() * scalingfactor));
+               // System.err.println("123123123132");
+               // System.out.println("widtbefore="+jT.getColumnModel().getColumn(i).getPreferredWidth()+" AFTER="+(int) (jT.getColumnModel().getColumn(i).getPreferredWidth() * scalingfactor));
                 
                 
                 jT.getColumnModel().getColumn(i).setPreferredWidth((int) (jT.getColumnModel().getColumn(i).getPreferredWidth() * scalingfactor));
@@ -318,8 +318,8 @@ public class JPanelDogovor extends javax.swing.JPanel {
         if (comp instanceof JViewport) {
             JViewport jV = (JViewport) comp;
              for (Component lComp : jV.getComponents()) {
-                    System.err.println("00001111");
-                    System.err.println(lComp.toString());
+                   // System.err.println("00001111");
+                   // System.err.println(lComp.toString());
                     rescaleComponent(lComp);
                 }
             jV.setFont(new Font("Tahoma", Font.PLAIN, (int) (jV.getFont().getSize() * scalingfactor)));

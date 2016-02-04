@@ -949,6 +949,16 @@ public class ServerDb implements Constatnts {
         return insertDb(sql);
 
     }
+
+    public int setOborudZamRash(DOborudZamenaRash zamRash) {
+
+        sql = "INSERT INTO dOborudZamenaRash "
+                + "       (idOborud, idOborudRas, dtZam, kolvo, pokaz) "
+                + "VALUES (" + zamRash.getIdOborud() + ","+zamRash.getIdOborudRas().getIdOborud()+",'"+zamRash.getDtZam()+"',"+zamRash.getKolvo()+","+zamRash.getPokaz()+")";
+        return insertDb(sql);
+
+    }
+
     public int updOborudDopHarac(DOborudDopHarac dopHarac) {
         sql = "UPDATE dOborudDopHarac "
                 + " SET pokaz = '" + dopHarac.getPokaz() + "' "
@@ -957,7 +967,13 @@ public class ServerDb implements Constatnts {
 
     }
     
-    
+    public int updOborudZamRash(DOborudZamenaRash zamRash) {
+        sql = "UPDATE dOborudZamenaRash "
+                + " SET kolvo = "+zamRash.getKolvo()+",pokaz = " + zamRash.getPokaz() + ""
+                + " WHERE idOborud = " + zamRash.getIdOborud() + " AND idOborudRas = " + zamRash.getIdOborudRas().getIdOborud() + " AND dtZam = '"+zamRash.getDtZam()+"'";
+        return updateDb(sql);
+
+    }
     
     public int updOborDogovor(DDogOborud obor) {
 
