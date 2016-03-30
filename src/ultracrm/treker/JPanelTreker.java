@@ -239,7 +239,6 @@ public class JPanelTreker extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void butAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butAddActionPerformed
-
         AddDevice addForm = new AddDevice(Start.mf, true, "Добавление нового трекера", null);
         addForm.setVisible(true);
     }//GEN-LAST:event_butAddActionPerformed

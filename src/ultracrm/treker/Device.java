@@ -2,7 +2,6 @@ package ultracrm.treker;
 
 import java.util.Objects;
 
-
 // класс предназначенный для комплексного хранения информации об устройстве в его полях.(сущность)
 public class Device {
 
@@ -12,10 +11,12 @@ public class Device {
     private boolean status = false;
     private String password = "";
     private String tel = "";
-    
-    
+    private Integer kod;
+    private boolean flGeo;
+    private boolean flDisable;
+
     public Device() {
-        this("863591026612469", 5601, "1234", false, false);
+        this("0000000000000000", 5600, "1234", false, false);
     }
 
     public Device(String id, int port, String password) {
@@ -29,7 +30,57 @@ public class Device {
         this.connection = connected;
         this.status = status;
     }
-    
+
+    public Device(String id, int port, String password, String tel, Integer kod, boolean flGeo, boolean flDisable) {
+        this.id = id;
+        this.port = port;
+        this.password = password;
+        this.tel = tel;
+        this.kod = kod;
+        this.flGeo = flGeo;
+        this.flDisable = flDisable;
+    }
+
+    public Device(String id, int port, String password, String tel, boolean flGeo, boolean flDisable) {
+        this.id = id;
+        this.port = port;
+        this.password = password;
+        this.tel = tel;
+        this.flGeo = flGeo;
+        this.flDisable = flDisable;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
+
+    public Integer getKod() {
+        return kod;
+    }
+
+    public void setKod(Integer kod) {
+        this.kod = kod;
+    }
+
+    public boolean isFlGeo() {
+        return flGeo;
+    }
+
+    public void setFlGeo(boolean flGeo) {
+        this.flGeo = flGeo;
+    }
+
+    public boolean isFlDisable() {
+        return flDisable;
+    }
+
+    public void setFlDisable(boolean flDisable) {
+        this.flDisable = flDisable;
+    }
 
     public void setConnection(boolean connection) {
         this.connection = connection;
@@ -96,9 +147,5 @@ public class Device {
         }
         return true;
     }
-    
-    
-    
-    
 
 }

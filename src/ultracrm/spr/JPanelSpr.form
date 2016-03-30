@@ -38,6 +38,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="&#x423;&#x441;&#x43b;&#x43e;&#x432;&#x438;&#x44f; &#x43e;&#x43f;&#x43b;&#x430;&#x442;&#x44b;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+      </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
           <AbsoluteConstraints x="0" y="10" width="200" height="80"/>

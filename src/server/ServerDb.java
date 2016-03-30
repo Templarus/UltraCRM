@@ -150,6 +150,13 @@ public class ServerDb implements Constatnts {
     }
 
 //работа с трекерами
+    public int setDevice(Device dev) {
+        sql = "INSERT INTO [dbo].[STreker] "
+                + "        ([deviceId],[port],[password],[tel],[flGeo],[flDisable])"
+                + " VALUES ('" + dev.getId() + "' ," + dev.getPort() + ",'" + dev.getPassword() + "','" + dev.getTel() + "','" + dev.isFlGeo() + "','" + dev.isFlDisable() + "')";
+        return insertDb(sql);
+    }
+
     public ResultSet getSTreker() {
         sql = "SELECT deviceId as Устройство, port as Порт, dbo.f_getOborudTreker(deviceId) as [Привязан к оборудованию] FROM STreker ORDER BY deviceId DESC";
         return selectDb(sql);
@@ -261,13 +268,14 @@ public class ServerDb implements Constatnts {
     public void updDeviceTimeWork() {
 
         for (Device dev : getDeviceList()) {
-            //Получаем данные по последней работе
-            // Date dtLastW = new Date(-2208978000000L);
-            //Time timeLastW = new Time(-10800000l);
-            //DeviceTimeWork devLastWork = getDeviceTimeWorkLast(dev);
             Date dtLast = new Date(-2208978000000L);
             Time timeLast = new Time(-10800000l);
-
+            
+            
+            sql = "DELETE FROM DeviceTimeWork WHERE id IN (SELECT    TOP(1) id FROM DeviceTimeWork WHERE (deviceId = N'" + dev.getId() + "') ORDER BY dtWork DESC, timeBegin DESC, timeEnd DESC)";
+            updateDb(sql);
+            
+            
             try {
                 sql = "SELECT    TOP(1)    deviceId, ISNULL(dtWork,''), timeBegin, ISNULL(timeEnd,ISNULL(timeBegin,'')) FROM DeviceTimeWork WHERE (deviceId = N'" + dev.getId() + "') ORDER BY dtWork DESC, timeBegin DESC, timeEnd DESC";
                 rs = selectDb(sql);
@@ -623,6 +631,11 @@ public class ServerDb implements Constatnts {
         return selectDb(sql);
     }
 
+    public ResultSet getOplata(int idDogovor) {
+        sql = "SELECT [id] as Код,nameOborud as Оборудование,[dt] as Дата,[summa] as Сумма FROM [dbo].[dDogOborudOplata] LEFT JOIN dOborud ON dOborud.idOborud = dDogOborudOplata.idOborud WHERE idDogovor = " + idDogovor + "";
+        return selectDb(sql);
+    }
+
     public DDogovor getDogovor(int idDog) {
         ResultSet rsQ;
         DDogovor dog = new DDogovor();
@@ -770,18 +783,6 @@ public class ServerDb implements Constatnts {
         ArrayList<DDogOborud> arr = new ArrayList<>();
         DDogOborud dogOborud;
         ResultSet rsQ;
-//        sql = "SELECT\n"
-//                + "	dDogOborud.idOborud AS Код, "
-//                + "	dOborud.nameOborud AS Наименование, "
-//                + "	RTRIM(LTRIM(ISNULL(dDogOborud.gorod,'') + ' ' + "
-//                + "	ISNULL(dDogOborud.ulica,'') + "
-//                + "	CASE WHEN ISNULL(dDogOborud.dom,'') = '' THEN '' ELSE ' д. ' + dDogOborud.dom END + "
-//                + "	CASE WHEN ISNULL(dDogOborud.korp,'') = '' THEN '' ELSE ' корп. ' + dDogOborud.korp END + "
-//                + "	CASE WHEN ISNULL(dDogOborud.office,'') = '' THEN '' ELSE ' оф. ' + dDogOborud.office END))  as Адрес, "
-//                + "	dDogOborud.kolvo as [Кол-во] "
-//                + "FROM dDogOborud "
-//                + "INNER JOIN dOborud "
-//                + "	ON dDogOborud.idOborud = dOborud.idOborud WHERE idDogovor = " + idDogovor + "";
 
         sql = "SELECT        dDogOborud.idDogovor, dDogOborud.idOborud, dDogOborud.kolvo, dDogOborud.dtEndArenda, dDogOborud.gorod, dDogOborud.ulica, dDogOborud.dom, dDogOborud.korp, dDogOborud.office, dDogOborud.prim, "
                 + "                         dDogOborud.cenaPoTarif, dDogOborud.idUslovie, dOborud.nameOborud "
@@ -803,6 +804,46 @@ public class ServerDb implements Constatnts {
         return arr;
     }
 
+        public DDogOborud[] getDDogOborudList(int idDogovor) {
+         
+        
+        ArrayList<DDogOborud> arr = new ArrayList<>();
+        DDogOborud dogOborud;
+        ResultSet rsQ;
+
+        sql = "SELECT        dDogOborud.idDogovor, dDogOborud.idOborud, dDogOborud.kolvo, dDogOborud.dtEndArenda, dDogOborud.gorod, dDogOborud.ulica, dDogOborud.dom, dDogOborud.korp, dDogOborud.office, dDogOborud.prim, "
+                + "                         dDogOborud.cenaPoTarif, dDogOborud.idUslovie, dOborud.nameOborud "
+                + "FROM            dDogOborud INNER JOIN "
+                + "                         dOborud ON dDogOborud.idOborud = dOborud.idOborud WHERE idDogovor = " + idDogovor + "";
+        rsQ = selectDb(sql);
+
+        try {
+            while (rsQ.next()) {
+                dogOborud = new DDogOborud(rsQ.getInt(1), rsQ.getInt(2), rsQ.getInt(3), rsQ.getDate(4), rsQ.getString(5), rsQ.getString(6), rsQ.getString(7), rsQ.getString(8), rsQ.getString(9), rsQ.getString(10), rsQ.getBigDecimal(11));
+                dogOborud.setIdUslovie(getSUslovie(rsQ.getInt(12)));
+                dogOborud.setNameOborud(rsQ.getString(13));
+                arr.add(dogOborud);
+            }
+        } catch (SQLException ex) {
+            System.out.println("ServerDb:getDDogovorOborud():Ошибка подключения или создание Statement - " + ex + " sql: " + sql);
+        }
+
+        DDogOborud[] obArr = new DDogOborud[arr.size()];
+        
+            System.out.println("Длина массива - " + arr.size());
+        
+        
+        for(int i = 0; i < arr.size(); i++){
+            System.out.println("Оборудование - " + arr.get(i));
+            obArr[i] = arr.get(i);
+        }
+                
+        return obArr;
+    }
+    
+    
+    
+    
     //Работа с событиями
     public int setEvent(Event ev) {
         sql = "INSERT INTO dEvent \n"
@@ -954,7 +995,7 @@ public class ServerDb implements Constatnts {
 
         sql = "INSERT INTO dOborudZamenaRash "
                 + "       (idOborud, idOborudRas, dtZam, kolvo, pokaz) "
-                + "VALUES (" + zamRash.getIdOborud() + ","+zamRash.getIdOborudRas().getIdOborud()+",'"+zamRash.getDtZam()+"',"+zamRash.getKolvo()+","+zamRash.getPokaz()+")";
+                + "VALUES (" + zamRash.getIdOborud() + "," + zamRash.getIdOborudRas().getIdOborud() + ",'" + zamRash.getDtZam() + "'," + zamRash.getKolvo() + "," + zamRash.getPokaz() + ")";
         return insertDb(sql);
 
     }
@@ -966,15 +1007,15 @@ public class ServerDb implements Constatnts {
         return insertDb(sql);
 
     }
-    
+
     public int updOborudZamRash(DOborudZamenaRash zamRash) {
         sql = "UPDATE dOborudZamenaRash "
-                + " SET kolvo = "+zamRash.getKolvo()+",pokaz = " + zamRash.getPokaz() + ""
-                + " WHERE idOborud = " + zamRash.getIdOborud() + " AND idOborudRas = " + zamRash.getIdOborudRas().getIdOborud() + " AND dtZam = '"+zamRash.getDtZam()+"'";
+                + " SET kolvo = " + zamRash.getKolvo() + ",pokaz = " + zamRash.getPokaz() + ""
+                + " WHERE idOborud = " + zamRash.getIdOborud() + " AND idOborudRas = " + zamRash.getIdOborudRas().getIdOborud() + " AND dtZam = '" + zamRash.getDtZam() + "'";
         return updateDb(sql);
 
     }
-    
+
     public int updOborDogovor(DDogOborud obor) {
 
         sql = "UPDATE       dDogOborud "
@@ -1130,6 +1171,12 @@ public class ServerDb implements Constatnts {
         }
 
         return dopHarac;
+    }
+
+    //Справочники
+    public ResultSet getSUslovieDogobor() {
+        sql = "SELECT [idUslovie] as Код,[nameUslovie] as Наименование FROM [sUslovieDogovor]";
+        return selectDb(sql);
     }
 
     @Override

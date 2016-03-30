@@ -28,12 +28,12 @@ public class MainFrame extends javax.swing.JFrame {
 
     public static ServerDb sDb;
     //private static String connectionString = "jdbc:sqlserver://188.120.254.195:1433;databaseName=UltraFiolet";
-    //private static String connectionString = "jdbc:sqlserver://185.43.7.183:1433;databaseName=UltraFiolet";
-    private static String connectionString = "jdbc:sqlserver://ASUSG46:1433;databaseName=UltraFiolet";
+    private static String connectionString = "jdbc:sqlserver://178.219.43.131:50515;databaseName=UltraFiolet";
+    //private static String connectionString = "jdbc:sqlserver://ASUSG46:1433;databaseName=UltraFiolet";
     //private static String connectionString = "jdbc:sqlserver://MAIN:1433;databaseName=UltraFiolet";
     private static String userName = "sa";
-    private static String userPwd = "sa";
-    //private static String userPwd = "Pa$$w0rd";
+    //private static String userPwd = "sa";
+    private static String userPwd = "Hrenwamdam2818!";
     //private static String userPwd = "Zx3d2818!";
     private double scalingfactor = 1.0;
 

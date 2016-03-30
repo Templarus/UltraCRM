@@ -57,9 +57,19 @@ public class JPanelSpr extends javax.swing.JPanel {
         setLayout(null);
 
         jButton1.setText("Условия оплаты");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         add(jButton1);
         jButton1.setBounds(0, 10, 200, 80);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       SUslovieDogovorSpr uslDog = new SUslovieDogovorSpr(null, true);
+       uslDog.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
     private void rescaling() //method used to rescale UI
     {
         scalingfactor = Start.interfaceScalingFactor;

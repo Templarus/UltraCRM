@@ -225,7 +225,7 @@ public class DDogOborud {
 
     @Override
     public String toString() {
-        return "ultracrm.dogovor.DDogOborud[ dDogOborudPK=" + idDogovor + " ]";
+        return nameOborud;
     }
 
 }

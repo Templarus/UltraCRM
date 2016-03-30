@@ -5,12 +5,10 @@
  */
 package ultracrm.treker;
 
-import ultracrm.dogovor.*;
-import ultracrm.kontragent.*;
 import javax.swing.JOptionPane;
 import ultracrm.MainFrame;
-import java.sql.Date;
 import yandexPack.YandexRequest;
+
 /**
  *
  * @author Asus
@@ -52,6 +50,8 @@ public class AddDevice extends javax.swing.JDialog {
         balans = new javax.swing.JLabel();
         tel = new javax.swing.JFormattedTextField();
         password = new javax.swing.JPasswordField();
+        flDisable = new javax.swing.JCheckBox();
+        flGeo = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -108,6 +108,7 @@ public class AddDevice extends javax.swing.JDialog {
         });
 
         jButton1.setText("Тест GEO");
+        jButton1.setEnabled(false);
         jButton1.setMaximumSize(new java.awt.Dimension(1920, 1680));
         jButton1.setMinimumSize(null);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -161,52 +162,75 @@ public class AddDevice extends javax.swing.JDialog {
         password.setMaximumSize(new java.awt.Dimension(1920, 1680));
         password.setMinimumSize(null);
 
+        flDisable.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        flDisable.setText("Заблокирован");
+        flDisable.setToolTipText("");
+        flDisable.setEnabled(false);
+        flDisable.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        flDisable.setIconTextGap(8);
+        flDisable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                flDisableActionPerformed(evt);
+            }
+        });
+
+        flGeo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        flGeo.setText("Позиционирование");
+        flGeo.setToolTipText("");
+        flGeo.setEnabled(false);
+        flGeo.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        flGeo.setIconTextGap(8);
+        flGeo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                flGeoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 537, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(70, 70, 70)
-                .addComponent(id, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(70, 70, 70)
+                        .addComponent(id, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(deviceId, javax.swing.GroupLayout.PREFERRED_SIZE, 517, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(port, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(4, 4, 4)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(butCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(6, 6, 6)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(6, 6, 6)
+                                .addComponent(butSaveClose, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tel, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))))
             .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(deviceId, javax.swing.GroupLayout.PREFERRED_SIZE, 517, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(port, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
-                .addComponent(tel, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
+                .addContainerGap()
+                .addComponent(flDisable)
+                .addGap(57, 57, 57)
                 .addComponent(balans, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(77, 77, 77)
-                .addComponent(butCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addComponent(butSaveClose, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addComponent(flGeo))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -236,15 +260,23 @@ public class AddDevice extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(balans, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(balans, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(flDisable)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(flGeo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(butCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(butSaveClose, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(butSaveClose, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         pack();
@@ -262,67 +294,69 @@ public class AddDevice extends javax.swing.JDialog {
     }//GEN-LAST:event_butCancelActionPerformed
 
     private void butSaveCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butSaveCloseActionPerformed
-//        System.out.println("Телефон : " + tel.getText());
 
+        int rezult;
 
+        if (deviceId.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Необходимо заполнить идентификатор трекера", "Внимание", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            if (port.getText().toString().equals("")) {
+                JOptionPane.showMessageDialog(this, "Необходимо заполнить порт", "Внимание", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                if (tel.getText().toString().equals("")) {
+                    JOptionPane.showMessageDialog(this, "Необходимо заполнить телефон", "Внимание", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    if (this.getTitle().equals("Добавление нового трекера")) {
+                        StringBuilder pass = new StringBuilder();
+                        
+                        Device dev = new Device(deviceId.getText(),new Integer(port.getText()).intValue(), pass.append(password.getPassword()).toString(), tel.getText().replace("(","").replace(")", "").replace("-",""), flGeo.isSelected(),flDisable.isSelected());
 
+                        rezult = MainFrame.sDb.setDevice(dev);
 
+                        if (MainFrame.sDb.err.equals("")) {
+                            if (rezult != 0) {
+                                JOptionPane.showMessageDialog(this, "Трекер успешно добавлен", "Внимание", JOptionPane.INFORMATION_MESSAGE);
+                                dispose();
+                            }
 
-
-
-//  //        System.out.println("Наименование контрагента - " +  Kontr.getSelectedItem().toString());
-//          
-//          
-//       // new Date(dtBegin.getDate().getTime());
-//      
-//        int rezult;
-//
-//        if (nameDogovor.getText().equals("")) {
-//            JOptionPane.showMessageDialog(this, "Необходимо заполнить наименование договора", "Внимание", JOptionPane.INFORMATION_MESSAGE);
-//        } else 
-//        if (Kontr.getSelectedItem().toString().equals("")) {
-//            JOptionPane.showMessageDialog(this, "Необходимо выбрать контрагента", "Внимание", JOptionPane.INFORMATION_MESSAGE);
-//        } else 
-//            if (this.getTitle().equals("Добавление нового договора")) {
-//            DKontr kontr = (DKontr)Kontr.getSelectedItem();
-//            //    System.out.println("IdKontragent : " + kontr.getIdKontr());
-//           
-//            
-//            rezult = MainFrame.sDb.setDogovor(new DDogovor(kontr, new Date(dtBegin.getDate().getTime()), new Date(dtEnd.getDate().getTime()), nameDogovor.getText(), flClose.isSelected(), (SUslovieDogovor)idUslovie.getSelectedItem(), (SVidOplat)idVidOplat.getSelectedItem(), prim.getText()));
-//
-//            if (MainFrame.sDb.err.equals("")) {
-//                if (rezult != 0) {
-//                    JOptionPane.showMessageDialog(this, "Контрагент успешно добавлен", "Внимание", JOptionPane.INFORMATION_MESSAGE);
-//                    dispose();
-//                }
-//
-//            } else {
-//                JOptionPane.showMessageDialog(this, "Произошла ошибка " + MainFrame.sDb.err, "Внимание", JOptionPane.INFORMATION_MESSAGE);
-//            }
-//        } else {
-//////            rezult = MainFrame.sDb.updKontr(new DKontr(new Integer(idDogovor.getText()),nameDogovor.getText(), urNameKontr.getText(), innKontr.getText(), kppKontr.getText(), adressKontr.getText()));
-//////
-//////            if (MainFrame.sDb.err.equals("")) {
-//////                if (rezult != 0) {
-//////                    JOptionPane.showMessageDialog(this, "Контрагент успешно обновлен", "Внимание", JOptionPane.INFORMATION_MESSAGE);
-//////                    dispose();
-//////                }
-//////
-//////            } else {
-//////                JOptionPane.showMessageDialog(this, "Произошла ошибка " + MainFrame.sDb.err, "Внимание", JOptionPane.INFORMATION_MESSAGE);
-//////            }
-  //      }
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Произошла ошибка " + MainFrame.sDb.err, "Внимание", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    } else {
+////            rezult = MainFrame.sDb.updKontr(new DKontr(new Integer(idDogovor.getText()),nameDogovor.getText(), urNameKontr.getText(), innKontr.getText(), kppKontr.getText(), adressKontr.getText()));
+////
+////            if (MainFrame.sDb.err.equals("")) {
+////                if (rezult != 0) {
+////                    JOptionPane.showMessageDialog(this, "Контрагент успешно обновлен", "Внимание", JOptionPane.INFORMATION_MESSAGE);
+////                    dispose();
+////                }
+////
+////            } else {
+////                JOptionPane.showMessageDialog(this, "Произошла ошибка " + MainFrame.sDb.err, "Внимание", JOptionPane.INFORMATION_MESSAGE);
+////            }
+                    }
+                }
+            }
+        }
     }//GEN-LAST:event_butSaveCloseActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-      YandexRequest yr = new YandexRequest();
-      deviceId.setText(yr.getLocation(MainFrame.sDb.getCellKoordinats("863591026612469"),false));
-      deviceId.updateUI();
+        YandexRequest yr = new YandexRequest();
+        deviceId.setText(yr.getLocation(MainFrame.sDb.getCellKoordinats("863591026612469"), false));
+        deviceId.updateUI();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void portActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_portActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_portActionPerformed
+
+    private void flDisableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flDisableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_flDisableActionPerformed
+
+    private void flGeoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flGeoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_flGeoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -374,6 +408,8 @@ public class AddDevice extends javax.swing.JDialog {
     private javax.swing.JButton butCancel;
     private javax.swing.JButton butSaveClose;
     private javax.swing.JTextField deviceId;
+    private javax.swing.JCheckBox flDisable;
+    private javax.swing.JCheckBox flGeo;
     private javax.swing.JLabel id;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;

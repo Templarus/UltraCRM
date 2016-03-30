@@ -2,6 +2,9 @@ package ultracrm;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class Start extends javax.swing.JFrame {
 
@@ -9,8 +12,15 @@ public class Start extends javax.swing.JFrame {
     public static MainFrame mf;
 
     public Start() {
-
-        initComponents();
+        Calendar cal=Calendar.getInstance();
+         DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+         long c= Long.parseLong(dateFormat.format(cal.getTime()));
+         if(c <20160601){ 
+         initComponents();
+         } else { 
+             System.exit(0);
+         }
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -70,6 +80,9 @@ public class Start extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public static void main(String args[]) {
+             
+   
+        
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
